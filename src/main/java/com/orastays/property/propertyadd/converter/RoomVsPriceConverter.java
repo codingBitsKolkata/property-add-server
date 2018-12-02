@@ -1,12 +1,15 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsPriceEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsPriceModel;
 
 @Component
@@ -24,14 +27,40 @@ public class RoomVsPriceConverter extends CommonConverter
 
 	@Override
 	public RoomVsPriceModel entityToModel(RoomVsPriceEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		RoomVsPriceModel roomVsPriceModel = new RoomVsPriceModel();
+		roomVsPriceModel = (RoomVsPriceModel) Util.transform(modelMapper, e, roomVsPriceModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return roomVsPriceModel;
 	}
 
 	@Override
 	public List<RoomVsPriceModel> entityListToModelList(List<RoomVsPriceEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<RoomVsPriceModel> roomVsPriceModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			roomVsPriceModels = new ArrayList<>();
+			for(RoomVsPriceEntity roomVsPriceEntity:es) {
+				roomVsPriceModels.add(entityToModel(roomVsPriceEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return roomVsPriceModels;
 	}
-
 }

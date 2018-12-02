@@ -1,12 +1,15 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsInfoEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsInfoModel;
 
 @Component
@@ -23,14 +26,41 @@ public class RoomVsInfoConverter extends CommonConverter implements BaseConverte
 
 	@Override
 	public RoomVsInfoModel entityToModel(RoomVsInfoEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		RoomVsInfoModel roomVsInfoModel = new RoomVsInfoModel();
+		roomVsInfoModel = (RoomVsInfoModel) Util.transform(modelMapper, e, roomVsInfoModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return roomVsInfoModel;
 	}
 
 	@Override
 	public List<RoomVsInfoModel> entityListToModelList(List<RoomVsInfoEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<RoomVsInfoModel> roomVsInfoModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			roomVsInfoModels = new ArrayList<>();
+			for(RoomVsInfoEntity roomVsInfoEntity:es) {
+				roomVsInfoModels.add(entityToModel(roomVsInfoEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return roomVsInfoModels;
 	}
 
 }

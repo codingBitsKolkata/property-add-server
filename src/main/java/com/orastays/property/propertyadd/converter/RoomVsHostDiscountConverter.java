@@ -1,12 +1,15 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsHostDiscountEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsHostDiscountModel;
 
 @Component
@@ -24,14 +27,41 @@ public class RoomVsHostDiscountConverter extends CommonConverter
 
 	@Override
 	public RoomVsHostDiscountModel entityToModel(RoomVsHostDiscountEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		RoomVsHostDiscountModel roomVsHostDiscountModel = new RoomVsHostDiscountModel();
+		roomVsHostDiscountModel = (RoomVsHostDiscountModel) Util.transform(modelMapper, e, roomVsHostDiscountModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return roomVsHostDiscountModel;
 	}
 
 	@Override
 	public List<RoomVsHostDiscountModel> entityListToModelList(List<RoomVsHostDiscountEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<RoomVsHostDiscountModel> roomVsHostDiscountModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			roomVsHostDiscountModels = new ArrayList<>();
+			for(RoomVsHostDiscountEntity roomVsHostDiscountEntity:es) {
+				roomVsHostDiscountModels.add(entityToModel(roomVsHostDiscountEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return roomVsHostDiscountModels;
 	}
 
 }

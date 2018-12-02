@@ -1,12 +1,15 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.SpaceRuleEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
 
 @Component
@@ -23,14 +26,41 @@ public class SpaceRuleConverter extends CommonConverter implements BaseConverter
 
 	@Override
 	public SpaceRuleModel entityToModel(SpaceRuleEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		SpaceRuleModel spaceRuleModel = new SpaceRuleModel();
+		spaceRuleModel = (SpaceRuleModel) Util.transform(modelMapper, e, spaceRuleModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return spaceRuleModel;
 	}
 
 	@Override
 	public List<SpaceRuleModel> entityListToModelList(List<SpaceRuleEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<SpaceRuleModel> spaceRuleModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			spaceRuleModels = new ArrayList<>();
+			for(SpaceRuleEntity spaceRuleEntity:es) {
+				spaceRuleModels.add(entityToModel(spaceRuleEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return spaceRuleModels;
 	}
 
 }

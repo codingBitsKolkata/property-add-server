@@ -33,7 +33,7 @@ public class RoomModel extends CommonModel {
 	private List<RoomVsOraDiscountModel> roomVsOraDiscountModels;
 	private List<RoomVsOrapricePercModel> roomVsOrapricePercModels;
 	private List<RoomVsPriceModel> roomVsPriceModels;
-	private List<RoomVsSpecialtiesModel> roomVsSpecialtiesModels;
+	private List<RoomVsSpecialitiesModel> roomVsSpecialitiesModels;
 	private List<RoomVsMealModel> roomVsMealModels;
 	
 }

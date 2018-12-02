@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class RoomVsSpecialtiesModel extends CommonModel {
+public class RoomVsSpecialitiesModel extends CommonModel {
 
 	private String roomspecId;
 	private RoomModel roomModel;
