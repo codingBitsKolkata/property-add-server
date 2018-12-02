@@ -1,10 +1,12 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.AmenitiesEntity;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
@@ -29,8 +31,24 @@ public class AmenitiesConverter extends CommonConverter implements BaseConverter
 
 	@Override
 	public List<AmenitiesModel> entityListToModelList(List<AmenitiesEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<AmenitiesModel> amenitiesModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			amenitiesModels = new ArrayList<>();
+			for(AmenitiesEntity amenitiesEntity:es) {
+				amenitiesModels.add(entityToModel(amenitiesEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return amenitiesModels;
 	}
 
 }

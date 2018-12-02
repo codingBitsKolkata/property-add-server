@@ -1,10 +1,12 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.DiscountCategoryOraEntity;
 import com.orastays.property.propertyadd.model.DiscountCategoryOraModel;
@@ -30,7 +32,23 @@ public class DiscountCategoryOraConverter extends CommonConverter
 
 	@Override
 	public List<DiscountCategoryOraModel> entityListToModelList(List<DiscountCategoryOraEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<DiscountCategoryOraModel> discountCategoryOraModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			discountCategoryOraModels = new ArrayList<>();
+			for(DiscountCategoryOraEntity discountCategoryOraEntity:es) {
+				discountCategoryOraModels.add(entityToModel(discountCategoryOraEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return discountCategoryOraModels;
 	}
 }
