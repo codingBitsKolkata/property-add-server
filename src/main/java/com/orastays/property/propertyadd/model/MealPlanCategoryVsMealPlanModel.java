@@ -14,7 +14,6 @@ import lombok.ToString;
 public class MealPlanCategoryVsMealPlanModel extends CommonModel {
 
 	private String mpcmpId;
-	private String name;
 	private MealPlanCategoryModel mealPlanCategoryModel;
 	private MealPlanModel mealPlanModel;
 	private List<RoomVsMealModel> roomVsMealModels;

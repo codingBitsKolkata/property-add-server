@@ -18,4 +18,5 @@ public class RoomCategoryModel extends CommonModel {
 	private String languageId;
 	private String parentId;
 	private List<RoomModel> roomModels;
+	private PropertyTypeModel propertyTypeModel;
 }

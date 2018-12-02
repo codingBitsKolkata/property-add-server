@@ -18,4 +18,5 @@ public class PropertyTypeModel extends CommonModel {
 	private String parentId;
 	private String name;
 	private List<PropertyModel> propertyModels;
+	private List<RoomCategoryModel> roomCategoryModels;
 }

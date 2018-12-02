@@ -16,6 +16,8 @@ import com.orastays.property.propertyadd.model.RoomVsMealModel;
 public class RoomVsMealEntityConverter extends CommonConverter
 		implements BaseConverter<RoomVsMealEntity, RoomVsMealModel> {
 
+	private static final long serialVersionUID = -4627576649206466658L;
+	
 	private static final Logger logger = LogManager.getLogger(RoomVsMealEntityConverter.class);
 
 	@Override

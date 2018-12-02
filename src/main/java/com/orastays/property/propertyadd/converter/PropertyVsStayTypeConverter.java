@@ -16,6 +16,8 @@ import com.orastays.property.propertyadd.model.PropertyVsStayTypeModel;
 public class PropertyVsStayTypeConverter extends CommonConverter
 		implements BaseConverter<PropertyVsStayTypeEntity, PropertyVsStayTypeModel> {
 
+	private static final long serialVersionUID = 5305209904741530647L;
+	
 	private static final Logger logger = LogManager.getLogger(PropertyVsStayTypeConverter.class);
 
 	@Override

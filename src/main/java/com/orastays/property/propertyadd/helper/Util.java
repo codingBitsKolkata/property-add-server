@@ -346,6 +346,7 @@ public class Util {
 
 		final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 		final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+		@SuppressWarnings("unused")
 		final DateTimeFormatter dateFormat8 = DateTimeFormatter.ofPattern(DATE_FORMAT);
 		Date currentDate = new Date();
 
@@ -1054,6 +1055,7 @@ public class Util {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public static Date getLastDate() {
 
 		try {

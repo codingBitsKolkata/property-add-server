@@ -16,6 +16,7 @@ import com.orastays.property.propertyadd.model.RoomVsSpecialitiesModel;
 public class RoomVsSpecialitiesConverter extends CommonConverter
 		implements BaseConverter<RoomVsSpecialitiesEntity, RoomVsSpecialitiesModel> {
 
+	private static final long serialVersionUID = -74840772349731968L;
 	
 	private static final Logger logger = LogManager.getLogger(RoomVsSpecialitiesConverter.class);
 

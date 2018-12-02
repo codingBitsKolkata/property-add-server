@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -38,6 +40,10 @@ public class RoomCategoryEntity extends CommonEntity {
 
 	@Column(name = "parent_id")
 	private Long parentId;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "property_type_id", nullable = false)
+	private PropertyTypeEntity propertyTypeEntity;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomCategoryEntity", cascade = { CascadeType.ALL })
 	private List<RoomEntity> roomEntities;

@@ -41,6 +41,9 @@ public class PropertyTypeEntity extends CommonEntity {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyTypeEntity", cascade = { CascadeType.ALL })
 	private List<PropertyEntity> propertyEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyTypeEntity", cascade = { CascadeType.ALL })
+	private List<RoomCategoryEntity> roomCategoryEntities;
 
 	@Override
 	public String toString() {

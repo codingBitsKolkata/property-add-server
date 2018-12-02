@@ -16,7 +16,8 @@ import com.orastays.property.propertyadd.model.RoomVsOrapricePercModel;
 public class RoomVsOraPricePercentageConverter extends CommonConverter
 		implements BaseConverter<RoomVsOraPricePercentageEntity, RoomVsOrapricePercModel> {
 
-
+	private static final long serialVersionUID = -1100382970490875823L;
+	
 	private static final Logger logger = LogManager.getLogger(RoomVsOraPricePercentageConverter.class);
 
 	@Override

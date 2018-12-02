@@ -32,9 +32,6 @@ public class MealPlanCatVsMealPlanEntity extends CommonEntity{
 	@Column(name = "mpcmp_id")
 	private Long mpcmpId;
 	
-	@Column(name = "name")
-	private String name;
-	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "mpc_id", nullable = false)
 	private MealPlanCategoryEntity mealPlanCategoryEntity;
