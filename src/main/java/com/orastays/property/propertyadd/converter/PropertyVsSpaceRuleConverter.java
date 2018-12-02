@@ -1,12 +1,15 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PropertyVsSpaceRuleEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyVsSpaceRuleModel;
 
 @Component
@@ -24,14 +27,41 @@ public class PropertyVsSpaceRuleConverter extends CommonConverter
 
 	@Override
 	public PropertyVsSpaceRuleModel entityToModel(PropertyVsSpaceRuleEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		PropertyVsSpaceRuleModel propertyVsSpaceRuleModel = new PropertyVsSpaceRuleModel();
+		propertyVsSpaceRuleModel = (PropertyVsSpaceRuleModel) Util.transform(modelMapper, e, propertyVsSpaceRuleModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return propertyVsSpaceRuleModel;
 	}
 
 	@Override
 	public List<PropertyVsSpaceRuleModel> entityListToModelList(List<PropertyVsSpaceRuleEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<PropertyVsSpaceRuleModel> propertyVsSpaceRuleModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			propertyVsSpaceRuleModels = new ArrayList<>();
+			for(PropertyVsSpaceRuleEntity propertyVsSpaceRuleEntity:es) {
+				propertyVsSpaceRuleModels.add(entityToModel(propertyVsSpaceRuleEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return propertyVsSpaceRuleModels;
 	}
 
 }

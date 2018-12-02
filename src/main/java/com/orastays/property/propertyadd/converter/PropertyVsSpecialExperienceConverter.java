@@ -1,12 +1,15 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PropertyVsSpecialExperienceEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyVsSpecialExperienceModel;
 
 @Component
@@ -24,14 +27,41 @@ public class PropertyVsSpecialExperienceConverter extends CommonConverter
 
 	@Override
 	public PropertyVsSpecialExperienceModel entityToModel(PropertyVsSpecialExperienceEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		PropertyVsSpecialExperienceModel propertyVsSpecialExperienceModel = new PropertyVsSpecialExperienceModel();
+		propertyVsSpecialExperienceModel = (PropertyVsSpecialExperienceModel) Util.transform(modelMapper, e, propertyVsSpecialExperienceModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return propertyVsSpecialExperienceModel;
 	}
 
 	@Override
 	public List<PropertyVsSpecialExperienceModel> entityListToModelList(List<PropertyVsSpecialExperienceEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<PropertyVsSpecialExperienceModel> propertyVsSpecialExperienceModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			propertyVsSpecialExperienceModels = new ArrayList<>();
+			for(PropertyVsSpecialExperienceEntity propertyVsSpecialExperienceEntity:es) {
+				propertyVsSpecialExperienceModels.add(entityToModel(propertyVsSpecialExperienceEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return propertyVsSpecialExperienceModels;
 	}
 
 }

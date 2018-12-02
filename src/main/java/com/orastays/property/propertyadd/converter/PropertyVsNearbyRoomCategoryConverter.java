@@ -1,12 +1,15 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PropertyVsNearbyEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyVsNearbyModel;
 
 @Component
@@ -24,14 +27,41 @@ public class PropertyVsNearbyRoomCategoryConverter extends CommonConverter
 
 	@Override
 	public PropertyVsNearbyModel entityToModel(PropertyVsNearbyEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		PropertyVsNearbyModel propertyVsNearbyModel = new PropertyVsNearbyModel();
+		propertyVsNearbyModel = (PropertyVsNearbyModel) Util.transform(modelMapper, e, propertyVsNearbyModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return propertyVsNearbyModel;
 	}
 
 	@Override
 	public List<PropertyVsNearbyModel> entityListToModelList(List<PropertyVsNearbyEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<PropertyVsNearbyModel> propertyVsNearbyModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			propertyVsNearbyModels = new ArrayList<>();
+			for(PropertyVsNearbyEntity propertyVsNearbyEntity:es) {
+				propertyVsNearbyModels.add(entityToModel(propertyVsNearbyEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return propertyVsNearbyModels;
 	}
 
 }

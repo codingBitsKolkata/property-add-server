@@ -1,12 +1,15 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomStandardEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomStandardModel;
 
 @Component
@@ -24,14 +27,41 @@ public class RoomStandardConverter extends CommonConverter
 
 	@Override
 	public RoomStandardModel entityToModel(RoomStandardEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		RoomStandardModel roomStandardModel = new RoomStandardModel();
+		roomStandardModel = (RoomStandardModel) Util.transform(modelMapper, e, roomStandardModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return roomStandardModel;
 	}
 
 	@Override
 	public List<RoomStandardModel> entityListToModelList(List<RoomStandardEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<RoomStandardModel> roomStandardModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			roomStandardModels = new ArrayList<>();
+			for(RoomStandardEntity roomStandardEntity:es) {
+				roomStandardModels.add(entityToModel(roomStandardEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return roomStandardModels;
 	}
 
 }
