@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2018 at 09:55 AM
+-- Generation Time: Dec 02, 2018 at 12:05 PM
 -- Server version: 5.7.9
 -- PHP Version: 5.6.16
 
@@ -534,7 +534,10 @@ CREATE TABLE IF NOT EXISTS `master_wishlist` (
   `modified_by` bigint(20) DEFAULT NULL,
   `modified_date` varchar(255) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
-  PRIMARY KEY (`wishlist_id`)
+  `user_id` bigint(20) DEFAULT NULL,
+  `property_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`wishlist_id`),
+  KEY `FKqp3nmgc19tiysytctn29jkypy` (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1030,6 +1033,12 @@ ALTER TABLE `master_room`
   ADD CONSTRAINT `FKas320kthc654sqmr7b83lqcr7` FOREIGN KEY (`dco_id`) REFERENCES `master_discount_category_ora` (`dco_id`),
   ADD CONSTRAINT `FKjw1vho56i8n32d1tyt64yh8ey` FOREIGN KEY (`room_cat_id`) REFERENCES `master_room_category` (`room_cat_id`),
   ADD CONSTRAINT `FKk76nhy20o1xpxxvciuyo75c93` FOREIGN KEY (`room_standard_id`) REFERENCES `master_room_standard` (`room_standard_id`);
+
+--
+-- Constraints for table `master_wishlist`
+--
+ALTER TABLE `master_wishlist`
+  ADD CONSTRAINT `FKqp3nmgc19tiysytctn29jkypy` FOREIGN KEY (`property_id`) REFERENCES `master_property` (`property_id`);
 
 --
 -- Constraints for table `meal_plan_cat_vs_meal_plan`
