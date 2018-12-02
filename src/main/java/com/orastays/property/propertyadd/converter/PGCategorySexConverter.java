@@ -1,10 +1,12 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PGCategorySexEntity;
 import com.orastays.property.propertyadd.model.PGCategorySexModel;
@@ -30,8 +32,24 @@ public class PGCategorySexConverter extends CommonConverter
 
 	@Override
 	public List<PGCategorySexModel> entityListToModelList(List<PGCategorySexEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<PGCategorySexModel> pgCategorySexModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			pgCategorySexModels = new ArrayList<>();
+			for(PGCategorySexEntity pgCategorySexEntity:es) {
+				pgCategorySexModels.add(entityToModel(pgCategorySexEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return pgCategorySexModels;
 	}
 
 }
