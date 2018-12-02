@@ -1,0 +1,36 @@
+package com.orastays.property.propertyadd.converter;
+
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
+
+import com.orastays.property.propertyadd.entity.MealDaysEntity;
+import com.orastays.property.propertyadd.model.MealDaysModel;
+
+@Component
+public class MealDaysConverter extends CommonConverter implements BaseConverter<MealDaysEntity, MealDaysModel> {
+
+	private static final long serialVersionUID = -6188321305638091179L;
+	private static final Logger logger = LogManager.getLogger(MealDaysConverter.class);
+
+	@Override
+	public MealDaysEntity modelToEntity(MealDaysModel m) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MealDaysModel entityToModel(MealDaysEntity e) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<MealDaysModel> entityListToModelList(List<MealDaysEntity> es) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
