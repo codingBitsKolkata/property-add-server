@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.CancellationSlabEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 
 @Component
@@ -26,8 +27,19 @@ public class CancellationSlabConverter extends CommonConverter
 
 	@Override
 	public CancellationSlabModel entityToModel(CancellationSlabEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		CancellationSlabModel cancellationSlabModel = new CancellationSlabModel();
+		cancellationSlabModel = (CancellationSlabModel) Util.transform(modelMapper, e, cancellationSlabModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return cancellationSlabModel;
 	}
 
 	@Override

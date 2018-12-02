@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.AccommodationEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.AccommodationModel;
 
 @Component
@@ -25,8 +26,19 @@ public class AccommodationConverter extends CommonConverter implements BaseConve
 
 	@Override
 	public AccommodationModel entityToModel(AccommodationEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		AccommodationModel accommodationModel = new AccommodationModel();
+		accommodationModel = (AccommodationModel) Util.transform(modelMapper, e, accommodationModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return accommodationModel;
 	}
 
 	@Override

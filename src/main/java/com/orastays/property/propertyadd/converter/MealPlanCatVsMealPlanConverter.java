@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.MealPlanCatVsMealPlanEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.MealPlanCategoryVsMealPlanModel;
 
 @Component
@@ -26,8 +27,19 @@ public class MealPlanCatVsMealPlanConverter extends CommonConverter
 
 	@Override
 	public MealPlanCategoryVsMealPlanModel entityToModel(MealPlanCatVsMealPlanEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		MealPlanCategoryVsMealPlanModel mealPlanCategoryVsMealPlanModel = new MealPlanCategoryVsMealPlanModel();
+		mealPlanCategoryVsMealPlanModel = (MealPlanCategoryVsMealPlanModel) Util.transform(modelMapper, e, mealPlanCategoryVsMealPlanModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return mealPlanCategoryVsMealPlanModel;
 	}
 
 	@Override

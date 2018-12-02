@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.MealCategoryEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.MealCategoryModel;
 
 @Component
@@ -26,8 +27,19 @@ public class MealCategoryConverter extends CommonConverter
 
 	@Override
 	public MealCategoryModel entityToModel(MealCategoryEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		MealCategoryModel mealCategoryModel = new MealCategoryModel();
+		mealCategoryModel = (MealCategoryModel) Util.transform(modelMapper, e, mealCategoryModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return mealCategoryModel;
 	}
 
 	@Override

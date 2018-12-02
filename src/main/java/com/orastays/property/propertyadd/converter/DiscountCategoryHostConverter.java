@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.DiscountCategoryHostEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.DiscountCategoryHostModel;
 
 @Component
@@ -26,8 +27,19 @@ public class DiscountCategoryHostConverter extends CommonConverter
 
 	@Override
 	public DiscountCategoryHostModel entityToModel(DiscountCategoryHostEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		DiscountCategoryHostModel discountCategoryHostModel = new DiscountCategoryHostModel();
+		discountCategoryHostModel = (DiscountCategoryHostModel) Util.transform(modelMapper, e, discountCategoryHostModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return discountCategoryHostModel;
 	}
 
 	@Override

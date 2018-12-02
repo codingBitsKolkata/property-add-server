@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.AmenitiesTypeEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.AmenitiesTypeModel;
 
 @Component
@@ -25,8 +26,19 @@ public class AmenitiesTypeConverter extends CommonConverter implements BaseConve
 
 	@Override
 	public AmenitiesTypeModel entityToModel(AmenitiesTypeEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		AmenitiesTypeModel amenitiesTypeModel = new AmenitiesTypeModel();
+		amenitiesTypeModel = (AmenitiesTypeModel) Util.transform(modelMapper, e, amenitiesTypeModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return amenitiesTypeModel;
 	}
 
 	@Override

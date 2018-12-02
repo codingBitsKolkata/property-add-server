@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.DiscountCategoryOraEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.DiscountCategoryOraModel;
 
 @Component
@@ -26,8 +27,19 @@ public class DiscountCategoryOraConverter extends CommonConverter
 
 	@Override
 	public DiscountCategoryOraModel entityToModel(DiscountCategoryOraEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		DiscountCategoryOraModel discountCategoryOraModel = new DiscountCategoryOraModel();
+		discountCategoryOraModel = (DiscountCategoryOraModel) Util.transform(modelMapper, e, discountCategoryOraModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return discountCategoryOraModel;
 	}
 
 	@Override
