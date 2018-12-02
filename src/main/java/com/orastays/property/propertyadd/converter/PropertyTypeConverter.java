@@ -1,12 +1,15 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PropertyTypeEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
 
 @Component
@@ -24,14 +27,41 @@ public class PropertyTypeConverter extends CommonConverter
 
 	@Override
 	public PropertyTypeModel entityToModel(PropertyTypeEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		PropertyTypeModel propertyTypeModel = new PropertyTypeModel();
+		propertyTypeModel = (PropertyTypeModel) Util.transform(modelMapper, e, propertyTypeModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return propertyTypeModel;
 	}
 
 	@Override
 	public List<PropertyTypeModel> entityListToModelList(List<PropertyTypeEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<PropertyTypeModel> propertyTypeModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			propertyTypeModels = new ArrayList<>();
+			for(PropertyTypeEntity propertyTypeEntity:es) {
+				propertyTypeModels.add(entityToModel(propertyTypeEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return propertyTypeModels;
 	}
 
 }

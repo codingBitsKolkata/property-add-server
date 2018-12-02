@@ -1,12 +1,15 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PropertyVsImageEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyVsImageModel;
 
 @Component
@@ -24,14 +27,41 @@ public class PropertyVsImageConverter extends CommonConverter
 
 	@Override
 	public PropertyVsImageModel entityToModel(PropertyVsImageEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		PropertyVsImageModel propertyVsImageModel = new PropertyVsImageModel();
+		propertyVsImageModel = (PropertyVsImageModel) Util.transform(modelMapper, e, propertyVsImageModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return propertyVsImageModel;
 	}
 
 	@Override
 	public List<PropertyVsImageModel> entityListToModelList(List<PropertyVsImageEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<PropertyVsImageModel> propertyVsImageModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			propertyVsImageModels = new ArrayList<>();
+			for(PropertyVsImageEntity propertyVsImageEntity:es) {
+				propertyVsImageModels.add(entityToModel(propertyVsImageEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return propertyVsImageModels;
 	}
 
 }

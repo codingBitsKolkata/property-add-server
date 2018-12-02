@@ -1,12 +1,15 @@
 package com.orastays.property.propertyadd.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PriceTypeEntity;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PriceTypeModel;
 
 @Component
@@ -23,14 +26,41 @@ public class PriceTypeConverter extends CommonConverter implements BaseConverter
 
 	@Override
 	public PriceTypeModel entityToModel(PriceTypeEntity e) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		PriceTypeModel priceTypeModel = new PriceTypeModel();
+		priceTypeModel = (PriceTypeModel) Util.transform(modelMapper, e, priceTypeModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return priceTypeModel;
 	}
 
 	@Override
 	public List<PriceTypeModel> entityListToModelList(List<PriceTypeEntity> es) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- START");
+		}
+		
+		List<PriceTypeModel> priceTypeModels = null;
+		if(!CollectionUtils.isEmpty(es)) {
+			priceTypeModels = new ArrayList<>();
+			for(PriceTypeEntity priceTypeEntity:es) {
+				priceTypeModels.add(entityToModel(priceTypeEntity));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityListToModelList -- END");
+		}
+		
+		return priceTypeModels;
 	}
 
 }
