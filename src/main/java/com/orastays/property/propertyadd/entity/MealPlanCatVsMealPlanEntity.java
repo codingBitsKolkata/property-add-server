@@ -1,10 +1,17 @@
 package com.orastays.property.propertyadd.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -27,4 +34,20 @@ public class MealPlanCatVsMealPlanEntity extends CommonEntity{
 	
 	@Column(name = "name")
 	private String name;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "mpc_id", nullable = false)
+	private MealPlanCategoryEntity mealPlanCategoryEntity;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "meal_plan_id", nullable = false)
+	private MealPlanEntity mealPlanEntity;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mealPlanCatVsMealPlanEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsMealEntity> roomVsMealEntities;
+	
+	@Override
+	public String toString() {
+		return Long.toString(mpcmpId);
+	}
 }

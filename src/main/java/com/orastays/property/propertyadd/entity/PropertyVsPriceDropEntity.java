@@ -37,7 +37,7 @@ public class PropertyVsPriceDropEntity extends CommonEntity  {
 	private PropertyEntity propertyEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "property_id", nullable = false)
+	@JoinColumn(name = "price_drop_id", nullable = false)
 	private PriceDropEntity priceDropEntity;
 	
 	@Override

@@ -25,8 +25,8 @@ public class MealCategoryEntity extends CommonEntity{
 	@Column(name = "meal_category_id")
 	private Long mealCategoryId;
 	
-	@Column(name = "name")
-	private String MealCatName;
+	@Column(name = "meal_category_name")
+	private String mealCatName;
 	
 	@Column(name = "language_id")
 	private Long languageId;

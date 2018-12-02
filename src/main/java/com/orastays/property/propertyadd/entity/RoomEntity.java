@@ -1,10 +1,18 @@
 package com.orastays.property.propertyadd.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -45,4 +53,58 @@ public class RoomEntity extends CommonEntity{
 	
 	@Column(name = "floor_no")
 	private String floorNo;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "accommodation_id", nullable = false)
+	private AccommodationEntity accommodationEntity;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "dco_id", nullable = false)
+	private DiscountCategoryOraEntity discountCategoryOraEntity;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "room_cat_id", nullable = false)
+	private RoomCategoryEntity roomCategoryEntity;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "room_standard_id", nullable = false)
+	private RoomStandardEntity roomStandardEntity;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsAmenitiesEntity> roomVsAmenitiesEntities;
+	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private RoomVsInfoEntity roomVsInfoEntity;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsBedEntity> roomVsBedEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsCancellationEntity> roomVsCancellationEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsHostDiscountEntity> roomVsHostDiscountEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsImageEntity> roomVsImageEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsOraDiscountEntity> roomVsOraDiscountEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsOraPricePercentageEntity> roomVsOraPricePercentageEntities;
+	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private RoomVsPriceEntity roomVsPriceEntity;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsSpecialitiesEntity> roomVsSpecialitiesEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsMealEntity> roomVsMealEntities;
+	
+	@Override
+	public String toString() {
+		return Long.toString(roomId);
+	}
 }

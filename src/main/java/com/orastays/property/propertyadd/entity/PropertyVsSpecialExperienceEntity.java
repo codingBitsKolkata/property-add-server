@@ -30,7 +30,7 @@ public class PropertyVsSpecialExperienceEntity extends CommonEntity  {
 	private Long propertyExpId;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "property_id", nullable = false)
+	@JoinColumn(name = "experience_id", nullable = false)
 	private SpecialExperienceEntity specialExperienceEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })

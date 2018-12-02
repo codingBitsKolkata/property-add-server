@@ -33,7 +33,7 @@ public class PropertyVsSpaceRuleEntity extends CommonEntity  {
 	private String answer;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "property_id", nullable = false)
+	@JoinColumn(name = "sprule_id", nullable = false)
 	private SpaceRuleEntity spaceRuleEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })

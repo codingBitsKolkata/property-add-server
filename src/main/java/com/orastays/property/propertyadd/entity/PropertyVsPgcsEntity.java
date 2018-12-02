@@ -30,7 +30,7 @@ public class PropertyVsPgcsEntity extends CommonEntity  {
 	private Long propertyPGCSId;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "property_id", nullable = false)
+	@JoinColumn(name = "pgcs_id", nullable = false)
 	private PGCategorySexEntity pgCategorySexEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })

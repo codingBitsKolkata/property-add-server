@@ -1,10 +1,15 @@
 package com.orastays.property.propertyadd.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -23,8 +28,16 @@ public class DiscountCategoryOraEntity extends CommonEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "dco_id")
-	private Long dco_id;
+	private Long dcoId;
 	
-	@Column(name = "name")
-	private String DisCatOraname;
+	@Column(name = "dis_cat_ora_name")
+	private String disCatOraname;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "discountCategoryOraEntity", cascade = { CascadeType.ALL })
+	private List<RoomEntity> roomEntities;
+	
+	@Override
+	public String toString() {
+		return Long.toString(dcoId);
+	}
 }

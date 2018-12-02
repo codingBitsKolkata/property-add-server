@@ -1,5 +1,7 @@
 package com.orastays.property.propertyadd.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -34,10 +37,6 @@ public class PropertyEntity extends CommonEntity {
 
 	@Column(name = "oraname")
 	private String oraname;
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "property_type_id", nullable = false)
-	private PropertyTypeEntity propertyTypeEntity;
 
 	@Column(name = "entire_apartment")
 	private String entireApartment;
@@ -77,7 +76,41 @@ public class PropertyEntity extends CommonEntity {
 
 	@Column(name = "price_drop")
 	private String priceDrop;
-
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "property_type_id", nullable = false)
+	private PropertyTypeEntity propertyTypeEntity;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	private List<PropertyVsDescriptionEntity> propertyVsDescriptionEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	private List<PropertyVsGuestAccessEntity> propertyVsGuestAccessEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	private List<PropertyVsHomestayEntity> propertyVsHomestayEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	private List<PropertyVsImageEntity> propertyVsImageEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	private List<PropertyVsNearbyEntity> propertyVsNearbyEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	private List<PropertyVsPgcsEntity> propertyVsPgcsEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	private List<PropertyVsPriceDropEntity> propertyVsPriceDropEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	private List<PropertyVsSpaceRuleEntity> propertyVsSpaceRuleEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	private List<PropertyVsSpecialExperienceEntity> propertyVsSpecialExperienceEntities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	private List<PropertyVsStayTypeEntity> propertyVsStayTypeEntities;
+	
 	@Override
 	public String toString() {
 		return Long.toString(propertyId);

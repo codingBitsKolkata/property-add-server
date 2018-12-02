@@ -1,10 +1,15 @@
 package com.orastays.property.propertyadd.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -30,5 +35,13 @@ public class CancellationSlabEntity extends CommonEntity{
 	
 	@Column(name = "end_time")
 	private String endTime;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cancellationSlabEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsCancellationEntity> roomVsCancellationEntities;
+	
+	@Override
+	public String toString() {
+		return Long.toString(cancellationSlabId);
+	}
 
 }

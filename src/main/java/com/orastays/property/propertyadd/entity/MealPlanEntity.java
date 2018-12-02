@@ -1,10 +1,15 @@
 package com.orastays.property.propertyadd.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -25,7 +30,7 @@ public class MealPlanEntity extends CommonEntity{
 	@Column(name = "meal_plan_id")
 	private Long mealPlanId;
 	
-	@Column(name = "name")
+	@Column(name = "meal_plan_name")
 	private String mealPlanName;
 	
 	@Column(name = "language_id")
@@ -33,5 +38,12 @@ public class MealPlanEntity extends CommonEntity{
 
 	@Column(name = "parent_id")
 	private Long parentId;
-
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mealPlanEntity", cascade = { CascadeType.ALL })
+	private List<MealPlanCatVsMealPlanEntity> mealPlanCatVsMealPlanEntities;
+	
+	@Override
+	public String toString() {
+		return Long.toString(mealPlanId);
+	}
 }
