@@ -28,6 +28,9 @@ public class PropertyVsSpaceRule extends CommonEntity  {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "property_space_id")
 	private Long propertySpaceId;
+	
+	@Column(name = "answer")
+	private String answer;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_id", nullable = false)
