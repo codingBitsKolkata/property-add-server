@@ -94,8 +94,8 @@ public class RoomEntity extends CommonEntity{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
 	private List<RoomVsOraPricePercentageEntity> roomVsOraPricePercentageEntities;
 	
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
-	private RoomVsPriceEntity roomVsPriceEntity;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsPriceEntity> roomVsPriceEntityEntities;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
 	private List<RoomVsSpecialitiesEntity> roomVsSpecialitiesEntities;

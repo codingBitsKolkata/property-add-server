@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -37,7 +36,7 @@ public class RoomVsPriceEntity extends CommonEntity {
 	@JoinColumn(name = "price_type_id", nullable = false)
 	private PriceTypeEntity priceTypeEntity;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_id", nullable = false)
 	private RoomEntity roomEntity;
 

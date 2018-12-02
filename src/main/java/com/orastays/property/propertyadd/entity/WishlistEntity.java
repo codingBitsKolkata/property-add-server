@@ -23,6 +23,7 @@ import lombok.Setter;
 public class WishlistEntity extends CommonEntity {
 
 	private static final long serialVersionUID = 4668857794991186192L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "wishlist_id")
