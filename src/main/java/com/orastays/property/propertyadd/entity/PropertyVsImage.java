@@ -16,24 +16,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "property_vs_description")
+@Table(name = "property_vs_image")
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class PropertyVsDescriptionEntity extends CommonEntity  {
+public class PropertyVsImage extends CommonEntity  {
 	
-	private static final long serialVersionUID = 7334573917152398666L;
+	private static final long serialVersionUID = -2032555716136454615L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "property_desc_id")
-	private Long propertyDescId;
+	@Column(name = "property_image_id")
+	private Long propertyImageId;
 
-	@Column(name = "description")
-	private String description;
-	
-	@Column(name = "language_id")
-	private Long languageId;
+	@Column(name = "image_url")
+	private String imageURL;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_id", nullable = false)
@@ -41,6 +38,6 @@ public class PropertyVsDescriptionEntity extends CommonEntity  {
 	
 	@Override
 	public String toString() {
-		return Long.toString(propertyDescId);
+		return Long.toString(propertyImageId);
 	}
 }

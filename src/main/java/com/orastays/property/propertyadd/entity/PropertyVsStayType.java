@@ -16,24 +16,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "property_vs_description")
+@Table(name = "property_vs_stay_type")
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class PropertyVsDescriptionEntity extends CommonEntity  {
+public class PropertyVsStayType extends CommonEntity  {
 	
-	private static final long serialVersionUID = 7334573917152398666L;
+	private static final long serialVersionUID = -6282731359926807359L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "property_desc_id")
-	private Long propertyDescId;
+	@Column(name = "property_staytype_id")
+	private Long propertyStayTypeId;
 
-	@Column(name = "description")
-	private String description;
-	
-	@Column(name = "language_id")
-	private Long languageId;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "stay_type_id", nullable = false)
+	private StayTypeEntity stayTypeEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_id", nullable = false)
@@ -41,6 +39,6 @@ public class PropertyVsDescriptionEntity extends CommonEntity  {
 	
 	@Override
 	public String toString() {
-		return Long.toString(propertyDescId);
+		return Long.toString(propertyStayTypeId);
 	}
 }
