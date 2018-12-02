@@ -1,5 +1,7 @@
 package com.orastays.property.propertyadd.model;
 
+import java.util.List;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,4 +13,9 @@ import lombok.ToString;
 @ToString
 public class MealDaysModel extends CommonModel {
 
+	private String mealDaysId;
+	private String name;
+	private String languageId;
+	private String parentId;
+	private List<RoomVsMealModel> roomVsMealModels;
 }

@@ -11,4 +11,10 @@ import lombok.ToString;
 @ToString
 public class RoomVsInfoModel extends CommonModel {
 
+	private String riId;
+	private String roomName;
+	private String description;
+	private String languageId;
+	private String parentId;
+	private RoomModel roomModel;
 }

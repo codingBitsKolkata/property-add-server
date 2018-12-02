@@ -11,4 +11,8 @@ import lombok.ToString;
 @ToString
 public class PropertyVsDescriptionModel extends CommonModel {
 
+	private String propertyDescId;
+	private String description;
+	private String languageId;
+	private PropertyModel propertyModel;
 }

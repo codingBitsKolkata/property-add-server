@@ -11,4 +11,8 @@ import lombok.ToString;
 @ToString
 public class StayTypeModel extends CommonModel {
 
+	private String stayTypeId;
+	private String languageId;
+	private String parentId;
+	private String stayTypeName;
 }

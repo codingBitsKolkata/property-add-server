@@ -11,4 +11,8 @@ import lombok.ToString;
 @ToString
 public class PropertyVsSpaceRuleModel extends CommonModel {
 
+	private String propertySpaceId;
+	private String answer;
+	private SpaceRuleModel spaceRuleModel;
+	private PropertyModel propertyModel;
 }

@@ -23,6 +23,7 @@ import lombok.Setter;
 public class RoomVsSpecialitiesEntity extends CommonEntity {
 
 	private static final long serialVersionUID = 3003716361946912468L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "roomspec_id")

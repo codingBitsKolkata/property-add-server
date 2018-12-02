@@ -9,6 +9,9 @@ import lombok.ToString;
 @Setter
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class MasteWishlistModel extends CommonModel {
+public class WishlistModel extends CommonModel {
 
+	private String wishlistId;
+	private String userId;
+	private PropertyModel propertyModel;
 }

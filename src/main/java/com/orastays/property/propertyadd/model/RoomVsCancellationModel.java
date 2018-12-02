@@ -11,4 +11,8 @@ import lombok.ToString;
 @ToString
 public class RoomVsCancellationModel extends CommonModel {
 
+	private String rcId;
+	private String percentage;
+	private CancellationSlabModel cancellationSlabModel;
+	private RoomModel roomModel;
 }

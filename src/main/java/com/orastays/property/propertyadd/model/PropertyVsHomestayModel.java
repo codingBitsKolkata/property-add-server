@@ -11,4 +11,8 @@ import lombok.ToString;
 @ToString
 public class PropertyVsHomestayModel extends CommonModel {
 
+	private String propertyHomeStayId;
+	private String immediateBooking;
+	private String strictCheckin;
+	private PropertyModel propertyModel;
 }

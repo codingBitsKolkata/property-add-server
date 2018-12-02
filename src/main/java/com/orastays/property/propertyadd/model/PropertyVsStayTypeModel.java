@@ -11,4 +11,7 @@ import lombok.ToString;
 @ToString
 public class PropertyVsStayTypeModel extends CommonModel {
 
+	private String propertyStayTypeId;
+	private StayTypeModel stayTypeModel;
+	private PropertyModel propertyModel;
 }

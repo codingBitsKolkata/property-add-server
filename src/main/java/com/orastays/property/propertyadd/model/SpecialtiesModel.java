@@ -11,4 +11,8 @@ import lombok.ToString;
 @ToString
 public class SpecialtiesModel extends CommonModel {
 
+	private String specialtiesId;
+	private String specialitiesName;
+	private String languageId;
+	private String parentId;
 }

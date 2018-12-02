@@ -11,4 +11,8 @@ import lombok.ToString;
 @ToString
 public class MealCategoryModel extends CommonModel {
 
+	private String mealCategoryId;
+	private String mealCatName;
+	private String languageId;
+	private String parentId;
 }

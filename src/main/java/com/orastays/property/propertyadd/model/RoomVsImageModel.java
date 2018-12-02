@@ -11,4 +11,7 @@ import lombok.ToString;
 @ToString
 public class RoomVsImageModel extends CommonModel {
 
+	private String roomVsImageId;
+	private String imageUrl;
+	private RoomModel roomModel;
 }

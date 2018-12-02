@@ -11,4 +11,8 @@ import lombok.ToString;
 @ToString
 public class SpecialExperienceModel extends CommonModel {
 
+	private String experienceId;
+	private String languageId;
+	private String parentId;
+	private String experienceName;
 }

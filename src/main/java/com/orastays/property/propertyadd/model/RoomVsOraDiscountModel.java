@@ -11,4 +11,7 @@ import lombok.ToString;
 @ToString
 public class RoomVsOraDiscountModel extends CommonModel {
 
+	private String rodId;
+	private String percentage;
+	private RoomModel roomModel;
 }

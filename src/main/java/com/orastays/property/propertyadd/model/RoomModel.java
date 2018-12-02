@@ -1,5 +1,7 @@
 package com.orastays.property.propertyadd.model;
 
+import java.util.List;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,4 +13,27 @@ import lombok.ToString;
 @ToString
 public class RoomModel extends CommonModel {
 
+	private String sharedSpace;
+	private String cotAvailable;
+	private String noOfGuest;
+	private String noOfChild;
+	private String numOfCot;
+	private String commision;
+	private String floorNo;
+	private AccommodationModel accommodationModel;
+	private DiscountCategoryOraModel discountCategoryOraModel;
+	private RoomCategoryModel roomCategoryModel;
+	private RoomStandardModel roomStandardModel;
+	private List<RoomVsAmenitiesModel> roomVsAmenitiesModels;
+	private RoomVsInfoModel roomVsInfoModel;
+	private List<RoomVsBedModel> roomVsBedModels;
+	private List<RoomVsCancellationModel> roomVsCancellationModels;
+	private List<RoomVsHostDiscountModel> roomVsHostDiscountModels;
+	private List<RoomVsImageModel> roomVsImageModels;
+	private List<RoomVsOraDiscountModel> roomVsOraDiscountModels;
+	private List<RoomVsOrapricePercModel> roomVsOrapricePercModels;
+	private RoomVsPriceModel roomVsPriceModel;
+	private List<RoomVsSpecialtiesModel> roomVsSpecialtiesModels;
+	private List<RoomVsMealModel> roomVsMealModels;
+	
 }

@@ -34,4 +34,8 @@ public class SpecialtiesEntity extends CommonEntity{
 	@Column(name = "parent_id")
 	private Long parentId;
 
+	@Override
+	public String toString() {
+		return Long.toString(specialtiesId);
+	}
 }

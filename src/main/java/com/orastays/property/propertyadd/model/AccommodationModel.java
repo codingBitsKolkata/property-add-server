@@ -1,5 +1,7 @@
 package com.orastays.property.propertyadd.model;
 
+import java.util.List;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +12,11 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public class AccommodationModel extends CommonModel {
-	
-	private Long accommodationId;
-	private Long languageId;
-	private Long parentId;
+
+	private String accommodationId;
+	private String languageId;
+	private String parentId;
 	private String accommodationName;
-	
-	
+	private List<RoomModel> roomModels;
+
 }

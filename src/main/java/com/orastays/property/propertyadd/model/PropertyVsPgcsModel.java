@@ -11,4 +11,7 @@ import lombok.ToString;
 @ToString
 public class PropertyVsPgcsModel extends CommonModel {
 
+	private String propertyPGCSId;
+	private PGCategorySexModel pgCategorySexModel;
+	private PropertyModel propertyModel;
 }

@@ -11,4 +11,7 @@ import lombok.ToString;
 @ToString
 public class PropertyVsSpecialExperienceModel extends CommonModel {
 
+	private String propertyExpId;
+	private SpecialExperienceModel specialExperienceModel;
+	private PropertyModel propertyModel;
 }

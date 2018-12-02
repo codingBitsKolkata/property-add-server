@@ -1,5 +1,7 @@
 package com.orastays.property.propertyadd.model;
 
+import java.util.List;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,4 +13,7 @@ import lombok.ToString;
 @ToString
 public class PriceDropModel extends CommonModel {
 
+	private String priceDropId;
+	private String afterTime;
+	private List<PropertyVsPriceDropModel> propertyVsPriceDropModels;
 }

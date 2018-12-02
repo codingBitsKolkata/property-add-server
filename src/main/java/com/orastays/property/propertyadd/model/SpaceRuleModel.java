@@ -11,4 +11,8 @@ import lombok.ToString;
 @ToString
 public class SpaceRuleModel extends CommonModel {
 
+	private String spruleId;
+	private String languageId;
+	private String parentId;
+	private String ruleName;
 }

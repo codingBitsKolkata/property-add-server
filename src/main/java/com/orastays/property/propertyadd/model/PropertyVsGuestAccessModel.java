@@ -11,4 +11,7 @@ import lombok.ToString;
 @ToString
 public class PropertyVsGuestAccessModel extends CommonModel {
 
+	private String propertyGAccessId;
+	private String guestAccess;
+	private PropertyModel propertyModel;
 }

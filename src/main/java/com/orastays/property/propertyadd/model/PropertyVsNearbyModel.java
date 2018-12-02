@@ -11,4 +11,7 @@ import lombok.ToString;
 @ToString
 public class PropertyVsNearbyModel extends CommonModel {
 
+	private String propertyNearbyId;
+	private String places;
+	private PropertyModel propertyModel;
 }

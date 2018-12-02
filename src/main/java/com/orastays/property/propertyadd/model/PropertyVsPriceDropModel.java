@@ -11,4 +11,8 @@ import lombok.ToString;
 @ToString
 public class PropertyVsPriceDropModel extends CommonModel {
 
+	private String propertyPDropId;
+	private String percentage;
+	private PropertyModel propertyModel;
+	private PriceDropModel priceDropModel;
 }
