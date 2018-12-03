@@ -70,6 +70,10 @@ public class RoomEntity extends CommonEntity{
 	@JoinColumn(name = "room_standard_id", nullable = false)
 	private RoomStandardEntity roomStandardEntity;
 	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "property_id", nullable = false)
+	private PropertyTypeEntity propertyEntity;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
 	private List<RoomVsAmenitiesEntity> roomVsAmenitiesEntities;
 	
@@ -102,6 +106,7 @@ public class RoomEntity extends CommonEntity{
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
 	private List<RoomVsMealEntity> roomVsMealEntities;
+	
 	
 	@Override
 	public String toString() {

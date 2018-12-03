@@ -76,41 +76,44 @@ public class PropertyEntity extends CommonEntity {
 
 	@Column(name = "price_drop")
 	private String priceDrop;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_type_id", nullable = false)
 	private PropertyTypeEntity propertyTypeEntity;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsDescriptionEntity> propertyVsDescriptionEntities;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsGuestAccessEntity> propertyVsGuestAccessEntities;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsHomestayEntity> propertyVsHomestayEntities;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsImageEntity> propertyVsImageEntities;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsNearbyEntity> propertyVsNearbyEntities;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsPgcsEntity> propertyVsPgcsEntities;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsPriceDropEntity> propertyVsPriceDropEntities;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsSpaceRuleEntity> propertyVsSpaceRuleEntities;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsSpecialExperienceEntity> propertyVsSpecialExperienceEntities;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsStayTypeEntity> propertyVsStayTypeEntities;
-	
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private List<RoomEntity> roomEntities;
+
 	@Override
 	public String toString() {
 		return Long.toString(propertyId);
