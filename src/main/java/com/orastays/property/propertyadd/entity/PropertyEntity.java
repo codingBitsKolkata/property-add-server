@@ -111,7 +111,7 @@ public class PropertyEntity extends CommonEntity {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsStayTypeEntity> propertyVsStayTypeEntities;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<RoomEntity> roomEntities;
 
 	@Override
