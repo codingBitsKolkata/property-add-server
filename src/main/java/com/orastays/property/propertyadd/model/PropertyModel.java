@@ -40,4 +40,5 @@ public class PropertyModel extends CommonModel {
 	private List<PropertyVsSpaceRuleModel> propertyVsSpaceRuleModels;
 	private List<PropertyVsSpecialExperienceModel> propertyVsSpecialExperienceModels;
 	private List<PropertyVsStayTypeModel> propertyVsStayTypeModels;
+	private List<RoomModel> roomModel;
 }

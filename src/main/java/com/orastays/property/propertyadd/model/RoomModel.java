@@ -20,6 +20,7 @@ public class RoomModel extends CommonModel {
 	private String numOfCot;
 	private String commision;
 	private String floorNo;
+	private PropertyModel propertyModel;
 	private AccommodationModel accommodationModel;
 	private DiscountCategoryOraModel discountCategoryOraModel;
 	private RoomCategoryModel roomCategoryModel;
@@ -35,5 +36,5 @@ public class RoomModel extends CommonModel {
 	private List<RoomVsPriceModel> roomVsPriceModels;
 	private List<RoomVsSpecialitiesModel> roomVsSpecialitiesModels;
 	private List<RoomVsMealModel> roomVsMealModels;
-	
+
 }

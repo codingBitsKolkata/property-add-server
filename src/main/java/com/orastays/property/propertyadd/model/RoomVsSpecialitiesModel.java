@@ -12,5 +12,6 @@ import lombok.ToString;
 public class RoomVsSpecialitiesModel extends CommonModel {
 
 	private String roomspecId;
+	private SpecialtiesModel specialtiesModel;
 	private RoomModel roomModel;
 }
