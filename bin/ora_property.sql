@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 02, 2018 at 02:19 PM
+-- Generation Time: Dec 03, 2018 at 05:01 PM
 -- Server version: 5.7.23
 -- PHP Version: 7.2.10
 
@@ -287,7 +287,7 @@ CREATE TABLE IF NOT EXISTS `master_meal_plan_category` (
   `modified_date` varchar(255) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `language_id` bigint(20) DEFAULT NULL,
-  `mean_plan_name` varchar(255) DEFAULT NULL,
+  `mean_plan_category_name` varchar(255) DEFAULT NULL,
   `parent_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`mpc_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
@@ -296,7 +296,7 @@ CREATE TABLE IF NOT EXISTS `master_meal_plan_category` (
 -- Dumping data for table `master_meal_plan_category`
 --
 
-INSERT INTO `master_meal_plan_category` (`mpc_id`, `created_by`, `created_date`, `modified_by`, `modified_date`, `status`, `language_id`, `mean_plan_name`, `parent_id`) VALUES
+INSERT INTO `master_meal_plan_category` (`mpc_id`, `created_by`, `created_date`, `modified_by`, `modified_date`, `status`, `language_id`, `mean_plan_category_name`, `parent_id`) VALUES
 (1, 1, '2018-09-06 01:27:34', NULL, NULL, 1, 1, 'AP', 0),
 (2, 1, '2018-09-06 01:27:34', NULL, NULL, 1, 1, 'CP', 0);
 
@@ -516,6 +516,7 @@ INSERT INTO `master_property_type` (`property_type_id`, `created_by`, `created_d
 DROP TABLE IF EXISTS `master_room`;
 CREATE TABLE IF NOT EXISTS `master_room` (
   `room_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `property_id` bigint(20) NOT NULL,
   `created_by` bigint(20) DEFAULT NULL,
   `created_date` varchar(255) DEFAULT NULL,
   `modified_by` bigint(20) DEFAULT NULL,
@@ -536,7 +537,8 @@ CREATE TABLE IF NOT EXISTS `master_room` (
   KEY `FK1jg5ov7jt5k4iaivxxa58u891` (`accommodation_id`),
   KEY `FKas320kthc654sqmr7b83lqcr7` (`dco_id`),
   KEY `FKjw1vho56i8n32d1tyt64yh8ey` (`room_cat_id`),
-  KEY `FKk76nhy20o1xpxxvciuyo75c93` (`room_standard_id`)
+  KEY `FKk76nhy20o1xpxxvciuyo75c93` (`room_standard_id`),
+  KEY `property_id_FK` (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1195,6 +1197,7 @@ CREATE TABLE IF NOT EXISTS `room_vs_price` (
 DROP TABLE IF EXISTS `room_vs_specialties`;
 CREATE TABLE IF NOT EXISTS `room_vs_specialties` (
   `roomspec_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `specialties_id` bigint(20) NOT NULL,
   `created_by` bigint(20) DEFAULT NULL,
   `created_date` varchar(255) DEFAULT NULL,
   `modified_by` bigint(20) DEFAULT NULL,
@@ -1202,7 +1205,8 @@ CREATE TABLE IF NOT EXISTS `room_vs_specialties` (
   `status` int(11) DEFAULT NULL,
   `room_id` bigint(20) NOT NULL,
   PRIMARY KEY (`roomspec_id`),
-  KEY `FKmjiqftc5rdrthmteghtchnkav` (`room_id`)
+  KEY `FKmjiqftc5rdrthmteghtchnkav` (`room_id`),
+  KEY `specialties_id_FK` (`specialties_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1228,7 +1232,8 @@ ALTER TABLE `master_room`
   ADD CONSTRAINT `FK1jg5ov7jt5k4iaivxxa58u891` FOREIGN KEY (`accommodation_id`) REFERENCES `master_accommodation` (`accommodation_id`),
   ADD CONSTRAINT `FKas320kthc654sqmr7b83lqcr7` FOREIGN KEY (`dco_id`) REFERENCES `master_discount_category_ora` (`dco_id`),
   ADD CONSTRAINT `FKjw1vho56i8n32d1tyt64yh8ey` FOREIGN KEY (`room_cat_id`) REFERENCES `master_room_category` (`room_cat_id`),
-  ADD CONSTRAINT `FKk76nhy20o1xpxxvciuyo75c93` FOREIGN KEY (`room_standard_id`) REFERENCES `master_room_standard` (`room_standard_id`);
+  ADD CONSTRAINT `FKk76nhy20o1xpxxvciuyo75c93` FOREIGN KEY (`room_standard_id`) REFERENCES `master_room_standard` (`room_standard_id`),
+  ADD CONSTRAINT `property_id_FK` FOREIGN KEY (`property_id`) REFERENCES `master_property` (`property_id`);
 
 --
 -- Constraints for table `master_room_category`
@@ -1387,7 +1392,8 @@ ALTER TABLE `room_vs_price`
 -- Constraints for table `room_vs_specialties`
 --
 ALTER TABLE `room_vs_specialties`
-  ADD CONSTRAINT `FKmjiqftc5rdrthmteghtchnkav` FOREIGN KEY (`room_id`) REFERENCES `master_room` (`room_id`);
+  ADD CONSTRAINT `FKmjiqftc5rdrthmteghtchnkav` FOREIGN KEY (`room_id`) REFERENCES `master_room` (`room_id`),
+  ADD CONSTRAINT `specialties_id_FK` FOREIGN KEY (`specialties_id`) REFERENCES `master_specialties` (`specialties_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
