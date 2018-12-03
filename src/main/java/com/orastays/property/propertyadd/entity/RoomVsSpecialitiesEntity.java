@@ -23,12 +23,16 @@ import lombok.Setter;
 public class RoomVsSpecialitiesEntity extends CommonEntity {
 
 	private static final long serialVersionUID = 3003716361946912468L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "roomspec_id")
 	private Long roomspecId;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "specialties_id", nullable = false)
+	private CancellationSlabEntity SpecialtiesEntity;
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_id", nullable = false)
 	private RoomEntity roomEntity;
