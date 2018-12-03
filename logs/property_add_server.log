@@ -1,0 +1,11 @@
+2018-12-04 00:53:01.517  INFO SHIBU-PC --- [nio-7083-exec-1] c.o.p.p.c.PropertyController             : fetchPropertyTypeList -- END
+2018-12-04 00:57:51.866  INFO SHIBU-PC --- [nio-7083-exec-9] c.o.p.p.c.PropertyController             : fetchPropertyTypeList -- START
+2018-12-04 00:57:52.003  INFO SHIBU-PC --- [nio-7083-exec-9] c.o.p.p.s.i.PropertyServiceImpl          : fetchAllPropertyTypeByLanguage -- START
+2018-12-04 00:57:52.455  INFO SHIBU-PC --- [nio-7083-exec-9] c.o.p.p.c.PropertyTypeConverter          : entityListToModelList -- START
+2018-12-04 00:57:52.456  INFO SHIBU-PC --- [nio-7083-exec-9] c.o.p.p.c.PropertyTypeConverter          : entityToModel -- START
+2018-12-04 00:57:52.517  INFO SHIBU-PC --- [nio-7083-exec-9] c.o.p.p.c.PropertyTypeConverter          : entityToModel -- END
+2018-12-04 00:57:52.517  INFO SHIBU-PC --- [nio-7083-exec-9] c.o.p.p.c.PropertyTypeConverter          : entityToModel -- START
+2018-12-04 00:57:52.518  INFO SHIBU-PC --- [nio-7083-exec-9] c.o.p.p.c.PropertyTypeConverter          : entityToModel -- END
+2018-12-04 00:57:52.518  INFO SHIBU-PC --- [nio-7083-exec-9] c.o.p.p.c.PropertyTypeConverter          : entityListToModelList -- END
+2018-12-04 00:57:52.518  INFO SHIBU-PC --- [nio-7083-exec-9] c.o.p.p.s.i.PropertyServiceImpl          : fetchAllPropertyTypeByLanguage -- END
+2018-12-04 00:57:52.597  INFO SHIBU-PC --- [nio-7083-exec-9] c.o.p.p.c.PropertyController             : fetchPropertyTypeList -- END
