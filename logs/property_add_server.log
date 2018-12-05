@@ -20,3 +20,7 @@
 2018-12-05 09:02:22.501  INFO SHIBU-PC --- [nio-7083-exec-1] c.o.p.p.c.PropertyTypeConverter          : entityListToModelList -- END
 2018-12-05 09:02:22.501  INFO SHIBU-PC --- [nio-7083-exec-1] c.o.p.p.s.i.PropertyServiceImpl          : fetchAllPropertyTypeByLanguage -- END
 2018-12-05 09:02:22.531  INFO SHIBU-PC --- [nio-7083-exec-1] c.o.p.p.c.PropertyController             : fetchPropertyTypeList -- END
+2018-12-05 23:30:34.644  INFO Abhideep-PC --- [nio-7083-exec-1] c.o.p.p.c.PropertyController             : fetchPropertyType -- START
+2018-12-05 23:30:34.659  INFO Abhideep-PC --- [nio-7083-exec-1] c.o.p.p.s.i.PropertyServiceImpl          : fetchAllPropertyTypeByLanguage -- START
+2018-12-05 23:30:34.671  INFO Abhideep-PC --- [nio-7083-exec-1] c.o.p.p.v.AuthorizeUserValidation        : getUserDetails -- START
+2018-12-05 23:30:37.233  INFO Abhideep-PC --- [nio-7083-exec-1] c.o.p.p.c.PropertyController             : fetchPropertyType -- END

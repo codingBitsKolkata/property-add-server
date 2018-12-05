@@ -10,7 +10,7 @@ import com.orastays.property.propertyadd.model.StayTypeModel;
 
 public interface PropertyService {
 
-	List<PropertyTypeModel> fetchAllPropertyTypeByLanguage(CommonModel commonModel) throws FormExceptions;
+	List<PropertyTypeModel> fetchPropertyTypes(CommonModel commonModel) throws FormExceptions;
 	List<StayTypeModel> fetchStayTypeList(String languageId);
 	List<AccommodationModel> fetchAllAccommodationTypeByLanguage(String languageId);
 }

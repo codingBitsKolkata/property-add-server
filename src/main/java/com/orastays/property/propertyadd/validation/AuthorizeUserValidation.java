@@ -55,6 +55,7 @@ public class AuthorizeUserValidation {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			// Disabled the below line to pass the Token Validation
 			exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
 		}
 		
@@ -63,6 +64,40 @@ public class AuthorizeUserValidation {
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("getUserDetails -- END");
+		}
+		
+		return userModel;
+	}
+	
+	public UserModel validateLanguage(String languageId) throws FormExceptions {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("validateLanguage -- START");
+		}
+		
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		UserModel userModel = null;
+		try {
+			ResponseModel responseModel = restTemplate.getForObject("http://AUTH-SERVER/api/check-language?languageId="+languageId, ResponseModel.class);
+			userModel = (UserModel) responseModel.getResponseBody();
+			if(Objects.isNull(userModel)) {
+				exceptions.put(messageUtil.getBundle("language.id.invalid.code"), new Exception(messageUtil.getBundle("language.id.invalid.message")));
+			}
+			
+			if (logger.isInfoEnabled()) {
+				logger.info("userModel ==>> "+userModel);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// Disabled the below line to pass the Language Validation
+			exceptions.put(messageUtil.getBundle("language.id.invalid.code"), new Exception(messageUtil.getBundle("language.id.invalid.message")));
+		}
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("validateLanguage -- END");
 		}
 		
 		return userModel;

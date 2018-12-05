@@ -25,10 +25,10 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 	private static final Logger logger = LogManager.getLogger(PropertyServiceImpl.class);
 	
 	@Override
-	public List<PropertyTypeModel> fetchAllPropertyTypeByLanguage(CommonModel commonModel) throws FormExceptions {
+	public List<PropertyTypeModel> fetchPropertyTypes(CommonModel commonModel) throws FormExceptions {
 		
 		if (logger.isInfoEnabled()) {
-			logger.info("fetchAllPropertyTypeByLanguage -- START");
+			logger.info("fetchPropertyTypes -- START");
 		}
 		
 		propertyValidation.validateFetchPropertyType(commonModel);
@@ -52,7 +52,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		}
 		
 		if (logger.isInfoEnabled()) {
-			logger.info("fetchAllPropertyTypeByLanguage -- END");
+			logger.info("fetchPropertyTypes -- END");
 		}
 		
 		return propertyTypeModels;

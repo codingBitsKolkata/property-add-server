@@ -1,6 +1,7 @@
 package com.orastays.property.propertyadd.controller;
 
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.helper.PropertyAddConstant;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.AccommodationModel;
@@ -38,32 +40,41 @@ public class PropertyController extends BaseController{
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
 			@ApiResponse(code = 202, message = "Token Required"),
-			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue...")})
-	public ResponseEntity<ResponseModel> fetchPropertyType(@RequestBody CommonModel commonModel) {
+			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue..."),
+			@ApiResponse(code = 204, message = "Language Id Required"),
+			@ApiResponse(code = 204, message = "Invalid Language ID") })
+	public ResponseEntity<ResponseModel> fetchPropertyTypes(@RequestBody CommonModel commonModel) {
 
 		if (logger.isInfoEnabled()) {
-			logger.info("fetchPropertyType -- START");
+			logger.info("fetchPropertyTypes -- START");
 		}
 
 		ResponseModel responseModel = new ResponseModel();
 		
 		try {
 		
-			List<PropertyTypeModel> propertyTypeModels = propertyService.fetchAllPropertyTypeByLanguage(commonModel);
+			List<PropertyTypeModel> propertyTypeModels = propertyService.fetchPropertyTypes(commonModel);
 			responseModel.setResponseBody(propertyTypeModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+			
+		} catch (FormExceptions fe) {
 
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
 		
-		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Fetch Property Type", request);
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Fetch Property Types", request);
 		
 		if (logger.isInfoEnabled()) {
-			logger.info("fetchPropertyType -- END");
+			logger.info("fetchPropertyTypes -- END");
 		}
 		
 		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {

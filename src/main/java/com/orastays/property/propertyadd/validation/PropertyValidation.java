@@ -38,6 +38,13 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			} else {
 				getUserDetails(commonModel.getUserToken());
 			}
+			
+			// Validate Language
+			if(StringUtils.isBlank(commonModel.getLanguageId())) {
+				exceptions.put(messageUtil.getBundle("language.id.null.code"), new Exception(messageUtil.getBundle("language.id.null.message")));
+			} else {
+				validateLanguage(commonModel.getLanguageId());
+			}
 		}
 		
 		if (exceptions.size() > 0)
