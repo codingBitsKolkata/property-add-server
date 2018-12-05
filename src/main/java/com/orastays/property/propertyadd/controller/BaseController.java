@@ -19,7 +19,6 @@ public class BaseController {
 	@Autowired
 	protected PropertyService propertyService;
 	
-	
 	@Autowired
 	protected MessageUtil messageUtil;
 }
