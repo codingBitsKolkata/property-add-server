@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.orastays.property.propertyadd.helper.AuthConstant;
+import com.orastays.property.propertyadd.helper.PropertyAddConstant;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.AccommodationModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
@@ -27,7 +28,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
-@Api(value = "property", description = "Rest API for Property Type", tags = "Property Type API")
+@Api(value = "property", description = "Rest API for Property Add Form", tags = "Property Add Form API")
 public class PropertyController extends BaseController{
 	
 	private static final Logger logger = LogManager.getLogger(PropertyController.class);
@@ -35,33 +36,37 @@ public class PropertyController extends BaseController{
 	@PostMapping(value = "/fetch-property-types", produces = "application/json")
 	@ApiOperation(value = "Property Type Listing", response = ResponseModel.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 201, message = "Please Try after Sometime!!!") })
-	public ResponseEntity<ResponseModel> fetchPropertyTypeList(@RequestBody CommonModel commonModel) {
+			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
+			@ApiResponse(code = 202, message = "Token Required"),
+			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue...")})
+	public ResponseEntity<ResponseModel> fetchPropertyType(@RequestBody CommonModel commonModel) {
 
 		if (logger.isInfoEnabled()) {
-			logger.info("fetchPropertyTypeList -- START");
+			logger.info("fetchPropertyType -- START");
 		}
 
 		ResponseModel responseModel = new ResponseModel();
 		
 		try {
 		
-			List<PropertyTypeModel> propertyTypeModels = propertyService.fetchAllPropertyTypeByLanguage(commonModel.getLanguageId());
+			List<PropertyTypeModel> propertyTypeModels = propertyService.fetchAllPropertyTypeByLanguage(commonModel);
 			responseModel.setResponseBody(propertyTypeModels);
-			responseModel.setResponseCode(messageUtil.getBundle(AuthConstant.COMMON_SUCCESS_CODE));
-			responseModel.setResponseMessage(messageUtil.getBundle(AuthConstant.COMMON_SUCCESS_MESSAGE));
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseModel.setResponseCode(messageUtil.getBundle(AuthConstant.COMMON_ERROR_CODE));
-			responseModel.setResponseMessage(messageUtil.getBundle(AuthConstant.COMMON_ERROR_MESSAGE));
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Fetch Property Type", request);
 		
 		if (logger.isInfoEnabled()) {
-			logger.info("fetchPropertyTypeList -- END");
+			logger.info("fetchPropertyType -- END");
 		}
 		
-		if (responseModel.getResponseCode().equals(messageUtil.getBundle(AuthConstant.COMMON_SUCCESS_CODE))) {
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
 			return new ResponseEntity<>(responseModel, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
@@ -80,20 +85,20 @@ public class PropertyController extends BaseController{
 		
 			List<StayTypeModel> stayTypeModels = propertyService.fetchStayTypeList(commonModel.getLanguageId());
 			responseModel.setResponseBody(stayTypeModels);
-			responseModel.setResponseCode(messageUtil.getBundle(AuthConstant.COMMON_SUCCESS_CODE));
-			responseModel.setResponseMessage(messageUtil.getBundle(AuthConstant.COMMON_SUCCESS_MESSAGE));
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseModel.setResponseCode(messageUtil.getBundle(AuthConstant.COMMON_ERROR_CODE));
-			responseModel.setResponseMessage(messageUtil.getBundle(AuthConstant.COMMON_ERROR_MESSAGE));
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchStayTypeList -- END");
 		}
 		
-		if (responseModel.getResponseCode().equals(messageUtil.getBundle(AuthConstant.COMMON_SUCCESS_CODE))) {
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
 			return new ResponseEntity<>(responseModel, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
@@ -112,20 +117,20 @@ public class PropertyController extends BaseController{
 		
 			List<AccommodationModel> accommodationModels = propertyService.fetchAllAccommodationTypeByLanguage(commonModel.getLanguageId());
 			responseModel.setResponseBody(accommodationModels);
-			responseModel.setResponseCode(messageUtil.getBundle(AuthConstant.COMMON_SUCCESS_CODE));
-			responseModel.setResponseMessage(messageUtil.getBundle(AuthConstant.COMMON_SUCCESS_MESSAGE));
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseModel.setResponseCode(messageUtil.getBundle(AuthConstant.COMMON_ERROR_CODE));
-			responseModel.setResponseMessage(messageUtil.getBundle(AuthConstant.COMMON_ERROR_MESSAGE));
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchAccommodationList -- END");
 		}
 		
-		if (responseModel.getResponseCode().equals(messageUtil.getBundle(AuthConstant.COMMON_SUCCESS_CODE))) {
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
 			return new ResponseEntity<>(responseModel, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);

@@ -9,11 +9,15 @@ import com.orastays.property.propertyadd.converter.StayTypeConverter;
 import com.orastays.property.propertyadd.dao.AccommodationDAO;
 import com.orastays.property.propertyadd.dao.PropertyTypeDAO;
 import com.orastays.property.propertyadd.dao.StayTypeDAO;
+import com.orastays.property.propertyadd.validation.PropertyValidation;
 
 public abstract class BaseServiceImpl {
 
 	@Value("${entitymanager.packagesToScan}")
 	protected String entitymanagerPackagesToScan;
+	
+	@Autowired
+	protected PropertyValidation propertyValidation;
 	
 	@Autowired
 	protected PropertyTypeDAO propertyTypeDAO;

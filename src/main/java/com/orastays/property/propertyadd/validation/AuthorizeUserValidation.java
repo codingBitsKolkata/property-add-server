@@ -1,0 +1,70 @@
+package com.orastays.property.propertyadd.validation;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import com.orastays.property.propertyadd.exceptions.FormExceptions;
+import com.orastays.property.propertyadd.helper.MessageUtil;
+import com.orastays.property.propertyadd.model.ResponseModel;
+import com.orastays.property.propertyadd.model.UserModel;
+
+@Component
+public class AuthorizeUserValidation {
+
+	private static final Logger logger = LogManager.getLogger(AuthorizeUserValidation.class);
+	
+	@Value("${entitymanager.packagesToScan}")
+	protected String entitymanagerPackagesToScan;
+	
+	@Autowired
+	protected MessageUtil messageUtil;
+	
+	@Autowired
+	protected RestTemplate restTemplate;
+	
+	@Autowired
+	protected HttpServletRequest request;
+	
+	public UserModel getUserDetails(String userToken) throws FormExceptions {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("getUserDetails -- START");
+		}
+		
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		UserModel userModel = null;
+		try {
+			ResponseModel responseModel = restTemplate.getForObject("http://AUTH-SERVER/api/check-token?userToken="+userToken, ResponseModel.class);
+			userModel = (UserModel) responseModel.getResponseBody();
+			if(Objects.isNull(userModel)) {
+				exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+			}
+			
+			if (logger.isInfoEnabled()) {
+				logger.info("userModel ==>> "+userModel);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+		}
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("getUserDetails -- END");
+		}
+		
+		return userModel;
+	}
+}
