@@ -39,7 +39,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			alliasMap.put(entitymanagerPackagesToScan+".PropertyTypeEntity", outerMap1);
 	
 			propertyTypeModels = propertyTypeConverter.entityListToModelList(propertyTypeDAO.fetchListBySubCiteria(alliasMap));
-			
+
 		} catch (Exception e) {
 			
 		}
