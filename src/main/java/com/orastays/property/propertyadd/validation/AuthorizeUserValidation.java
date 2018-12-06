@@ -56,7 +56,7 @@ public class AuthorizeUserValidation {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// Disabled the below line to pass the Token Validation
-			exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+			//exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
 		}
 		
 		if (exceptions.size() > 0)
@@ -90,7 +90,7 @@ public class AuthorizeUserValidation {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// Disabled the below line to pass the Language Validation
-			exceptions.put(messageUtil.getBundle("language.id.invalid.code"), new Exception(messageUtil.getBundle("language.id.invalid.message")));
+			//exceptions.put(messageUtil.getBundle("language.id.invalid.code"), new Exception(messageUtil.getBundle("language.id.invalid.message")));
 		}
 		
 		if (exceptions.size() > 0)

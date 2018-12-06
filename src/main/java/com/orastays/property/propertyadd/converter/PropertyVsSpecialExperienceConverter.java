@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PropertyVsSpecialExperienceEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyVsSpecialExperienceModel;
 
@@ -21,8 +22,16 @@ public class PropertyVsSpecialExperienceConverter extends CommonConverter
 
 	@Override
 	public PropertyVsSpecialExperienceEntity modelToEntity(PropertyVsSpecialExperienceModel m) {
-		// TODO Auto-generated method stub
-		return null;
+
+		PropertyVsSpecialExperienceEntity specialExperienceEntity = new PropertyVsSpecialExperienceEntity();
+		specialExperienceEntity = (PropertyVsSpecialExperienceEntity) Util.transform(modelMapper, m, specialExperienceEntity);
+		specialExperienceEntity.setStatus(Status.ACTIVE.ordinal());
+		specialExperienceEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		specialExperienceEntity.setCreatedDate(Util.getCurrentDateTime());
+		
+		specialExperienceEntity.setSpecialExperienceEntity(specialExperienceDAO.find(Long.parseLong(m.getSpecialExperienceModel().getExperienceId())));
+		
+		return specialExperienceEntity;
 	}
 
 	@Override

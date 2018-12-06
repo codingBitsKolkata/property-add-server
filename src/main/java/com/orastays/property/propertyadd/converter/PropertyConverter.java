@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.entity.PropertyEntity;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyModel;
@@ -20,8 +21,16 @@ public class PropertyConverter extends CommonConverter implements BaseConverter<
 
 	@Override
 	public PropertyEntity modelToEntity(PropertyModel m) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		PropertyEntity propertyEntity = new PropertyEntity();
+		propertyEntity = (PropertyEntity) Util.transform(modelMapper, m, propertyEntity);
+		propertyEntity.setStatus(Status.ACTIVE.ordinal());
+		propertyEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		propertyEntity.setCreatedDate(Util.getCurrentDateTime());
+		
+		propertyEntity.setPropertyTypeEntity(propertyTypeDAO.find(Long.parseLong(m.getPropertyTypeModel().getPropertyTypeId())));
+		
+		return propertyEntity;
 	}
 
 	@Override

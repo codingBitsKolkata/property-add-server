@@ -20,15 +20,15 @@ import com.orastays.property.propertyadd.model.StayTypeModel;
 public interface PropertyService {
 
 	List<PropertyTypeModel> fetchPropertyTypes(CommonModel commonModel) throws FormExceptions;
-	List<StayTypeModel> fetchStayTypeList(String languageId);
-	List<AccommodationModel> fetchAccommodationByLanguage(String languageId);
-	List<PGCategorySexModel> fetchPgCategorySexListByLanguage(String languageId);
-	List<AmenitiesTypeModel> fetchAmenitiesTypeList();
-	List<AmenitiesModel> fetchAmenitiesList(String languageId);
-	List<SpecialExperienceModel> fetchSpecialExperienceList(String languageId);
-	List<SpaceRuleModel> fetchSpaceRuleList(String languageId);
-	List<SpecialtiesModel> fetchSpecialtiesList(String languageId);
-	List<RoomCategoryModel> fetchRoomCategoryList(String languageId);
-	List<PriceTypeModel> fetchPriceTypeList(String languageId);
-	List<CancellationSlabModel> fetchCancellationSlabList();
+	List<StayTypeModel> fetchStayTypeList(CommonModel commonModel) throws FormExceptions;
+	List<AccommodationModel> fetchAccommodationByLanguage(CommonModel commonModel) throws FormExceptions;
+	List<PGCategorySexModel> fetchPgCategorySexListByLanguage(CommonModel commonModel) throws FormExceptions;
+	List<AmenitiesTypeModel> fetchAmenitiesTypeList() throws FormExceptions;
+	List<AmenitiesModel> fetchAmenitiesList(CommonModel commonModel) throws FormExceptions;
+	List<SpecialExperienceModel> fetchSpecialExperienceList(CommonModel commonModel) throws FormExceptions;
+	List<SpaceRuleModel> fetchSpaceRuleList(CommonModel commonModel) throws FormExceptions;
+	List<SpecialtiesModel> fetchSpecialtiesList(CommonModel commonModel) throws FormExceptions;
+	List<RoomCategoryModel> fetchRoomCategoryList(CommonModel commonModel) throws FormExceptions;
+	List<PriceTypeModel> fetchPriceTypeList(CommonModel commonModel) throws FormExceptions;
+	List<CancellationSlabModel> fetchCancellationSlabList() throws FormExceptions;
 }

@@ -110,11 +110,18 @@ public class PropertyController extends BaseController{
 		ResponseModel responseModel = new ResponseModel();
 		
 		try {
-			List<StayTypeModel> stayTypeModels = propertyService.fetchStayTypeList(commonModel.getLanguageId());
+			List<StayTypeModel> stayTypeModels = propertyService.fetchStayTypeList(commonModel);
 			responseModel.setResponseBody(stayTypeModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
@@ -149,11 +156,18 @@ public class PropertyController extends BaseController{
 		ResponseModel responseModel = new ResponseModel();
 		
 		try {
-			List<AccommodationModel> accommodationModels = propertyService.fetchAccommodationByLanguage(commonModel.getLanguageId());
+			List<AccommodationModel> accommodationModels = propertyService.fetchAccommodationByLanguage(commonModel);
 			responseModel.setResponseBody(accommodationModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
@@ -188,11 +202,18 @@ public class PropertyController extends BaseController{
 		ResponseModel responseModel = new ResponseModel();
 		
 		try {
-			List<PGCategorySexModel> pgCategorySexModels = propertyService.fetchPgCategorySexListByLanguage(commonModel.getLanguageId());
+			List<PGCategorySexModel> pgCategorySexModels = propertyService.fetchPgCategorySexListByLanguage(commonModel);
 			responseModel.setResponseBody(pgCategorySexModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
@@ -230,6 +251,13 @@ public class PropertyController extends BaseController{
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
@@ -264,11 +292,18 @@ public class PropertyController extends BaseController{
 		ResponseModel responseModel = new ResponseModel();
 		
 		try {
-			List<AmenitiesModel> amenitiesModels = propertyService.fetchAmenitiesList(commonModel.getLanguageId());
+			List<AmenitiesModel> amenitiesModels = propertyService.fetchAmenitiesList(commonModel);
 			responseModel.setResponseBody(amenitiesModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
@@ -303,11 +338,18 @@ public class PropertyController extends BaseController{
 		ResponseModel responseModel = new ResponseModel();
 		
 		try {
-			List<SpecialExperienceModel> specialExperienceModels = propertyService.fetchSpecialExperienceList(commonModel.getLanguageId());
+			List<SpecialExperienceModel> specialExperienceModels = propertyService.fetchSpecialExperienceList(commonModel);
 			responseModel.setResponseBody(specialExperienceModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
@@ -342,11 +384,18 @@ public class PropertyController extends BaseController{
 		ResponseModel responseModel = new ResponseModel();
 		
 		try {
-			List<SpaceRuleModel> spaceRuleModels = propertyService.fetchSpaceRuleList(commonModel.getLanguageId());
+			List<SpaceRuleModel> spaceRuleModels = propertyService.fetchSpaceRuleList(commonModel);
 			responseModel.setResponseBody(spaceRuleModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
@@ -381,11 +430,18 @@ public class PropertyController extends BaseController{
 		ResponseModel responseModel = new ResponseModel();
 		
 		try {
-			List<SpecialtiesModel> specialtiesModels = propertyService.fetchSpecialtiesList(commonModel.getLanguageId());
+			List<SpecialtiesModel> specialtiesModels = propertyService.fetchSpecialtiesList(commonModel);
 			responseModel.setResponseBody(specialtiesModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
@@ -420,11 +476,18 @@ public class PropertyController extends BaseController{
 		ResponseModel responseModel = new ResponseModel();
 		
 		try {
-			List<RoomCategoryModel> roomCategoryModels = propertyService.fetchRoomCategoryList(commonModel.getLanguageId());
+			List<RoomCategoryModel> roomCategoryModels = propertyService.fetchRoomCategoryList(commonModel);
 			responseModel.setResponseBody(roomCategoryModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
@@ -459,11 +522,18 @@ public class PropertyController extends BaseController{
 		ResponseModel responseModel = new ResponseModel();
 		
 		try {
-			List<PriceTypeModel> priceTypeModels = propertyService.fetchPriceTypeList(commonModel.getLanguageId());
+			List<PriceTypeModel> priceTypeModels = propertyService.fetchPriceTypeList(commonModel);
 			responseModel.setResponseBody(priceTypeModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
@@ -501,6 +571,13 @@ public class PropertyController extends BaseController{
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
