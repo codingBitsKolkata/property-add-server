@@ -1095,7 +1095,7 @@ CREATE TABLE IF NOT EXISTS `room_vs_ora_discount` (
   `modified_by` bigint(20) DEFAULT NULL,
   `modified_date` varchar(255) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
-  `percentage` varchar(255) DEFAULT NULL,
+  `discount` varchar(255) DEFAULT NULL,
   `dco_id` bigint(20) NOT NULL,
   `room_id` bigint(20) NOT NULL,
   PRIMARY KEY (`rod_id`),
