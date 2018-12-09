@@ -38,7 +38,7 @@ public class AmenitiesTypeEntity extends CommonEntity{
 	private List<AmenitiesEntity> amenitiesEntities;
 	
 	@Column(name = "aminities_type_name")
-	@JsonProperty("aminitiesTypes")
+	@JsonProperty("aminitiesType")
 	private String aminitiesTypeName;
 	
 	@Override

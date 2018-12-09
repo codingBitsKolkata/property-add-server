@@ -38,7 +38,7 @@ public class RoomVsOraPricePercentageEntity extends CommonEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_id", nullable = false)
-	@JsonProperty("rooms")
+	@JsonProperty("room")
 	private RoomEntity roomEntity;
 
 	@Override

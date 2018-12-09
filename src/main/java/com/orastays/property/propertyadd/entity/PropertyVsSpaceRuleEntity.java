@@ -38,12 +38,12 @@ public class PropertyVsSpaceRuleEntity extends CommonEntity  {
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "sprule_id", nullable = false)
-	@JsonProperty("spaceRules")
+	@JsonProperty("spaceRule")
 	private SpaceRuleEntity spaceRuleEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_id", nullable = false)
-	@JsonProperty("propertys")
+	@JsonProperty("property")
 	private PropertyEntity propertyEntity;
 	
 	@Override

@@ -38,7 +38,7 @@ public class PropertyVsImageEntity extends CommonEntity  {
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_id", nullable = false)
-	@JsonProperty("propertys")
+	@JsonProperty("property")
 	private PropertyEntity propertyEntity;
 	
 	@Override

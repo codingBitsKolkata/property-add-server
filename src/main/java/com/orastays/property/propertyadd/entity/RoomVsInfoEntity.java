@@ -50,7 +50,7 @@ public class RoomVsInfoEntity extends CommonEntity {
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_id", nullable = false)
-	@JsonProperty("rooms")
+	@JsonProperty("room")
 	private RoomEntity roomEntity;
 
 	@Override

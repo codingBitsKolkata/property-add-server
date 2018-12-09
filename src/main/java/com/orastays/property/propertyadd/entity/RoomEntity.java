@@ -85,11 +85,11 @@ public class RoomEntity extends CommonEntity {
 	private List<RoomVsAmenitiesEntity> roomVsAmenitiesEntities;
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
-	@JsonProperty("roomVsInfos")
+	@JsonProperty("roomVsInfo")
 	private RoomVsInfoEntity roomVsInfoEntity;
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
-	@JsonProperty("roomVsBeds")
+	@JsonProperty("roomVsBed")
 	private RoomVsBedEntity roomVsBedEntity;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })

@@ -38,12 +38,12 @@ public class RoomVsPriceEntity extends CommonEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "price_type_id", nullable = false)
-	@JsonProperty("priceTypes")
+	@JsonProperty("priceType")
 	private PriceTypeEntity priceTypeEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_id", nullable = false)
-	@JsonProperty("rooms")
+	@JsonProperty("room")
 	private RoomEntity roomEntity;
 
 	@Override

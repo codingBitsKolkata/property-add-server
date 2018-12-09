@@ -34,12 +34,12 @@ public class RoomVsMealEntity extends CommonEntity{
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "meal_category_id", nullable = false)
-	@JsonProperty("mealCategorys")
+	@JsonProperty("mealCategory")
 	private MealCategoryEntity mealCategoryEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_id", nullable = false)
-	@JsonProperty("rooms")
+	@JsonProperty("room")
 	private RoomEntity roomEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
@@ -49,17 +49,17 @@ public class RoomVsMealEntity extends CommonEntity{
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "meal_type_id", nullable = false)
-	@JsonProperty("mealTypes")
+	@JsonProperty("mealType")
 	private MealTypeEntity mealTypeEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "mpcmp_id", nullable = false)
-	@JsonProperty("mealPlanCatVsMealPlans")
+	@JsonProperty("mealPlanCatVsMealPlan")
 	private MealPlanCatVsMealPlanEntity mealPlanCatVsMealPlanEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "mmpc_id", nullable = false)
-	@JsonProperty("mealPriceCategorys")
+	@JsonProperty("mealPriceCategory")
 	private MealPriceCategoryEntity mealPriceCategoryEntity;
 	
 	@Override

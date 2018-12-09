@@ -38,12 +38,12 @@ public class RoomVsCancellationEntity extends CommonEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "cancellation_slab_id", nullable = false)
-	@JsonProperty("cancellationSlabs")
+	@JsonProperty("cancellationSlab")
 	private CancellationSlabEntity cancellationSlabEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_id", nullable = false)
-	@JsonProperty("rooms")
+	@JsonProperty("room")
 	private RoomEntity roomEntity;
 
 	@Override

@@ -49,7 +49,7 @@ public class RoomCategoryEntity extends CommonEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_type_id", nullable = false)
-	@JsonProperty("propertyTypes")
+	@JsonProperty("propertyType")
 	private PropertyTypeEntity propertyTypeEntity;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomCategoryEntity", cascade = { CascadeType.ALL })

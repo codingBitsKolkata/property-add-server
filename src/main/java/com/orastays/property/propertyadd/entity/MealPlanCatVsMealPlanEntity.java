@@ -37,12 +37,12 @@ public class MealPlanCatVsMealPlanEntity extends CommonEntity{
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "mpc_id", nullable = false)
-	@JsonProperty("mealPlanCategorys")
+	@JsonProperty("mealPlanCategory")
 	private MealPlanCategoryEntity mealPlanCategoryEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "meal_plan_id", nullable = false)
-	@JsonProperty("mealPlans")
+	@JsonProperty("mealPlan")
 	private MealPlanEntity mealPlanEntity;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mealPlanCatVsMealPlanEntity", cascade = { CascadeType.ALL })

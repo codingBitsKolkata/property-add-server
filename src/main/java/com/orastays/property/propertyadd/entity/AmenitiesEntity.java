@@ -61,7 +61,7 @@ public class AmenitiesEntity extends CommonEntity{
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "aminities_type_id", nullable = false)
-	@JsonProperty("amenitiesTypes")
+	@JsonProperty("amenitiesType")
 	private AmenitiesTypeEntity amenitiesTypeEntity;
 	
 	@Override
