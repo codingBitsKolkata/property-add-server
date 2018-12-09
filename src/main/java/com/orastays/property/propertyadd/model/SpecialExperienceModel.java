@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class SpecialExperienceModel extends CommonModel {
 
-	@JsonProperty("specialitiesName")
+	@JsonProperty("experienceId")
 	private String experienceId;
 	
 	@JsonProperty("languageId")
@@ -22,6 +22,6 @@ public class SpecialExperienceModel extends CommonModel {
 	@JsonProperty("parentId")
 	private String parentId;
 	
-	@JsonProperty("specialitiesName")
+	@JsonProperty("experienceName")
 	private String experienceName;
 }
