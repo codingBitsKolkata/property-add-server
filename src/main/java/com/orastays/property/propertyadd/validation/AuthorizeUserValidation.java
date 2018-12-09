@@ -38,6 +38,7 @@ public class AuthorizeUserValidation {
 	
 	@Autowired
 	protected PropertyTypeDAO propertyTypeDAO;
+
 	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {
 

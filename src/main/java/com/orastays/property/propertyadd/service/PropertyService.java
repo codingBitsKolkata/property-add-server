@@ -9,7 +9,9 @@ import com.orastays.property.propertyadd.model.AmenitiesTypeModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.PGCategorySexModel;
+import com.orastays.property.propertyadd.model.PriceDropModel;
 import com.orastays.property.propertyadd.model.PriceTypeModel;
+import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
 import com.orastays.property.propertyadd.model.RoomCategoryModel;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
@@ -31,4 +33,7 @@ public interface PropertyService {
 	List<RoomCategoryModel> fetchRoomCategoryList(CommonModel commonModel) throws FormExceptions;
 	List<PriceTypeModel> fetchPriceTypeList(CommonModel commonModel) throws FormExceptions;
 	List<CancellationSlabModel> fetchCancellationSlabList() throws FormExceptions;
+	List<PriceDropModel> fetchPriceDropList() throws FormExceptions;
+	PropertyModel saveProperty(PropertyModel propertyModel) throws FormExceptions;
+	
 }

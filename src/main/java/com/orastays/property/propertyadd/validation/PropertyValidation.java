@@ -16,7 +16,7 @@ import com.orastays.property.propertyadd.helper.PropertyAddConstant;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
-import com.orastays.property.propertyadd.model.UserModel;
+import com.orastays.property.propertyadd.model.PropertyVsDescriptionModel;
 
 @Component
 @Transactional
@@ -70,7 +70,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		}
 	}
 	
-	public UserModel validatePropertyAdd(PropertyModel propertyModel) throws FormExceptions {
+	public void validatePropertyAdd(PropertyModel propertyModel) throws FormExceptions {
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("validatePropertyAdd -- Start");
@@ -79,7 +79,6 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		Util.printLog(propertyModel, PropertyAddConstant.INCOMING, "Property Add", request);
 
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
-		UserModel userModel = null;
 		
 		if(Objects.nonNull(propertyModel)) {
 			
@@ -93,7 +92,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			}
 			
 			// Calculation Pending
-			propertyModel.setOraname("ORA00001");
+			propertyModel.setOraname("ORA000011");
 			
 			//validate Entire Apartment
 			if(StringUtils.isBlank(propertyModel.getEntireApartment())) {
@@ -166,6 +165,20 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			//Validate Price Drop
 			if(StringUtils.isBlank(propertyModel.getPriceDrop())) {
 				exceptions.put(messageUtil.getBundle("price.drop.null.code"), new Exception(messageUtil.getBundle("price.drop.null.message")));
+			} else {
+				
+				if(!(propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_Y) || propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_N))){
+					exceptions.put(messageUtil.getBundle("price.drop.invalid.code"), new Exception(messageUtil.getBundle("price.drop.invalid.message")));
+				} 
+				
+				/*else { 
+					if(propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_Y)) {
+						
+						//Move this Validation to Service Impl Because need property Entity 
+						 * validate Property Vs Price Drop
+						
+					}
+				}*/
 			}
 			
 			//Validate Property Type
@@ -182,6 +195,31 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			}
 			
 			// Validate Property Vs Description
+			if(Objects.nonNull(propertyModel.getPropertyVsDescriptionModels())) {
+				exceptions.put(messageUtil.getBundle("propertty.description.null.code"), new Exception(messageUtil.getBundle("propertty.description.null.message")));
+			} else {
+				
+				for(PropertyVsDescriptionModel propertyVsDescriptionModel:propertyModel.getPropertyVsDescriptionModels()){
+					if(StringUtils.isBlank(propertyVsDescriptionModel.getDescription())){
+						exceptions.put(messageUtil.getBundle("propertty.description.null.code"), new Exception(messageUtil.getBundle("propertty.description.null.message")));
+					}
+				}
+			}
+			
+			//Property Vs Guest Access
+			
+			//Property Vs HomeStay
+			
+			//Property Vs NearBy
+			
+			//PropertyVs PGCS
+			
+			//Property Vs Space Rule
+			
+			//Property vs Special Experience
+			
+			//Property Vs Stay Type
+			
 			
 			
 		}
@@ -191,6 +229,6 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			logger.debug("validatePropertyAdd -- End");
 		}
 		
-		return userModel;
 	}
+	
 }

@@ -608,7 +608,7 @@ public class PropertyController extends BaseController{
 	public ResponseEntity<ResponseModel> addProperty(@RequestBody PropertyModel propertyModel) {
 
 		if (logger.isInfoEnabled()) {
-			logger.info("fetchPropertyTypes -- START");
+			logger.info("addProperty -- START");
 		}
 
 		ResponseModel responseModel = new ResponseModel();
@@ -617,19 +617,19 @@ public class PropertyController extends BaseController{
 			System.out.println("propertyMod==>"+propertyModel);
 			
 		
-			/*List<PropertyTypeModel> propertyTypeModels = propertyService.fetchPropertyTypes(commonModel);
-			responseModel.setResponseBody(propertyTypeModels);*/
+			PropertyModel propertyModel2 = propertyService.saveProperty(propertyModel);
+			responseModel.setResponseBody(propertyModel2);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 			
-		} /*catch (FormExceptions fe) {
+		} catch (FormExceptions fe) {
 
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
 				break;
 			}
-		}*/ catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
@@ -638,7 +638,7 @@ public class PropertyController extends BaseController{
 		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Fetch Property Types", request);
 		
 		if (logger.isInfoEnabled()) {
-			logger.info("fetchPropertyTypes -- END");
+			logger.info("addProperty -- END");
 		}
 		
 		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {

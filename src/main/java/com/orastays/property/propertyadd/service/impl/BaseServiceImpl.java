@@ -8,7 +8,9 @@ import com.orastays.property.propertyadd.converter.AmenitiesConverter;
 import com.orastays.property.propertyadd.converter.AmenitiesTypeConverter;
 import com.orastays.property.propertyadd.converter.CancellationSlabConverter;
 import com.orastays.property.propertyadd.converter.PGCategorySexConverter;
+import com.orastays.property.propertyadd.converter.PriceDropConverter;
 import com.orastays.property.propertyadd.converter.PriceTypeConverter;
+import com.orastays.property.propertyadd.converter.PropertyConverter;
 import com.orastays.property.propertyadd.converter.PropertyTypeConverter;
 import com.orastays.property.propertyadd.converter.RoomCategoryConverter;
 import com.orastays.property.propertyadd.converter.SpaceRuleConverter;
@@ -20,7 +22,9 @@ import com.orastays.property.propertyadd.dao.AmenitiesDAO;
 import com.orastays.property.propertyadd.dao.AmenitiesTypeDAO;
 import com.orastays.property.propertyadd.dao.CancellationSlabDAO;
 import com.orastays.property.propertyadd.dao.PGCategorySexDAO;
+import com.orastays.property.propertyadd.dao.PriceDropDAO;
 import com.orastays.property.propertyadd.dao.PriceTypeDAO;
+import com.orastays.property.propertyadd.dao.PropertyDAO;
 import com.orastays.property.propertyadd.dao.PropertyTypeDAO;
 import com.orastays.property.propertyadd.dao.RoomCategoryDAO;
 import com.orastays.property.propertyadd.dao.SpaceRuleDAO;
@@ -108,4 +112,16 @@ public abstract class BaseServiceImpl {
 	
 	@Autowired
 	protected CancellationSlabDAO cancellationSlabDAO;
+	
+	@Autowired
+	protected PriceDropDAO priceDropDAO;
+	
+	@Autowired
+	protected PriceDropConverter priceDropConverter;
+	
+	@Autowired
+	protected PropertyConverter propertyConverter;
+	
+	@Autowired
+	protected PropertyDAO propertyDAO;
 }

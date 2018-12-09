@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.orastays.property.propertyadd.entity.PropertyEntity;
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.helper.PropertyAddConstant;
 import com.orastays.property.propertyadd.helper.Status;
@@ -18,7 +19,9 @@ import com.orastays.property.propertyadd.model.AmenitiesTypeModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.PGCategorySexModel;
+import com.orastays.property.propertyadd.model.PriceDropModel;
 import com.orastays.property.propertyadd.model.PriceTypeModel;
+import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
 import com.orastays.property.propertyadd.model.RoomCategoryModel;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
@@ -437,5 +440,48 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		}
 		
 		return cancellationSlabModels;
+	}
+	
+	@Override
+	public List<PriceDropModel> fetchPriceDropList() throws FormExceptions{
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("fetchPriceDropList -- Start");
+		}
+		
+		List<PriceDropModel> priceDropModels = null;
+		
+		try {
+			Map<String, String> innerMap1 = new LinkedHashMap<>();
+			innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+	
+			Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+			outerMap1.put("eq", innerMap1);
+	
+			Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+			alliasMap.put(entitymanagerPackagesToScan+".PriceDropEntity", outerMap1);
+	
+			priceDropModels = priceDropConverter.entityListToModelList(priceDropDAO.fetchListBySubCiteria(alliasMap));
+
+		} catch (Exception e) {
+			
+		}
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("fetchPriceDropList -- End");
+		}
+		
+		return priceDropModels;
+	}
+
+	@Override
+	public PropertyModel saveProperty(PropertyModel propertyModel) throws FormExceptions {
+		
+		propertyValidation.validatePropertyAdd(propertyModel);
+		
+		PropertyEntity propertyEntity = propertyConverter.modelToEntity(propertyModel);
+		Long propertyId = (Long) propertyDAO.save(propertyEntity);
+		System.out.println(propertyId);
+		return propertyModel;
 	}
 }

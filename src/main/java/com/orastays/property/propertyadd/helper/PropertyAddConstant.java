@@ -13,5 +13,7 @@ public final class PropertyAddConstant {
 	public static final String FOR_ROW = "for ROW";
 	public static final String STATUS = "status";
 	public static final String LANGUAGEID = "languageId";
+	public static final String STR_Y = "Y";
+	public static final String STR_N = "N";
 	
 }
