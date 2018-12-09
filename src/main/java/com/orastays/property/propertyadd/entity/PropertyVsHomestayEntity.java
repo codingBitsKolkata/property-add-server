@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,16 +29,20 @@ public class PropertyVsHomestayEntity extends CommonEntity  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "property_homestay_id")
+	@JsonProperty("propertyHomeStayId")
 	private Long propertyHomeStayId;
 
 	@Column(name = "immediate_booking")
+	@JsonProperty("immediateBooking")
 	private String immediateBooking;
 	
 	@Column(name = "strict_checkin")
+	@JsonProperty("strictCheckin")
 	private String strictCheckin;
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_id", nullable = false)
+	@JsonProperty("propertys")
 	private PropertyEntity propertyEntity;
 	
 	@Override

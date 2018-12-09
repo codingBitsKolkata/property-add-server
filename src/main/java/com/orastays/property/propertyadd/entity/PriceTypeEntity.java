@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,18 +30,23 @@ public class PriceTypeEntity extends CommonEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "price_type_id")
+	@JsonProperty("priceTypeId")
 	private Long priceTypeId;
 
 	@Column(name = "price_type_name")
+	@JsonProperty("priceTypeName")
 	private String priceTypeName;
 
 	@Column(name = "language_id")
+	@JsonProperty("languageId")
 	private Long languageId;
 
 	@Column(name = "parent_id")
+	@JsonProperty("parentId")
 	private Long parentId;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "priceTypeEntity", cascade = { CascadeType.ALL })
+	@JsonProperty("roomVsPrices")
 	private List<RoomVsPriceEntity> roomVsPriceEntities;
 
 	@Override
