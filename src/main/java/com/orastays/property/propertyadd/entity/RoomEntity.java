@@ -66,15 +66,15 @@ public class RoomEntity extends CommonEntity {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_id", nullable = false)
 	private PropertyTypeEntity propertyEntity;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
-	private List<RoomVsAmenitiesEntity> roomVsAmenitiesEntities;
-
+	
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
 	private RoomVsInfoEntity roomVsInfoEntity;
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
 	private RoomVsBedEntity roomVsBedEntity;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
+	private List<RoomVsAmenitiesEntity> roomVsAmenitiesEntities;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
 	private List<RoomVsCancellationEntity> roomVsCancellationEntities;
