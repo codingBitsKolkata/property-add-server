@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -35,7 +35,7 @@ public class PropertyVsHomestayEntity extends CommonEntity  {
 	@Column(name = "strict_checkin")
 	private String strictCheckin;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_id", nullable = false)
 	private PropertyEntity propertyEntity;
 	

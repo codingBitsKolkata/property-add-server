@@ -21,27 +21,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class PriceTypeEntity extends CommonEntity{
-	
+public class PriceTypeEntity extends CommonEntity {
+
 	private static final long serialVersionUID = 4482929565346280536L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "price_type_id")
 	private Long priceTypeId;
-	
-	@Column(name = "name")
-	private String PriceTypeName;
-	
+
+	@Column(name = "price_type_name")
+	private String priceTypeName;
+
 	@Column(name = "language_id")
 	private Long languageId;
 
 	@Column(name = "parent_id")
 	private Long parentId;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "priceTypeEntity", cascade = { CascadeType.ALL })
 	private List<RoomVsPriceEntity> roomVsPriceEntities;
-	
+
 	@Override
 	public String toString() {
 		return Long.toString(priceTypeId);

@@ -31,7 +31,7 @@ public class RoomVsSpecialitiesEntity extends CommonEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "specialties_id", nullable = false)
-	private CancellationSlabEntity SpecialtiesEntity;
+	private SpecialtiesEntity specialtiesEntity;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_id", nullable = false)

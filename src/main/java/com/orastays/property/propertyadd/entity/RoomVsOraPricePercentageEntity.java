@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "room_vs_ora_price_percentage")
+@Table(name = "room_vs_ora_price")
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)

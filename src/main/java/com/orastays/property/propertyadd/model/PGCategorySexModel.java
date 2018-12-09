@@ -1,7 +1,5 @@
 package com.orastays.property.propertyadd.model;
 
-import java.util.List;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +15,4 @@ public class PGCategorySexModel extends CommonModel {
 	private String languageId;
 	private String parentId;
 	private String categoryName;
-	private List<PropertyVsPgcsModel> propertyVsPgcsModels;
 }

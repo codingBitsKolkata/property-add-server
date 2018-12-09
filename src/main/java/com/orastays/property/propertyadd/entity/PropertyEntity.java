@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -80,24 +81,29 @@ public class PropertyEntity extends CommonEntity {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_type_id", nullable = false)
 	private PropertyTypeEntity propertyTypeEntity;
-
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "stay_type_id", nullable = false)
+	private StayTypeEntity stayTypeEntity;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "pgcs_id", nullable = false)
+	private PGCategorySexEntity pgCategorySexEntity;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsDescriptionEntity> propertyVsDescriptionEntities;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsGuestAccessEntity> propertyVsGuestAccessEntities;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
-	private List<PropertyVsHomestayEntity> propertyVsHomestayEntities;
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	private PropertyVsHomestayEntity propertyVsHomestayEntity;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsImageEntity> propertyVsImageEntities;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsNearbyEntity> propertyVsNearbyEntities;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
-	private List<PropertyVsPgcsEntity> propertyVsPgcsEntities;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsPriceDropEntity> propertyVsPriceDropEntities;
@@ -107,9 +113,6 @@ public class PropertyEntity extends CommonEntity {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<PropertyVsSpecialExperienceEntity> propertyVsSpecialExperienceEntities;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
-	private List<PropertyVsStayTypeEntity> propertyVsStayTypeEntities;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
 	private List<RoomEntity> roomEntities;

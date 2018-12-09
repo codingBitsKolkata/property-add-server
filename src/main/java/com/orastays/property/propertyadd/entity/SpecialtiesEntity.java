@@ -39,7 +39,7 @@ public class SpecialtiesEntity extends CommonEntity {
 	@Column(name = "parent_id")
 	private Long parentId;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "SpecialtiesEntity", cascade = { CascadeType.ALL })
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "specialtiesEntity", cascade = { CascadeType.ALL })
 	private List<RoomVsSpecialitiesEntity> roomVsSpecialitiesEntities;
 
 	@Override

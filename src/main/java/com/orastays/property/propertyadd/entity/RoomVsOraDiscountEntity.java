@@ -33,6 +33,10 @@ public class RoomVsOraDiscountEntity extends CommonEntity {
 	private String percentage;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "dco_id", nullable = false)
+	private DiscountCategoryOraEntity discountCategoryOraEntity;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_id", nullable = false)
 	private RoomEntity roomEntity;
 

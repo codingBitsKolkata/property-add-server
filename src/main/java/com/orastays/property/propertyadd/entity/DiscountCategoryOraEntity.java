@@ -34,7 +34,7 @@ public class DiscountCategoryOraEntity extends CommonEntity{
 	private String disCatOraname;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "discountCategoryOraEntity", cascade = { CascadeType.ALL })
-	private List<RoomEntity> roomEntities;
+	private List<RoomVsOraDiscountEntity> roomVsOraDiscountEntities;
 	
 	@Override
 	public String toString() {

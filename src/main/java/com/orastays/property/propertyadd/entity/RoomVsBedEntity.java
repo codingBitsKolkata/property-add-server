@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -32,7 +32,7 @@ public class RoomVsBedEntity extends CommonEntity {
 	@Column(name = "no_of_beds")
 	private String noOfBeds;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_id", nullable = false)
 	private RoomEntity roomEntity;
 

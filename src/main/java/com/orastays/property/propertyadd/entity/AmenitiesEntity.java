@@ -32,8 +32,14 @@ public class AmenitiesEntity extends CommonEntity{
 	@Column(name = "aminities_id")
 	private Long aminitiesId;
 	
-	@Column(name = "name")
-	private String amiName;
+	@Column(name = "aminities_name")
+	private String aminitiesName;
+	
+	@Column(name = "filter_flag")
+	private String filterFlag;
+	
+	@Column(name = "priority")
+	private String priority;
 	
 	@Column(name = "language_id")
 	private Long languageId;

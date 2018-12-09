@@ -32,6 +32,15 @@ public class PropertyVsNearbyEntity extends CommonEntity  {
 	@Column(name = "places")
 	private String places;
 	
+	@Column(name = "latitude")
+	private String latitude;
+	
+	@Column(name = "longitude")
+	private String longitude;
+	
+	@Column(name = "address")
+	private String address;
+	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_id", nullable = false)
 	private PropertyEntity propertyEntity;

@@ -35,10 +35,8 @@ public class PropertyModel extends CommonModel {
 	private List<PropertyVsHomestayModel> propertyVsHomestayModels;
 	private List<PropertyVsImageModel> propertyVsImageModels;
 	private List<PropertyVsNearbyModel> propertyVsNearbyModels;
-	private List<PropertyVsPgcsModel> propertyVsPgcsModels;
 	private List<PropertyVsPriceDropModel> propertyVsPriceDropModels;
 	private List<PropertyVsSpaceRuleModel> propertyVsSpaceRuleModels;
 	private List<PropertyVsSpecialExperienceModel> propertyVsSpecialExperienceModels;
-	private List<PropertyVsStayTypeModel> propertyVsStayTypeModels;
 	private List<RoomModel> roomModel;
 }

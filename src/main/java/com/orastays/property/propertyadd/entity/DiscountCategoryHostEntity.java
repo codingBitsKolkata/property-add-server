@@ -30,7 +30,7 @@ public class DiscountCategoryHostEntity extends CommonEntity {
 	@Column(name = "dch_id")
 	private Long dchId;
 	
-	@Column(name = "name")
+	@Column(name = "dis_cat_host_name")
 	private String disCatHostname;
 	
 	@Column(name = "language_id")

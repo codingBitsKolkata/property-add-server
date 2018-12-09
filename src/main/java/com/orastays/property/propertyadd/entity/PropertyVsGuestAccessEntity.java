@@ -32,6 +32,9 @@ public class PropertyVsGuestAccessEntity extends CommonEntity  {
 	@Column(name = "guest_access")
 	private String guestAccess;
 	
+	@Column(name = "language_id")
+	private Long languageId;
+	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_id", nullable = false)
 	private PropertyEntity propertyEntity;

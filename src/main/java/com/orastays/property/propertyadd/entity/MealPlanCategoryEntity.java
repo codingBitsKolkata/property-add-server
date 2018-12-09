@@ -30,7 +30,7 @@ public class MealPlanCategoryEntity extends CommonEntity {
 	@Column(name = "mpc_id")
 	private Long mpcId;
 	
-	@Column(name = "mean_plan_category_name")
+	@Column(name = "mpc_name")
 	private String mpcName;
 	
 	@Column(name = "language_id")

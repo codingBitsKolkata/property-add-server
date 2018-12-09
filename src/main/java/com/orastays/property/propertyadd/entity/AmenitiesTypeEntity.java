@@ -28,16 +28,16 @@ public class AmenitiesTypeEntity extends CommonEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "aminities_type_id")
-	private Long amiTypeId;
+	private Long aminitiesTypeId;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "amenitiesTypeEntity", cascade = { CascadeType.ALL })
 	private List<AmenitiesEntity> amenitiesEntities;
 	
-	@Column(name = "name")
-	private String amiTypeName;
+	@Column(name = "aminities_type_name")
+	private String aminitiesTypeName;
 	
 	@Override
 	public String toString() {
-		return Long.toString(amiTypeId);
+		return Long.toString(aminitiesTypeId);
 	}
 }

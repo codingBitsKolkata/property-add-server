@@ -26,8 +26,8 @@ public class RoomVsAmenitiesEntity extends CommonEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "room_vs_ami_id")
-	private Long roomVsAmiId;
+	@Column(name = "room_vs_aminities_id")
+	private Long roomVsAminitiesId;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "aminities_id", nullable = false)
@@ -39,7 +39,7 @@ public class RoomVsAmenitiesEntity extends CommonEntity {
 
 	@Override
 	public String toString() {
-		return Long.toString(roomVsAmiId);
+		return Long.toString(roomVsAminitiesId);
 	}
 
 }

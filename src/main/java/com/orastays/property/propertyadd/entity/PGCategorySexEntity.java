@@ -40,7 +40,7 @@ public class PGCategorySexEntity extends CommonEntity {
 	private String categoryName;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pgCategorySexEntity", cascade = { CascadeType.ALL })
-	private List<PropertyVsPgcsEntity> propertyVsPgcsEntities;
+	private List<PropertyEntity> propertyEntities;
 
 	@Override
 	public String toString() {
