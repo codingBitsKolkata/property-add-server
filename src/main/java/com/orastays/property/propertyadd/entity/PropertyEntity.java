@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,90 +33,118 @@ public class PropertyEntity extends CommonEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "property_id")
+	@JsonProperty("propertyId")
 	private Long propertyId;
 
 	@Column(name = "name")
+	@JsonProperty("name")
 	private String name;
 
 	@Column(name = "oraname")
+	@JsonProperty("oraname")
 	private String oraname;
 
 	@Column(name = "entire_apartment")
+	@JsonProperty("entireApartment")
 	private String entireApartment;
 
 	@Column(name = "dedicated_space")
+	@JsonProperty("dedicatedSpace")
 	private String dedicatedSpace;
 
 	@Column(name = "apartment_name")
+	@JsonProperty("apartmentName")
 	private String apartmentName;
 
 	@Column(name = "apartment_number")
+	@JsonProperty("apartmentNumber")
 	private String apartmentNumber;
 
 	@Column(name = "latitude")
+	@JsonProperty("latitude")
 	private String latitude;
 
 	@Column(name = "longitude")
+	@JsonProperty("longitude")
 	private String longitude;
 
 	@Column(name = "address")
+	@JsonProperty("address")
 	private String address;
 
 	@Column(name = "start_date")
+	@JsonProperty("startDate")
 	private String startDate;
 
 	@Column(name = "end_date")
+	@JsonProperty("endDate")
 	private String endDate;
 
 	@Column(name = "checkin_time")
+	@JsonProperty("checkinTime")
 	private String checkinTime;
 
 	@Column(name = "checkout_time")
+	@JsonProperty("checkoutTime")
 	private String checkoutTime;
 
 	@Column(name = "cover_image_url")
+	@JsonProperty("coverImageUrl")
 	private String coverImageUrl;
 
 	@Column(name = "price_drop")
+	@JsonProperty("priceDrop")
 	private String priceDrop;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_type_id", nullable = false)
+	@JsonProperty("propertyTypes")
 	private PropertyTypeEntity propertyTypeEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "stay_type_id", nullable = false)
+	@JsonProperty("stayTypes")
 	private StayTypeEntity stayTypeEntity;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "pgcs_id", nullable = false)
+	@JsonProperty("pgCategorySexs")
 	private PGCategorySexEntity pgCategorySexEntity;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	@JsonProperty("propertyVsDescriptions")
 	private List<PropertyVsDescriptionEntity> propertyVsDescriptionEntities;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	@JsonProperty("propertyVsGuestAccess")
 	private List<PropertyVsGuestAccessEntity> propertyVsGuestAccessEntities;
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	@JsonProperty("propertyVsHomestays")
 	private PropertyVsHomestayEntity propertyVsHomestayEntity;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	@JsonProperty("propertyVsImages")
 	private List<PropertyVsImageEntity> propertyVsImageEntities;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	@JsonProperty("propertyVsNearbys")
 	private List<PropertyVsNearbyEntity> propertyVsNearbyEntities;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	@JsonProperty("propertyVsPriceDrops")
 	private List<PropertyVsPriceDropEntity> propertyVsPriceDropEntities;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	@JsonProperty("propertyVsSpaceRules")
 	private List<PropertyVsSpaceRuleEntity> propertyVsSpaceRuleEntities;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	@JsonProperty("propertyVsSpecialExperiences")
 	private List<PropertyVsSpecialExperienceEntity> propertyVsSpecialExperienceEntities;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "propertyEntity", cascade = { CascadeType.ALL })
+	@JsonProperty("rooms")
 	private List<RoomEntity> roomEntities;
 
 	@Override
