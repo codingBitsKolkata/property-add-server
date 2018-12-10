@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.orastays.property.propertyadd.dao.PropertyTypeDAO;
+import com.orastays.property.propertyadd.dao.SpaceRuleDAO;
+import com.orastays.property.propertyadd.dao.SpecialExperienceDAO;
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.helper.MessageUtil;
 import com.orastays.property.propertyadd.model.ResponseModel;
@@ -38,6 +40,12 @@ public class AuthorizeUserValidation {
 	
 	@Autowired
 	protected PropertyTypeDAO propertyTypeDAO;
+	
+	@Autowired
+	protected SpaceRuleDAO spaceRuleDAO;
+	
+	@Autowired
+	protected SpecialExperienceDAO specialExperienceDAO;
 
 	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {

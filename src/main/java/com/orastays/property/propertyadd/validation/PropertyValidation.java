@@ -17,6 +17,10 @@ import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyVsDescriptionModel;
+import com.orastays.property.propertyadd.model.PropertyVsGuestAccessModel;
+import com.orastays.property.propertyadd.model.PropertyVsNearbyModel;
+import com.orastays.property.propertyadd.model.PropertyVsSpaceRuleModel;
+import com.orastays.property.propertyadd.model.PropertyVsSpecialExperienceModel;
 
 @Component
 @Transactional
@@ -174,41 +178,136 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			
 			//Validate Property Type
 			if(Objects.nonNull(propertyModel.getPropertyTypeModel())) {
-				exceptions.put(messageUtil.getBundle("propertty.type.null.code"), new Exception(messageUtil.getBundle("propertty.type.null.message")));
+				exceptions.put(messageUtil.getBundle("property.type.null.code"), new Exception(messageUtil.getBundle("property.type.null.message")));
 			} else {
 				if(StringUtils.isBlank(propertyModel.getPropertyTypeModel().getPropertyTypeId())) {
-					exceptions.put(messageUtil.getBundle("propertty.type.id.null.code"), new Exception(messageUtil.getBundle("propertty.type.id.null.message")));
+					exceptions.put(messageUtil.getBundle("property.type.id.null.code"), new Exception(messageUtil.getBundle("property.type.id.null.message")));
 				} else {
 					if(Objects.isNull(propertyTypeDAO.find(Long.parseLong(propertyModel.getPropertyTypeModel().getPropertyTypeId())))) {
-						exceptions.put(messageUtil.getBundle("propertty.type.id.invalid.code"), new Exception(messageUtil.getBundle("propertty.type.id.invalid.message")));
+						exceptions.put(messageUtil.getBundle("property.type.id.invalid.code"), new Exception(messageUtil.getBundle("property.type.id.invalid.message")));
 					}
 				}
 			}
 			
 			// Validate Property Vs Description
 			if(Objects.nonNull(propertyModel.getPropertyVsDescriptionModels())) {
-				exceptions.put(messageUtil.getBundle("propertty.description.null.code"), new Exception(messageUtil.getBundle("propertty.description.null.message")));
+				exceptions.put(messageUtil.getBundle("property.description.null.code"), new Exception(messageUtil.getBundle("property.description.null.message")));
 			} else {
 				
 				for(PropertyVsDescriptionModel propertyVsDescriptionModel:propertyModel.getPropertyVsDescriptionModels()){
 					if(StringUtils.isBlank(propertyVsDescriptionModel.getDescription())){
-						exceptions.put(messageUtil.getBundle("propertty.description.null.code"), new Exception(messageUtil.getBundle("propertty.description.null.message")));
+						exceptions.put(messageUtil.getBundle("property.description.null.code"), new Exception(messageUtil.getBundle("property.description.null.message")));
+					}
+					
+					if(StringUtils.isBlank(propertyVsDescriptionModel.getLanguageId())) {
+						exceptions.put(messageUtil.getBundle("language.id.null.code"), new Exception(messageUtil.getBundle("language.id.null.message")));
+					} else {
+						validateLanguage(propertyVsDescriptionModel.getLanguageId());
 					}
 				}
 			}
 			
 			//Property Vs Guest Access
+			if(Objects.nonNull(propertyModel.getPropertyVsGuestAccessModels())) {
+				exceptions.put(messageUtil.getBundle("property.guest.null.code"), new Exception(messageUtil.getBundle("property.guest.null.message")));
+			} else {
+				
+				for(PropertyVsGuestAccessModel propertyVsGuestAccessModel:propertyModel.getPropertyVsGuestAccessModels()){
+					if(StringUtils.isBlank(propertyVsGuestAccessModel.getGuestAccess())){
+						exceptions.put(messageUtil.getBundle("property.guest.null.code"), new Exception(messageUtil.getBundle("property.guest.null.message")));
+					}
+					
+					if(StringUtils.isBlank(propertyVsGuestAccessModel.getLanguageId())) {
+						exceptions.put(messageUtil.getBundle("language.id.null.code"), new Exception(messageUtil.getBundle("language.id.null.message")));
+					} else {
+						validateLanguage(propertyVsGuestAccessModel.getLanguageId());
+					}
+				}
+			}
 			
 			//Property Vs HomeStay
+			if(Objects.nonNull(propertyModel.getPropertyVsHomestayModel())) {
+				exceptions.put(messageUtil.getBundle("property.homestay.null.code"), new Exception(messageUtil.getBundle("property.homestay.null.message")));
+			} else {
+				//Immediate Booking
+				if(StringUtils.isBlank(propertyModel.getPropertyVsHomestayModel().getImmediateBooking())){
+					exceptions.put(messageUtil.getBundle("property.immbooking.null.code"), new Exception(messageUtil.getBundle("property.immbooking.null.message")));
+				} else{
+					if(!(propertyModel.getPropertyVsHomestayModel().getImmediateBooking().equals(PropertyAddConstant.STR_Y) || propertyModel.getPropertyVsHomestayModel().getImmediateBooking().equals(PropertyAddConstant.STR_N))){
+						exceptions.put(messageUtil.getBundle("property.immbooking.invalid.code"), new Exception(messageUtil.getBundle("property.immbooking.invalid.message")));
+					}
+				}
+				
+				//Strict Checkin
+				if(StringUtils.isBlank(propertyModel.getPropertyVsHomestayModel().getStrictCheckin())){
+					exceptions.put(messageUtil.getBundle("property.checkin.null.code"), new Exception(messageUtil.getBundle("property.checkin.null.message")));
+				} else{
+					if(!(propertyModel.getPropertyVsHomestayModel().getStrictCheckin().equals(PropertyAddConstant.STR_Y) || propertyModel.getPropertyVsHomestayModel().getStrictCheckin().equals(PropertyAddConstant.STR_N))){
+						exceptions.put(messageUtil.getBundle("property.checkin.invalid.code"), new Exception(messageUtil.getBundle("property.checkin.invalid.message")));
+					}
+				}
+				 
+			}
+			
+			// Property Vs Image **Optional
 			
 			//Property Vs NearBy
+			if(Objects.nonNull(propertyModel.getPropertyVsNearbyModels())) {
+				exceptions.put(messageUtil.getBundle("property.nearby.null.code"), new Exception(messageUtil.getBundle("property.nearby.null.message")));
+			} else {
+				// Address Validation
+				for(PropertyVsNearbyModel propertyVsNearbyModel:propertyModel.getPropertyVsNearbyModels()){
+					if(StringUtils.isBlank(propertyVsNearbyModel.getAddress())){
+						exceptions.put(messageUtil.getBundle("property.address.null.code"), new Exception(messageUtil.getBundle("property.address.null.message")));
+					}
+				}
+			}
 			
-			//PropertyVs PGCS
+			//PropertyVs PGCS **// Not Found
+			
 			
 			//Property Vs Space Rule
+			if(Objects.nonNull(propertyModel.getPropertyVsSpaceRuleModels())) {
+				exceptions.put(messageUtil.getBundle("property.spacerule.null.code"), new Exception(messageUtil.getBundle("property.spacerule.null.message")));
+			} else {
+				// Answer Validation
+				for(PropertyVsSpaceRuleModel propertyVsSpaceRuleModel:propertyModel.getPropertyVsSpaceRuleModels()){
+					if(StringUtils.isBlank(propertyVsSpaceRuleModel.getAnswer())){
+						exceptions.put(messageUtil.getBundle("property.spacerule.answer.null.code"), new Exception(messageUtil.getBundle("property.sp.answer.null.message")));
+					} else {
+						if(!(propertyVsSpaceRuleModel.getAnswer().equals(PropertyAddConstant.STR_Y) || propertyVsSpaceRuleModel.getAnswer().equals(PropertyAddConstant.STR_N))){
+							exceptions.put(messageUtil.getBundle("property.spacerule.invalid.code"), new Exception(messageUtil.getBundle("property.spacerule.invalid.message")));
+						}
+					}
+					
+					//Validate Space Rule
+					if(Objects.nonNull(propertyVsSpaceRuleModel.getSpaceRuleModel())){
+						exceptions.put(messageUtil.getBundle("space.rule.null.code"), new Exception(messageUtil.getBundle("space.rule.null.message")));
+					} else {
+						if(Objects.isNull(spaceRuleDAO.find(Long.parseLong(propertyVsSpaceRuleModel.getSpaceRuleModel().getSpruleId())))) {
+							exceptions.put(messageUtil.getBundle("sprule.invalid.code"), new Exception(messageUtil.getBundle("sprule.invalid.message")));
+						}
+					}
+				}
+			}
 			
 			//Property vs Special Experience
 			
+			if(Objects.nonNull(propertyModel.getPropertyVsSpecialExperienceModels())) {
+				exceptions.put(messageUtil.getBundle("special.expe.null.code"), new Exception(messageUtil.getBundle("special.expe.null.message")));
+			} else {
+				// Answer Validation
+				for(PropertyVsSpecialExperienceModel propertyVsExperienceModel:propertyModel.getPropertyVsSpecialExperienceModels()){
+					if(Objects.nonNull(propertyVsExperienceModel.getSpecialExperienceModel())){
+						exceptions.put(messageUtil.getBundle("special.expe.null.code"), new Exception(messageUtil.getBundle("special.expe.null.message")));
+					} else {
+						if(Objects.isNull(specialExperienceDAO.find(Long.parseLong(propertyVsExperienceModel.getSpecialExperienceModel().getExperienceId())))) {
+							exceptions.put(messageUtil.getBundle("special.expe.invalid.code"), new Exception(messageUtil.getBundle("special.expe.invalid.message")));
+						}
+					}
+					
+				}
+			}
 			//Property Vs Stay Type
 			
 			
