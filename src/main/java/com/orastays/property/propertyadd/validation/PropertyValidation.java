@@ -170,15 +170,6 @@ public class PropertyValidation extends AuthorizeUserValidation {
 				if(!(propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_Y) || propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_N))){
 					exceptions.put(messageUtil.getBundle("price.drop.invalid.code"), new Exception(messageUtil.getBundle("price.drop.invalid.message")));
 				} 
-				
-				/*else { 
-					if(propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_Y)) {
-						
-						//Move this Validation to Service Impl Because need property Entity 
-						 * validate Property Vs Price Drop
-						
-					}
-				}*/
 			}
 			
 			//Validate Property Type

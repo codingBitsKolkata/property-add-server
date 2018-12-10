@@ -15,5 +15,6 @@ public final class PropertyAddConstant {
 	public static final String LANGUAGEID = "languageId";
 	public static final String STR_Y = "Y";
 	public static final String STR_N = "N";
+	public static final String STR_ZERO = "0";
 	
 }
