@@ -103,11 +103,6 @@ public class PropertyValidation extends AuthorizeUserValidation {
 				exceptions.put(messageUtil.getBundle("entire.appartment.null.code"), new Exception(messageUtil.getBundle("entire.appartment.null.message")));
 			}
 			
-			//Validate Dedicated Space
-			if(StringUtils.isBlank(propertyModel.getDedicatedSpace())) {
-				exceptions.put(messageUtil.getBundle("dedicated.space.null.code"), new Exception(messageUtil.getBundle("dedicated.space.null.message")));
-			}
-			
 			//Validate Latitude
 			if(StringUtils.isBlank(propertyModel.getLatitude())) {
 				exceptions.put(messageUtil.getBundle("latitude.null.code"), new Exception(messageUtil.getBundle("latitude.null.message")));
@@ -183,9 +178,13 @@ public class PropertyValidation extends AuthorizeUserValidation {
 				if(StringUtils.isBlank(propertyModel.getPropertyTypeModel().getPropertyTypeId())) {
 					exceptions.put(messageUtil.getBundle("property.type.id.null.code"), new Exception(messageUtil.getBundle("property.type.id.null.message")));
 				} else {
-					if(Objects.isNull(propertyTypeDAO.find(Long.parseLong(propertyModel.getPropertyTypeModel().getPropertyTypeId())))) {
+					if(!Util.isNumeric(propertyModel.getPropertyTypeModel().getPropertyTypeId())){
 						exceptions.put(messageUtil.getBundle("property.type.id.invalid.code"), new Exception(messageUtil.getBundle("property.type.id.invalid.message")));
-					}
+					} else {
+							if(Objects.isNull(propertyTypeDAO.find(Long.parseLong(propertyModel.getPropertyTypeModel().getPropertyTypeId())))) {
+								exceptions.put(messageUtil.getBundle("property.type.id.invalid.code"), new Exception(messageUtil.getBundle("property.type.id.invalid.message")));
+							}
+						} 
 				}
 			}
 			
@@ -225,29 +224,24 @@ public class PropertyValidation extends AuthorizeUserValidation {
 				}
 			}
 			
-			//Property Vs HomeStay
-			if(Objects.nonNull(propertyModel.getPropertyVsHomestayModel())) {
-				exceptions.put(messageUtil.getBundle("property.homestay.null.code"), new Exception(messageUtil.getBundle("property.homestay.null.message")));
-			} else {
 				//Immediate Booking
-				if(StringUtils.isBlank(propertyModel.getPropertyVsHomestayModel().getImmediateBooking())){
+				if(StringUtils.isBlank(propertyModel.getImmediateBooking())){
 					exceptions.put(messageUtil.getBundle("property.immbooking.null.code"), new Exception(messageUtil.getBundle("property.immbooking.null.message")));
 				} else{
-					if(!(propertyModel.getPropertyVsHomestayModel().getImmediateBooking().equals(PropertyAddConstant.STR_Y) || propertyModel.getPropertyVsHomestayModel().getImmediateBooking().equals(PropertyAddConstant.STR_N))){
+					if(!(propertyModel.getImmediateBooking().equals(PropertyAddConstant.STR_Y) || propertyModel.getImmediateBooking().equals(PropertyAddConstant.STR_N))){
 						exceptions.put(messageUtil.getBundle("property.immbooking.invalid.code"), new Exception(messageUtil.getBundle("property.immbooking.invalid.message")));
 					}
 				}
 				
 				//Strict Checkin
-				if(StringUtils.isBlank(propertyModel.getPropertyVsHomestayModel().getStrictCheckin())){
+				if(StringUtils.isBlank(propertyModel.getStrictCheckin())){
 					exceptions.put(messageUtil.getBundle("property.checkin.null.code"), new Exception(messageUtil.getBundle("property.checkin.null.message")));
 				} else{
-					if(!(propertyModel.getPropertyVsHomestayModel().getStrictCheckin().equals(PropertyAddConstant.STR_Y) || propertyModel.getPropertyVsHomestayModel().getStrictCheckin().equals(PropertyAddConstant.STR_N))){
+					if(!(propertyModel.getStrictCheckin().equals(PropertyAddConstant.STR_Y) || propertyModel.getStrictCheckin().equals(PropertyAddConstant.STR_N))){
 						exceptions.put(messageUtil.getBundle("property.checkin.invalid.code"), new Exception(messageUtil.getBundle("property.checkin.invalid.message")));
 					}
 				}
 				 
-			}
 			
 			// Property Vs Image **Optional
 			
