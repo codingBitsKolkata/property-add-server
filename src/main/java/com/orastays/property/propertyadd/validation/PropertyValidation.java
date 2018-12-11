@@ -278,9 +278,20 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					if(Objects.nonNull(propertyVsSpaceRuleModel.getSpaceRuleModel())){
 						exceptions.put(messageUtil.getBundle("space.rule.null.code"), new Exception(messageUtil.getBundle("space.rule.null.message")));
 					} else {
-						if(Objects.isNull(spaceRuleDAO.find(Long.parseLong(propertyVsSpaceRuleModel.getSpaceRuleModel().getSpruleId())))) {
-							exceptions.put(messageUtil.getBundle("sprule.invalid.code"), new Exception(messageUtil.getBundle("sprule.invalid.message")));
+
+						if(StringUtils.isBlank(propertyVsSpaceRuleModel.getSpaceRuleModel().getSpruleId())) {
+							exceptions.put(messageUtil.getBundle("space.rule.null.code"), new Exception(messageUtil.getBundle("space.rule.null.message")));
+						} else {
+						
+							if(!Util.isNumeric(propertyVsSpaceRuleModel.getSpaceRuleModel().getSpruleId())) {
+								exceptions.put(messageUtil.getBundle("sprule.nonnumeric.code"), new Exception(messageUtil.getBundle("sprule.nonnumeric.message")));
+							} else {
+								if(Objects.isNull(spaceRuleDAO.find(Long.parseLong(propertyVsSpaceRuleModel.getSpaceRuleModel().getSpruleId())))) {
+									exceptions.put(messageUtil.getBundle("sprule.invalid.code"), new Exception(messageUtil.getBundle("sprule.invalid.message")));
+								}
+							}
 						}
+						
 					}
 				}
 			}
@@ -295,9 +306,19 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					if(Objects.nonNull(propertyVsExperienceModel.getSpecialExperienceModel())){
 						exceptions.put(messageUtil.getBundle("special.expe.null.code"), new Exception(messageUtil.getBundle("special.expe.null.message")));
 					} else {
-						if(Objects.isNull(specialExperienceDAO.find(Long.parseLong(propertyVsExperienceModel.getSpecialExperienceModel().getExperienceId())))) {
-							exceptions.put(messageUtil.getBundle("special.expe.invalid.code"), new Exception(messageUtil.getBundle("special.expe.invalid.message")));
+						
+						if(StringUtils.isEmpty(propertyVsExperienceModel.getSpecialExperienceModel().getExperienceId())){
+							exceptions.put(messageUtil.getBundle("special.expe.null.code"), new Exception(messageUtil.getBundle("special.expe.null.message")));
+						} else {
+							if(!Util.isNumeric(propertyVsExperienceModel.getSpecialExperienceModel().getExperienceId())){
+								exceptions.put(messageUtil.getBundle("special.expe.null.code"), new Exception(messageUtil.getBundle("special.expe.null.message")));
+							} else {
+								if(Objects.isNull(specialExperienceDAO.find(Long.parseLong(propertyVsExperienceModel.getSpecialExperienceModel().getExperienceId())))) {
+									exceptions.put(messageUtil.getBundle("special.expe.invalid.code"), new Exception(messageUtil.getBundle("special.expe.invalid.message")));
+								}
+							}
 						}
+						
 					}
 					
 				}
@@ -308,6 +329,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			
 		}
 		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
 		
 		if (logger.isDebugEnabled()) {
 			logger.debug("validatePropertyAdd -- End");
