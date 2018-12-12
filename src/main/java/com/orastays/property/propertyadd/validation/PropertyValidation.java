@@ -172,7 +172,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			}
 			
 			//Validate Property Type
-			if(Objects.nonNull(propertyModel.getPropertyTypeModel())) {
+			if(Objects.isNull(propertyModel.getPropertyTypeModel())) {
 				exceptions.put(messageUtil.getBundle("property.type.null.code"), new Exception(messageUtil.getBundle("property.type.null.message")));
 			} else {
 				if(StringUtils.isBlank(propertyModel.getPropertyTypeModel().getPropertyTypeId())) {
@@ -189,7 +189,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			}
 			
 			// Validate Property Vs Description
-			if(Objects.nonNull(propertyModel.getPropertyVsDescriptionModels())) {
+			if(Objects.isNull(propertyModel.getPropertyVsDescriptionModels())) {
 				exceptions.put(messageUtil.getBundle("property.description.null.code"), new Exception(messageUtil.getBundle("property.description.null.message")));
 			} else {
 				
@@ -207,7 +207,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			}
 			
 			//Property Vs Guest Access
-			if(Objects.nonNull(propertyModel.getPropertyVsGuestAccessModels())) {
+			if(Objects.isNull(propertyModel.getPropertyVsGuestAccessModels())) {
 				exceptions.put(messageUtil.getBundle("property.guest.null.code"), new Exception(messageUtil.getBundle("property.guest.null.message")));
 			} else {
 				
@@ -246,7 +246,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			// Property Vs Image **Optional
 			
 			//Property Vs NearBy
-			if(Objects.nonNull(propertyModel.getPropertyVsNearbyModels())) {
+			if(Objects.isNull(propertyModel.getPropertyVsNearbyModels())) {
 				exceptions.put(messageUtil.getBundle("property.nearby.null.code"), new Exception(messageUtil.getBundle("property.nearby.null.message")));
 			} else {
 				// Address Validation
@@ -261,7 +261,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			
 			
 			//Property Vs Space Rule
-			if(Objects.nonNull(propertyModel.getPropertyVsSpaceRuleModels())) {
+			if(Objects.isNull(propertyModel.getPropertyVsSpaceRuleModels())) {
 				exceptions.put(messageUtil.getBundle("property.spacerule.null.code"), new Exception(messageUtil.getBundle("property.spacerule.null.message")));
 			} else {
 				// Answer Validation
@@ -275,7 +275,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					}
 					
 					//Validate Space Rule
-					if(Objects.nonNull(propertyVsSpaceRuleModel.getSpaceRuleModel())){
+					if(Objects.isNull(propertyVsSpaceRuleModel.getSpaceRuleModel())){
 						exceptions.put(messageUtil.getBundle("space.rule.null.code"), new Exception(messageUtil.getBundle("space.rule.null.message")));
 					} else {
 
@@ -298,12 +298,12 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			
 			//Property vs Special Experience
 			
-			if(Objects.nonNull(propertyModel.getPropertyVsSpecialExperienceModels())) {
+			if(Objects.isNull(propertyModel.getPropertyVsSpecialExperienceModels())) {
 				exceptions.put(messageUtil.getBundle("special.expe.null.code"), new Exception(messageUtil.getBundle("special.expe.null.message")));
 			} else {
 				// Answer Validation
 				for(PropertyVsSpecialExperienceModel propertyVsExperienceModel:propertyModel.getPropertyVsSpecialExperienceModels()){
-					if(Objects.nonNull(propertyVsExperienceModel.getSpecialExperienceModel())){
+					if(Objects.isNull(propertyVsExperienceModel.getSpecialExperienceModel())){
 						exceptions.put(messageUtil.getBundle("special.expe.null.code"), new Exception(messageUtil.getBundle("special.expe.null.message")));
 					} else {
 						
@@ -311,7 +311,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							exceptions.put(messageUtil.getBundle("special.expe.null.code"), new Exception(messageUtil.getBundle("special.expe.null.message")));
 						} else {
 							if(!Util.isNumeric(propertyVsExperienceModel.getSpecialExperienceModel().getExperienceId())){
-								exceptions.put(messageUtil.getBundle("special.expe.null.code"), new Exception(messageUtil.getBundle("special.expe.null.message")));
+								exceptions.put(messageUtil.getBundle("special.expe.invalid.code"), new Exception(messageUtil.getBundle("special.expe.invalid.message")));
 							} else {
 								if(Objects.isNull(specialExperienceDAO.find(Long.parseLong(propertyVsExperienceModel.getSpecialExperienceModel().getExperienceId())))) {
 									exceptions.put(messageUtil.getBundle("special.expe.invalid.code"), new Exception(messageUtil.getBundle("special.expe.invalid.message")));

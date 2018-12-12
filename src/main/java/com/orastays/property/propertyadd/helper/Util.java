@@ -1289,7 +1289,7 @@ public class Util {
 	public static void main(String[] args) {
 
 		try {
-			 System.out.println(isNumeric("2"));
+			 System.out.println(checkTimeFormat("02:00"));
 		} catch (Exception e) {
 
 		}
