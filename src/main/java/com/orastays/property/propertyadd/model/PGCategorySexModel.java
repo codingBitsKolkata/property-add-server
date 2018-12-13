@@ -27,6 +27,6 @@ public class PGCategorySexModel extends CommonModel {
 	@JsonProperty("categoryName")
 	private String categoryName;
 	
-	@JsonProperty("properties")
+	@JsonProperty("propertys")
 	private List<PropertyModel> propertyModels;
 }

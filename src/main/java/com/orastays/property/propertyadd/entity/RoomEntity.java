@@ -56,9 +56,9 @@ public class RoomEntity extends CommonEntity {
 	@JsonProperty("numOfCot")
 	private String numOfCot;
 
-	@Column(name = "floor_no")
-	@JsonProperty("floorNo")
-	private String floorNo;
+	@Column(name = "room_current_status")
+	@JsonProperty("roomCurrentStatus")
+	private String roomCurrentStatus;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "accommodation_id", nullable = false)
@@ -83,10 +83,6 @@ public class RoomEntity extends CommonEntity {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
 	@JsonProperty("roomVsAmenities")
 	private List<RoomVsAmenitiesEntity> roomVsAmenitiesEntities;
-
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
-	@JsonProperty("roomVsInfo")
-	private RoomVsInfoEntity roomVsInfoEntity;
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
 	@JsonProperty("roomVsBed")

@@ -18,13 +18,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "master_room")
+@Table(name = "property_vs_document")
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
 public class PropertyVsDocumentEntity extends CommonEntity {
 
-	private static final long serialVersionUID = 252461737582048082L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
