@@ -1,0 +1,494 @@
+{
+  "name": "HOTELOrastays",
+  "address": "Merlin Infinite, Unit No 501, DN 51, DN Block, Sector 5, Salt Lake, DN Block, Sector V, Salt Lake City, Kolkata, West Bengal 700091",
+  "latitude": "22.582490",
+  "longitude": "88.426787",
+  "entireApartment": "Y",
+  "apartmentName": "",
+  "apartmentNumber": "",
+  "startDate": "01-01-2019",
+  "endDate": "31-12-2019",
+  "checkinTime": "11:00:00",
+  "checkoutTime": "10:00:00",
+  "strictCheckin": "N",
+  "coverImageUrl": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg",
+  "priceDrop": "Y",
+  "immediateBooking": "Y",
+  "languageId": "1",
+  "contactPerson": "Sudeep Chhetri",
+  "altMobile": "9883741610",
+  "landline": "033-25478451",
+  "altEmail": "sudeep@orastays.com",
+  "propertyType": {
+    "name": "Hotel",
+    "propertyTypeId": "1"
+  },
+  "propertyVsDescriptions": [
+    {
+      "description": "Where does it come from",
+      "languageId": "1"
+    }
+  ],
+  "propertyVsDocuments": [
+    {
+      "documentNumber": "AKBHP6784S",
+      "fileUrl": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg",
+      "document": {
+        "documentId": "1",
+        "documentName": "PAN CARD"
+      }
+    },
+    {
+      "documentNumber": "",
+      "fileUrl": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg",
+      "document": {
+        "documentId": "2",
+        "documentName": "CANCELLED CHEQUE"
+      }
+    }
+  ],
+  "propertyVsGuestAccess": [
+    {
+      "guestAccess": "Guest Can Access Terrace, Access To Lawn",
+      "languageId": "1"
+    }
+  ],
+  "propertyVsImages": [
+    {
+      "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+    },
+    {
+      "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+    },
+    {
+      "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+    }
+  ],
+  "propertyVsNearbys": [
+    {
+      "places": "RS Software"
+    },
+    {
+      "places": "SDF"
+    },
+    {
+      "places": "Nicco Park"
+    }
+  ],
+  "propertyVsSpaceRules": [
+    {
+      "answer": "Y",
+      "spaceRule": {
+        "spruleId": "1",
+        "ruleName": "Smoking"
+      }
+    },
+    {
+      "answer": "N",
+      "spaceRule": {
+        "spruleId": "2",
+        "ruleName": "Drinking"
+      }
+    }
+  ],
+  "propertyVsSpecialExperiences": [
+    {
+      "specialExperience": {
+        "experienceId": "1",
+        "experienceName": "Musical Instrument"
+      }
+    },
+    {
+      "specialExperience": {
+        "experienceId": "3",
+        "experienceName": "Spa"
+      }
+    }
+  ],
+  "rooms": [
+    {
+      "cotAvailable": "Y",
+      "noOfChild": "1",
+      "noOfGuest": "2",
+      "numOfCot": "1",
+      "sharedSpace": "N",
+      "roomCategory": {
+        "roomCatId": "1",
+        "name": "Delux"
+      },
+      "accommodation": {
+        "accommodationId": "2",
+        "accommodationName": "Private"
+      },
+      "roomVsAmenities": [
+        {
+          "amenities": {
+            "aminitiesId": "1",
+            "aminitiesName": "WIFI"
+          }
+        }
+      ],
+      "roomVsBed": {
+        "noOfBeds": ""
+      },
+      "roomVsCancellation": [
+        {
+          "percentage": "50",
+          "cancellationSlab": {
+            "cancellationSlabId": "1"
+          }
+        },
+        {
+          "percentage": "40",
+          "cancellationSlab": {
+            "cancellationSlabId": "2"
+          }
+        }
+      ],
+      "roomVsHostDiscount": [
+        {
+          "percentage": "10",
+          "discountCategoryHost": {
+            "dchId": "1",
+            "disCatHostname": "Weekly"
+          }
+        }
+      ],
+      "roomVsImage": [
+        {
+          "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+        },
+        {
+          "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+        },
+        {
+          "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+        }
+      ],
+      "roomVsMeal": [
+        {
+          "mealCategory": {
+            "mealCategoryId": "1",
+            "mealCatName": "Normal"
+          },
+          "mealDays": {
+            "mealDaysId": "",
+            "name": ""
+          },
+          "mealType": {
+            "mealTypeId": "3",
+            "name": "Both"
+          },
+          "mealPlan": {
+            "mealPlanId": "1",
+            "mealPlanName": "Break Fast"
+          },
+          "mealPriceCategory": {
+            "mmpcId": "1",
+            "name": "Free"
+          }
+        },
+        {
+          "mealCategory": {
+            "mealCategoryId": "1",
+            "mealCatName": "Normal"
+          },
+          "mealDays": {
+            "mealDaysId": "",
+            "name": ""
+          },
+          "mealType": {
+            "mealTypeId": "3",
+            "name": "Both"
+          },
+          "mealPlan": {
+            "mealPlanId": "2",
+            "mealPlanName": "Major Meal 1"
+          },
+          "mealPriceCategory": {
+            "mmpcId": "1",
+            "name": "Free"
+          }
+        },
+        {
+          "mealCategory": {
+            "mealCategoryId": "1",
+            "mealCatName": "Normal"
+          },
+          "mealDays": {
+            "mealDaysId": "",
+            "name": ""
+          },
+          "mealType": {
+            "mealTypeId": "3",
+            "name": "Both"
+          },
+          "mealPlan": {
+            "mealPlanId": "3",
+            "mealPlanName": "Major Meal 2"
+          },
+          "mealPriceCategory": {
+            "mmpcId": "2",
+            "name": "Chargeable"
+          }
+        },
+        {
+          "mealCategory": {
+            "mealCategoryId": "1",
+            "mealCatName": "Normal"
+          },
+          "mealDays": {
+            "mealDaysId": "",
+            "name": ""
+          },
+          "mealType": {
+            "mealTypeId": "3",
+            "name": "Both"
+          },
+          "mealPlan": {
+            "mealPlanId": "4",
+            "mealPlanName": "Snacks"
+          },
+          "mealPriceCategory": {
+            "mmpcId": "2",
+            "name": "Chargeable"
+          }
+        }
+      ],
+      "roomVsPrice": [
+        {
+          "value": "2000",
+          "priceType": {
+            "priceTypeId": "1",
+            "priceTypeName": "Room Price Per Night"
+          }
+        },
+        {
+          "value": "300",
+          "priceType": {
+            "priceTypeId": "5",
+            "priceTypeName": "Cot Price"
+          }
+        },
+        {
+          "value": "5",
+          "priceType": {
+            "priceTypeId": "8",
+            "priceTypeName": "Commission"
+          }
+        }
+      ],
+      "roomVsSpecialities": [
+        {
+          "specialties": {
+            "specialitiesName": "Mountain Facing",
+            "specialtiesId": "1"
+          }
+        },
+        {
+          "specialties": {
+            "specialitiesName": "Sea Facing",
+            "specialtiesId": "2"
+          }
+        }
+      ]
+    },
+    {
+      "cotAvailable": "Y",
+      "noOfChild": "1",
+      "noOfGuest": "3",
+      "numOfCot": "2",
+      "sharedSpace": "N",
+      "roomCategory": {
+        "roomCatId": "1",
+        "name": "Delux"
+      },
+      "accommodation": {
+        "accommodationId": "2",
+        "accommodationName": "Private"
+      },
+      "roomVsAmenities": [
+        {
+          "amenities": {
+            "aminitiesId": "1",
+            "aminitiesName": "WIFI"
+          }
+        }
+      ],
+      "roomVsBed": {
+        "noOfBeds": ""
+      },
+      "roomVsCancellation": [
+        {
+          "percentage": "50",
+          "cancellationSlab": {
+            "cancellationSlabId": "1"
+          }
+        },
+        {
+          "percentage": "40",
+          "cancellationSlab": {
+            "cancellationSlabId": "2"
+          }
+        }
+      ],
+      "roomVsHostDiscount": [
+        {
+          "percentage": "15",
+          "discountCategoryHost": {
+            "dchId": "1",
+            "disCatHostname": "Weekly"
+          }
+        }
+      ],
+      "roomVsImage": [
+        {
+          "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+        },
+        {
+          "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+        },
+        {
+          "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+        }
+      ],
+      "roomVsMeal": [
+        {
+          "mealCategory": {
+            "mealCategoryId": "1",
+            "mealCatName": "Normal"
+          },
+          "mealDays": {
+            "mealDaysId": "",
+            "name": ""
+          },
+          "mealType": {
+            "mealTypeId": "3",
+            "name": "Both"
+          },
+          "mealPlan": {
+            "mealPlanId": "1",
+            "mealPlanName": "Break Fast"
+          },
+          "mealPriceCategory": {
+            "mmpcId": "1",
+            "name": "Free"
+          }
+        },
+        {
+          "mealCategory": {
+            "mealCategoryId": "1",
+            "mealCatName": "Normal"
+          },
+          "mealDays": {
+            "mealDaysId": "",
+            "name": ""
+          },
+          "mealType": {
+            "mealTypeId": "3",
+            "name": "Both"
+          },
+          "mealPlan": {
+            "mealPlanId": "2",
+            "mealPlanName": "Major Meal 1"
+          },
+          "mealPriceCategory": {
+            "mmpcId": "1",
+            "name": "Free"
+          }
+        },
+        {
+          "mealCategory": {
+            "mealCategoryId": "1",
+            "mealCatName": "Normal"
+          },
+          "mealDays": {
+            "mealDaysId": "",
+            "name": ""
+          },
+          "mealType": {
+            "mealTypeId": "3",
+            "name": "Both"
+          },
+          "mealPlan": {
+            "mealPlanId": "3",
+            "mealPlanName": "Major Meal 2"
+          },
+          "mealPriceCategory": {
+            "mmpcId": "2",
+            "name": "Chargeable"
+          }
+        },
+        {
+          "mealCategory": {
+            "mealCategoryId": "1",
+            "mealCatName": "Normal"
+          },
+          "mealDays": {
+            "mealDaysId": "",
+            "name": ""
+          },
+          "mealType": {
+            "mealTypeId": "3",
+            "name": "Both"
+          },
+          "mealPlan": {
+            "mealPlanId": "4",
+            "mealPlanName": "Snacks"
+          },
+          "mealPriceCategory": {
+            "mmpcId": "2",
+            "name": "Chargeable"
+          }
+        }
+      ],
+      "roomVsPrice": [
+        {
+          "value": "2500",
+          "priceType": {
+            "priceTypeId": "1",
+            "priceTypeName": "Room Price Per Night"
+          }
+        },
+        {
+          "value": "200",
+          "priceType": {
+            "priceTypeId": "5",
+            "priceTypeName": "Cot Price"
+          }
+        },
+        {
+          "value": "7",
+          "priceType": {
+            "priceTypeId": "8",
+            "priceTypeName": "Commission"
+          }
+        }
+      ],
+      "roomVsSpecialities": [
+        {
+          "specialties": {
+            "specialitiesName": "Sea Facing",
+            "specialtiesId": "2"
+          }
+        }
+      ]
+    }
+  ],
+  "stayType": {
+    "stayTypeId": "2",
+    "stayTypeName": "Short Term"
+  },
+  "userVsAccount": {
+    "accountHolderName": "Sudeep Chhetri",
+    "accountNumber": "159883741610",
+    "accountType": "Saving",
+    "bankName": "IndusInd Bank",
+    "branchName": "Sector V",
+    "ifscCode": "IND0015478"
+  },
+  "pgCategorySex": {
+    "pgcsId": "3",
+    "categoryName": "Both"
+  }
+}
