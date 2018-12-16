@@ -36,7 +36,8 @@ public class RoomConverter extends CommonConverter
 		
 		roomEntity.setAccommodationEntity(accommodationDAO.find(Long.valueOf(m.getAccommodationModel().getAccommodationId())));
 		roomEntity.setRoomCategoryEntity(roomCategoryDAO.find(Long.valueOf(m.getRoomCategoryModel().getRoomCatId())));
-		roomEntity.setRoomStandardEntity(roomStandardDAO.find(Long.valueOf(m.getRoomStandardModel().getRoomStandardId())));
+		
+		//roomEntity.setRoomStandardEntity(roomStandardDAO.find(Long.valueOf(m.getRoomStandardModel().getRoomStandardId())));
 
 		if (logger.isInfoEnabled()) {
 			logger.info("modelToEntity -- END");

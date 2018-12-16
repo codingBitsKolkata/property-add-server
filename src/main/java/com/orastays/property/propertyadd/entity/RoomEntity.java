@@ -71,7 +71,7 @@ public class RoomEntity extends CommonEntity {
 	private RoomCategoryEntity roomCategoryEntity;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "room_standard_id", nullable = false)
+	@JoinColumn(name = "room_standard_id", nullable = true)
 	@JsonProperty("roomStandard")
 	private RoomStandardEntity roomStandardEntity;
 

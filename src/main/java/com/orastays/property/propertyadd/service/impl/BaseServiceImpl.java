@@ -40,6 +40,7 @@ import com.orastays.property.propertyadd.dao.AccommodationDAO;
 import com.orastays.property.propertyadd.dao.AmenitiesDAO;
 import com.orastays.property.propertyadd.dao.AmenitiesTypeDAO;
 import com.orastays.property.propertyadd.dao.CancellationSlabDAO;
+import com.orastays.property.propertyadd.dao.DiscountCategoryOraDAO;
 import com.orastays.property.propertyadd.dao.PGCategorySexDAO;
 import com.orastays.property.propertyadd.dao.PriceDropDAO;
 import com.orastays.property.propertyadd.dao.PriceTypeDAO;
@@ -276,5 +277,8 @@ public abstract class BaseServiceImpl {
 	
 	@Autowired
 	protected RoomVsCancellationDAO roomVsCancellationDAO;
+	
+	@Autowired
+	protected DiscountCategoryOraDAO discountCategoryOraDAO;
 	
 }

@@ -11,8 +11,27 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.orastays.property.propertyadd.entity.AccommodationEntity;
+import com.orastays.property.propertyadd.entity.AmenitiesEntity;
+import com.orastays.property.propertyadd.entity.CancellationSlabEntity;
+import com.orastays.property.propertyadd.entity.DiscountCategoryHostEntity;
+import com.orastays.property.propertyadd.entity.DocumentEntity;
+import com.orastays.property.propertyadd.entity.MealCategoryEntity;
+import com.orastays.property.propertyadd.entity.MealDaysEntity;
+import com.orastays.property.propertyadd.entity.MealPriceCategoryEntity;
+import com.orastays.property.propertyadd.entity.MealTypeEntity;
+import com.orastays.property.propertyadd.entity.PGCategorySexEntity;
+import com.orastays.property.propertyadd.entity.PriceTypeEntity;
+import com.orastays.property.propertyadd.entity.PropertyTypeEntity;
+import com.orastays.property.propertyadd.entity.RoomCategoryEntity;
+import com.orastays.property.propertyadd.entity.SpaceRuleEntity;
+import com.orastays.property.propertyadd.entity.SpecialExperienceEntity;
+import com.orastays.property.propertyadd.entity.SpecialtiesEntity;
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
+import com.orastays.property.propertyadd.helper.Accommodation;
+import com.orastays.property.propertyadd.helper.MealCategory;
 import com.orastays.property.propertyadd.helper.PropertyAddConstant;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
@@ -23,6 +42,12 @@ import com.orastays.property.propertyadd.model.PropertyVsNearbyModel;
 import com.orastays.property.propertyadd.model.PropertyVsSpaceRuleModel;
 import com.orastays.property.propertyadd.model.PropertyVsSpecialExperienceModel;
 import com.orastays.property.propertyadd.model.RoomModel;
+import com.orastays.property.propertyadd.model.RoomVsAmenitiesModel;
+import com.orastays.property.propertyadd.model.RoomVsCancellationModel;
+import com.orastays.property.propertyadd.model.RoomVsHostDiscountModel;
+import com.orastays.property.propertyadd.model.RoomVsMealModel;
+import com.orastays.property.propertyadd.model.RoomVsPriceModel;
+import com.orastays.property.propertyadd.model.RoomVsSpecialitiesModel;
 import com.orastays.property.propertyadd.model.UserModel;
 
 @Component
@@ -106,6 +131,10 @@ public class PropertyValidation extends AuthorizeUserValidation {
 				//validate Entire Apartment
 				if(StringUtils.isBlank(propertyModel.getEntireApartment())) {
 					exceptions.put(messageUtil.getBundle("entire.appartment.null.code"), new Exception(messageUtil.getBundle("entire.appartment.null.message")));
+				} else {
+					if(!(propertyModel.getEntireApartment().equals(PropertyAddConstant.STR_Y) || propertyModel.getEntireApartment().equals(PropertyAddConstant.STR_N))){
+						exceptions.put(messageUtil.getBundle("entire.appartment.invalid.code"), new Exception(messageUtil.getBundle("entire.appartment.invalid.message")));
+					} 
 				}
 				
 				//Validate Latitude
@@ -138,8 +167,10 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					if(StringUtils.isBlank(propertyModel.getEndDate())) {
 						exceptions.put(messageUtil.getBundle("end.date.null.code"), new Exception(messageUtil.getBundle("end.date.null.message")));
 					} else {
-						
-						// logic for date difference
+							String startDate = propertyModel.getStartDate();
+							String endDate = propertyModel.getEndDate();
+							propertyModel.setStartDate(startDate + " 00:00:01");
+							propertyModel.setEndDate(endDate + " 23:59:59");
 					}
 				}
 				
@@ -170,13 +201,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 				if(StringUtils.isBlank(propertyModel.getPriceDrop())) {
 					exceptions.put(messageUtil.getBundle("price.drop.null.code"), new Exception(messageUtil.getBundle("price.drop.null.message")));
 				} else {
-					
 					if(!(propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_Y) || propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_N))){
 						exceptions.put(messageUtil.getBundle("price.drop.invalid.code"), new Exception(messageUtil.getBundle("price.drop.invalid.message")));
-					} else {
-						if(propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_Y)){
-							//Logic For Property vs PriceDrop
-						}
 					} 
 				}
 				
@@ -190,7 +216,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 						if(!Util.isNumeric(propertyModel.getPropertyTypeModel().getPropertyTypeId())){
 							exceptions.put(messageUtil.getBundle("property.type.id.invalid.code"), new Exception(messageUtil.getBundle("property.type.id.invalid.message")));
 						} else {
-								if(Objects.isNull(propertyTypeDAO.find(Long.parseLong(propertyModel.getPropertyTypeModel().getPropertyTypeId())))) {
+								PropertyTypeEntity propertyTypeEntity = propertyTypeDAO.find(Long.parseLong(propertyModel.getPropertyTypeModel().getPropertyTypeId()));
+								if(Objects.isNull(propertyTypeEntity) && propertyTypeEntity.getStatus() != Status.ACTIVE.ordinal()) {
 									exceptions.put(messageUtil.getBundle("property.type.id.invalid.code"), new Exception(messageUtil.getBundle("property.type.id.invalid.message")));
 								}
 							} 
@@ -260,8 +287,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 				} else {
 					// Address Validation
 					for(PropertyVsNearbyModel propertyVsNearbyModel:propertyModel.getPropertyVsNearbyModels()){
-						if(StringUtils.isBlank(propertyVsNearbyModel.getAddress())){
-							exceptions.put(messageUtil.getBundle("property.address.null.code"), new Exception(messageUtil.getBundle("property.address.null.message")));
+						if(StringUtils.isBlank(propertyVsNearbyModel.getPlaces())){
+							exceptions.put(messageUtil.getBundle("property.place.null.code"), new Exception(messageUtil.getBundle("property.place.null.message")));
 						}
 					}
 				}
@@ -276,7 +303,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 						if(!Util.isNumeric(propertyModel.getPgCategorySexModel().getPgcsId())){
 							exceptions.put(messageUtil.getBundle("property.pgcs.numeric.code"), new Exception(messageUtil.getBundle("property.pgcs.numeric.message")));
 						} else {
-							if(Objects.isNull(pgCategorySexDAO.find(Long.valueOf(propertyModel.getPgCategorySexModel().getPgcsId())))){
+							PGCategorySexEntity pgCategorySexEntity = pgCategorySexDAO.find(Long.valueOf(propertyModel.getPgCategorySexModel().getPgcsId()));
+							if(Objects.isNull(pgCategorySexEntity) && pgCategorySexEntity.getStatus() != Status.ACTIVE.ordinal()){
 								exceptions.put(messageUtil.getBundle("property.pgcs.invalid.code"), new Exception(messageUtil.getBundle("property.pgcs.invalid.message")));
 							}
 						}
@@ -309,7 +337,9 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								if(!Util.isNumeric(propertyVsSpaceRuleModel.getSpaceRuleModel().getSpruleId())) {
 									exceptions.put(messageUtil.getBundle("sprule.nonnumeric.code"), new Exception(messageUtil.getBundle("sprule.nonnumeric.message")));
 								} else {
-									if(Objects.isNull(spaceRuleDAO.find(Long.parseLong(propertyVsSpaceRuleModel.getSpaceRuleModel().getSpruleId())))) {
+									
+									SpaceRuleEntity spaceRuleEntity = spaceRuleDAO.find(Long.parseLong(propertyVsSpaceRuleModel.getSpaceRuleModel().getSpruleId()));
+									if(Objects.isNull(spaceRuleEntity) && spaceRuleEntity.getStatus() != Status.ACTIVE.ordinal()) {
 										exceptions.put(messageUtil.getBundle("sprule.invalid.code"), new Exception(messageUtil.getBundle("sprule.invalid.message")));
 									}
 								}
@@ -336,7 +366,9 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								if(!Util.isNumeric(propertyVsExperienceModel.getSpecialExperienceModel().getExperienceId())){
 									exceptions.put(messageUtil.getBundle("special.expe.invalid.code"), new Exception(messageUtil.getBundle("special.expe.invalid.message")));
 								} else {
-									if(Objects.isNull(specialExperienceDAO.find(Long.parseLong(propertyVsExperienceModel.getSpecialExperienceModel().getExperienceId())))) {
+									
+									SpecialExperienceEntity specialExperienceEntity = specialExperienceDAO.find(Long.parseLong(propertyVsExperienceModel.getSpecialExperienceModel().getExperienceId()));
+									if(Objects.isNull(specialExperienceEntity) && specialExperienceEntity.getStatus() != Status.ACTIVE.ordinal()) {
 										exceptions.put(messageUtil.getBundle("special.expe.invalid.code"), new Exception(messageUtil.getBundle("special.expe.invalid.message")));
 									}
 								}
@@ -373,9 +405,6 @@ public class PropertyValidation extends AuthorizeUserValidation {
 				} else {
 					
 					for(PropertyVsDocumentModel propertyVsDocumentModel:propertyModel.getPropertyVsDocumentModels()){
-						if(Util.isEmpty(propertyVsDocumentModel.getDocumentNumber())){
-							exceptions.put(messageUtil.getBundle("property.documentNo.null.code"), new Exception(messageUtil.getBundle("property.documentNo.null.message")));
-						}
 						
 						if(Objects.isNull(propertyVsDocumentModel.getDocumentModel())) {
 							exceptions.put(messageUtil.getBundle("document.null.code"), new Exception(messageUtil.getBundle("document.null.message")));
@@ -386,7 +415,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								if(!Util.isNumeric(propertyVsDocumentModel.getDocumentModel().getDocumentId())){
 									exceptions.put(messageUtil.getBundle("document.id.nonnumeric.code"), new Exception(messageUtil.getBundle("document.id.nonnumeric.message")));
 								} else {
-									if(Objects.isNull(documentDAO.find(Long.valueOf(propertyVsDocumentModel.getDocumentModel().getDocumentId())))){
+									DocumentEntity documentEntity = documentDAO.find(Long.valueOf(propertyVsDocumentModel.getDocumentModel().getDocumentId()));
+									if(Objects.isNull(documentEntity) && documentEntity.getStatus() != Status.ACTIVE.ordinal()){
 										exceptions.put(messageUtil.getBundle("document.id.invalid.code"), new Exception(messageUtil.getBundle("document.id.invalid.message")));
 									}
 								}
@@ -415,10 +445,6 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							
 							if(!(roomModel.getSharedSpace().equals(PropertyAddConstant.STR_Y) || roomModel.getSharedSpace().equals(PropertyAddConstant.STR_N))){
 								exceptions.put(messageUtil.getBundle("room.sharedSpace.invalid.code"), new Exception(messageUtil.getBundle("room.sharedSpace.invalid.message")));
-							} else {
-								if(roomModel.getSharedSpace().equals(PropertyAddConstant.STR_Y)){
-									//Logic For Shared Space Logic
-								}
 							} 
 						}
 						
@@ -429,52 +455,30 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							
 							if(!(roomModel.getCotAvailable().equals(PropertyAddConstant.STR_Y) || roomModel.getCotAvailable().equals(PropertyAddConstant.STR_N))){
 								exceptions.put(messageUtil.getBundle("room.cotavail.invalid.code"), new Exception(messageUtil.getBundle("room.cotavail.invalid.message")));
-							} else {
-								if(roomModel.getCotAvailable().equals(PropertyAddConstant.STR_Y)){
-									//Logic For Cot Available Logic
-								}
 							} 
 						}
 						
 						//No Of Guest
-						if(StringUtils.isBlank(roomModel.getNoOfGuest())){
-							exceptions.put(messageUtil.getBundle("room.noofguest.null.code"), new Exception(messageUtil.getBundle("room.noofguest.null.message")));
-						} else {
+						if(!StringUtils.isBlank(roomModel.getNoOfGuest())){
 							if(!Util.isNumeric(roomModel.getNoOfGuest())){
 								exceptions.put(messageUtil.getBundle("room.noofguest.numeric.code"), new Exception(messageUtil.getBundle("room.noofguest.numeric.message")));
 							}
 						}
 						
 						//No of Child
-						if(StringUtils.isBlank(roomModel.getNoOfChild())){
-							exceptions.put(messageUtil.getBundle("room.noofchild.null.code"), new Exception(messageUtil.getBundle("room.noofchild.null.message")));
-						} else {
+						if(!StringUtils.isBlank(roomModel.getNoOfChild())){
 							if(!Util.isNumeric(roomModel.getNoOfChild())){
 								exceptions.put(messageUtil.getBundle("room.noofchild.numeric.code"), new Exception(messageUtil.getBundle("room.noofchild.numeric.message")));
 							}
-						}
+						} 
 						
 						// not of Cot
 						if(StringUtils.isBlank(roomModel.getNumOfCot())){
-							exceptions.put(messageUtil.getBundle("room.numofCot.null.code"), new Exception(messageUtil.getBundle("room.numofCot.null.message")));
-						} else {
 							if(!Util.isNumeric(roomModel.getNumOfCot())){
 								exceptions.put(messageUtil.getBundle("room.numofCot.numeric.code"), new Exception(messageUtil.getBundle("room.numofCot.numeric.message")));
 							}
 						}
 						
-						// Room Current Status
-						if(StringUtils.isBlank(roomModel.getRoomCurrentStatus())){
-							exceptions.put(messageUtil.getBundle("room.roomcstatus.null.code"), new Exception(messageUtil.getBundle("room.roomcstatus.null.message")));
-						} else {
-							if(!(roomModel.getRoomCurrentStatus().equals(PropertyAddConstant.STR_Y) || roomModel.getRoomCurrentStatus().equals(PropertyAddConstant.STR_N))){
-								exceptions.put(messageUtil.getBundle("room.roomcstatus.invalid.code"), new Exception(messageUtil.getBundle("room.roomcstatus.invalid.message")));
-							} else {
-								if(roomModel.getRoomCurrentStatus().equals(PropertyAddConstant.STR_Y)){
-									//Logic For Room Current Status
-								}
-							} 
-						}
 						
 						// Accommodation Check
 						if(Objects.isNull(roomModel.getAccommodationModel())){
@@ -487,45 +491,323 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								if(!Util.isNumeric(roomModel.getAccommodationModel().getAccommodationId())){
 									exceptions.put(messageUtil.getBundle("room.accommodation.invalid.code"), new Exception(messageUtil.getBundle("room.accommodation.invalid.message")));
 								} else {
-									if(Objects.isNull(accommodationDAO.find(Long.parseLong(roomModel.getAccommodationModel().getAccommodationId())))) {
+									AccommodationEntity accommodationEntity = accommodationDAO.find(Long.parseLong(roomModel.getAccommodationModel().getAccommodationId()));
+									if(Objects.isNull(accommodationEntity) && accommodationEntity.getStatus() != Status.ACTIVE.ordinal()) {
 										exceptions.put(messageUtil.getBundle("room.accommodation.invalid.code"), new Exception(messageUtil.getBundle("room.accommodation.invalid.message")));
+									} else if(accommodationEntity.getAccommodationName() == String.valueOf(Accommodation.Shared.ordinal())){
+										//Room Vs Bed
+										if(Objects.isNull(roomModel.getRoomVsBedModel())){
+											exceptions.put(messageUtil.getBundle("room.vs.bed.null.code"), new Exception(messageUtil.getBundle("room.vs.bed.null.message")));
+										} else {
+											if(StringUtils.isEmpty(roomModel.getRoomVsBedModel().getNoOfBeds())){
+												exceptions.put(messageUtil.getBundle("room.vs.bed.null.code"), new Exception(messageUtil.getBundle("room.vs.bed.null.message")));
+											} else if(!Util.isNumeric(roomModel.getRoomVsBedModel().getNoOfBeds())) {
+												exceptions.put(messageUtil.getBundle("room.no.of.bed.numeric.code"), new Exception(messageUtil.getBundle("room.no.of.bed.numeric.message")));
+											} 
+										}
 									}
 								}
 							}
 							
 						}
 						
-						// Discount Category Ora Validation
-						
-						
+						/////////////////
 						//Room Category Validation
-						
+						if(Objects.isNull(roomModel.getRoomCategoryModel())){
+							exceptions.put(messageUtil.getBundle("room.category.null.code"), new Exception(messageUtil.getBundle("room.category.null.message")));
+						} else {
+							
+							if(StringUtils.isEmpty(roomModel.getRoomCategoryModel().getRoomCatId())){
+								exceptions.put(messageUtil.getBundle("room.category.null.code"), new Exception(messageUtil.getBundle("room.category.null.message")));
+							} else {
+								if(!Util.isNumeric(roomModel.getRoomCategoryModel().getRoomCatId())){
+									exceptions.put(messageUtil.getBundle("room.category.numeric.code"), new Exception(messageUtil.getBundle("room.category.numeric.message")));
+								} else {
+									RoomCategoryEntity roomCategoryEntity = roomCategoryDAO.find(Long.parseLong(roomModel.getRoomCategoryModel().getRoomCatId()));
+									if(Objects.isNull(roomCategoryEntity) && roomCategoryEntity.getStatus() != Status.ACTIVE.ordinal()) {
+										exceptions.put(messageUtil.getBundle("room.category.invalid.code"), new Exception(messageUtil.getBundle("room.category.invalid.message")));
+									}
+								}
+							}
+							
+						}
 						// Room Standard Validation
-						
-						//Room Vs Bed
+						/*if(Objects.isNull(roomModel.getRoomStandardModel())){
+							exceptions.put(messageUtil.getBundle("room.standard.null.code"), new Exception(messageUtil.getBundle("room.standard.null.message")));
+						} else {
+							
+							if(StringUtils.isEmpty(roomModel.getRoomStandardModel().getRoomStandardId())){
+								exceptions.put(messageUtil.getBundle("room.standard.null.code"), new Exception(messageUtil.getBundle("room.standard.null.message")));
+							} else {
+								if(!Util.isNumeric(roomModel.getRoomStandardModel().getRoomStandardId())){
+									exceptions.put(messageUtil.getBundle("room.standard.numeric.code"), new Exception(messageUtil.getBundle("room.standard.numeric.message")));
+								} else {
+									RoomStandardEntity roomStandardEntity = roomStandardDAO.find(Long.parseLong(roomModel.getRoomStandardModel().getRoomStandardId()));
+									if(Objects.isNull(roomStandardEntity) && roomStandardEntity.getStatus() != Status.ACTIVE.ordinal()) {
+										exceptions.put(messageUtil.getBundle("room.standard.invalid.code"), new Exception(messageUtil.getBundle("room.standard.invalid.message")));
+									}
+								}
+							}
+						}*/
 						
 						//Room Vs Amenities
+						if(Objects.isNull(roomModel.getRoomVsAmenitiesModels())){
+							exceptions.put(messageUtil.getBundle("room.vs.amenities.null.code"), new Exception(messageUtil.getBundle("room.vs.amenities.null.message")));
+						} else {
+							for(RoomVsAmenitiesModel roomVsAmenitiesModel:roomModel.getRoomVsAmenitiesModels()){
+								if(Objects.nonNull(roomVsAmenitiesModel.getAmenitiesModel())) {
+									if(StringUtils.isBlank(roomVsAmenitiesModel.getAmenitiesModel().getAminitiesId())) {
+										exceptions.put(messageUtil.getBundle("amenities.id.null.code"), new Exception(messageUtil.getBundle("amenities.id.null.message")));
+									} else {
+										if(!Util.isNumeric(roomVsAmenitiesModel.getAmenitiesModel().getAminitiesId())) {
+											exceptions.put(messageUtil.getBundle("amenities.id.numeric.code"), new Exception(messageUtil.getBundle("amenities.id.numeric.message")));
+										} else {
+											AmenitiesEntity amenitiesEntity = amenitiesDAO.find(Long.parseLong(roomVsAmenitiesModel.getAmenitiesModel().getAminitiesId()));
+											if(Objects.isNull(amenitiesEntity) && amenitiesEntity.getStatus() != Status.ACTIVE.ordinal()) {
+												exceptions.put(messageUtil.getBundle("amenities.invalid.code"), new Exception(messageUtil.getBundle("amenities.invalid.message")));
+											}
+										}
+										
+									}
+								} else {
+									exceptions.put(messageUtil.getBundle("amenities.null.code"), new Exception(messageUtil.getBundle("amenities.null.message")));
+								}
+							}
+						}
 						
 						//Room Vs Cancellation
+						if(Objects.isNull(roomModel.getRoomVsCancellationModels())){
+							exceptions.put(messageUtil.getBundle("room.vs.cancellation.null.code"), new Exception(messageUtil.getBundle("room.vs.cancellation.null.message")));
+						} else {
+							for(RoomVsCancellationModel roomVsCancellationModel:roomModel.getRoomVsCancellationModels()){
+							
+								// Percentage
+								if(StringUtils.isBlank(roomVsCancellationModel.getPercentage())){
+									exceptions.put(messageUtil.getBundle("room.vs.cancellation.percentage.null.code"), new Exception(messageUtil.getBundle("room.vs.cancellation.percentage.null.message")));
+								} else {
+									if(!Util.isNumeric(roomVsCancellationModel.getPercentage())) {
+										exceptions.put(messageUtil.getBundle("room.vs.cancellation.percentage.numeric.code"), new Exception(messageUtil.getBundle("room.vs.cancellation.percentage.numeric.message")));
+									}
+								} 
+								
+								//Cancellation Slab Validation
+								if(Objects.nonNull(roomVsCancellationModel.getCancellationSlabModel())){
+									if(StringUtils.isBlank(roomVsCancellationModel.getCancellationSlabModel().getCancellationSlabId())){
+										exceptions.put(messageUtil.getBundle("cancellation.slab.null.code"), new Exception(messageUtil.getBundle("cancellation..slab.null.message")));
+									} else {
+										if(!Util.isNumeric(roomVsCancellationModel.getCancellationSlabModel().getCancellationSlabId())) {
+											exceptions.put(messageUtil.getBundle("cancellation.slab.numeric.code"), new Exception(messageUtil.getBundle("cancellation.slab.numeric.message")));
+										} else {
+											CancellationSlabEntity cancellationSlabEntity = cancellationSlabDAO.find(Long.parseLong(roomVsCancellationModel.getCancellationSlabModel().getCancellationSlabId()));
+											if(Objects.isNull(cancellationSlabEntity) && cancellationSlabEntity.getStatus() != Status.ACTIVE.ordinal()) {
+												exceptions.put(messageUtil.getBundle("cancellation.invalid.code"), new Exception(messageUtil.getBundle("cancellation.invalid.message")));
+											}
+										}
+									}
+								} else {
+									exceptions.put(messageUtil.getBundle("cancellation.slab.null.code"), new Exception(messageUtil.getBundle("cancellation.slab.null.message")));
+								}
+							}
+						}
 						
 						//Room Vs Image
 						
+						
 						//Room Vs Price
+						if(Objects.nonNull(roomModel.getRoomVsPriceModels())){
+							for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()) {
+								
+								//Value
+								if(StringUtils.isEmpty(roomVsPriceModel.getValue())){
+									exceptions.put(messageUtil.getBundle("price.value.null.code"), new Exception(messageUtil.getBundle("price.value.null.message")));
+								} else if(!Util.isNumeric(roomVsPriceModel.getValue())){
+									exceptions.put(messageUtil.getBundle("price.value.numeric.code"), new Exception(messageUtil.getBundle("price.value.numeric.message")));
+								}
+								
+								//Price Type 
+								if(Objects.nonNull(roomVsPriceModel.getPriceTypeModel())){
+									if(StringUtils.isEmpty(roomVsPriceModel.getPriceTypeModel().getPriceTypeId())){
+										exceptions.put(messageUtil.getBundle("price.type.null.code"), new Exception(messageUtil.getBundle("price.type.null.message")));
+									} else {
+										if(!Util.isNumeric(roomVsPriceModel.getPriceTypeModel().getPriceTypeId())){
+											exceptions.put(messageUtil.getBundle("price.type.id.numeric.code"), new Exception(messageUtil.getBundle("price.type.id.numeric.message")));
+										} else {
+											  PriceTypeEntity priceTypeEntity = priceTypeDAO.find(Long.valueOf(roomVsPriceModel.getPriceTypeModel().getPriceTypeId()));
+											  if(Objects.isNull(priceTypeEntity) && priceTypeEntity.getStatus() != Status.ACTIVE.ordinal()){
+												  exceptions.put(messageUtil.getBundle("price.type.id.invalid.code"), new Exception(messageUtil.getBundle("price.type.id.invalid.message")));
+											  }
+										}
+									}
+								} else{
+									exceptions.put(messageUtil.getBundle("price.type.null.code"), new Exception(messageUtil.getBundle("price.type.null.message")));
+								}
+							}
+							
+						} else {
+							exceptions.put(messageUtil.getBundle("room.vs.price.null.code"), new Exception(messageUtil.getBundle("room.vs.price.null.message")));
+						}
 						
 						//Room vs host discount
 						
+						if(Objects.nonNull(roomModel.getRoomVsHostDiscountModels())){
+							for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()) {
+								
+								//Percentage
+								if(StringUtils.isEmpty(roomVsHostDiscountModel.getPercentage())){
+									exceptions.put(messageUtil.getBundle("discount.percentage.null.code"), new Exception(messageUtil.getBundle("discount.percentage.null.message")));
+								} else if(!Util.isNumeric(roomVsHostDiscountModel.getPercentage())){
+									exceptions.put(messageUtil.getBundle("discount.percentage.numeric.code"), new Exception(messageUtil.getBundle("discount.percentage.numeric.message")));
+								}
+								
+								//Room Vs Discount Category Host 
+								if(Objects.nonNull(roomVsHostDiscountModel.getDiscountCategoryHostModel())){
+									if(StringUtils.isEmpty(roomVsHostDiscountModel.getDiscountCategoryHostModel().getDchId())){
+										exceptions.put(messageUtil.getBundle("discount.category.null.code"), new Exception(messageUtil.getBundle("discount.category.null.message")));
+									} else {
+										if(!Util.isNumeric(roomVsHostDiscountModel.getDiscountCategoryHostModel().getDchId())){
+											exceptions.put(messageUtil.getBundle("discount.category.id.numeric.code"), new Exception(messageUtil.getBundle("discount.category.id.numeric.message")));
+										} else {
+												DiscountCategoryHostEntity discountCategoryHostEntity = discountCategoryHostDAO.find(Long.valueOf(roomVsHostDiscountModel.getDiscountCategoryHostModel().getDchId()));
+											  if(Objects.isNull(discountCategoryHostEntity) && discountCategoryHostEntity.getStatus() != Status.ACTIVE.ordinal()){
+												  exceptions.put(messageUtil.getBundle("discount.category.id.invalid.code"), new Exception(messageUtil.getBundle("discount.category.id.invalid.message")));
+											  }
+										}
+									}
+								} else{
+									exceptions.put(messageUtil.getBundle("discount.category.null.code"), new Exception(messageUtil.getBundle("discount.category.null.message")));
+								}
+							}
+							
+						} else {
+							exceptions.put(messageUtil.getBundle("discount.category.null.code"), new Exception(messageUtil.getBundle("discount.category.null.message")));
+						}
 						//Room Vs Ora discount
+						//Logic For Code Set
+						
 						
 						//Room Vs Ora Price Percentage
+							//Logic For Code Set
 						
-						//Room Vs Specilities
+						
+						//Room Vs Specialities
+						if(Objects.nonNull(roomModel.getRoomVsSpecialitiesModels())){
+							for(RoomVsSpecialitiesModel roomVsSpecialitiesModel:roomModel.getRoomVsSpecialitiesModels()) {
+								
+								//Specialities 
+								if(Objects.nonNull(roomVsSpecialitiesModel.getSpecialtiesModel())){
+									if(StringUtils.isEmpty(roomVsSpecialitiesModel.getSpecialtiesModel().getSpecialtiesId())){
+										exceptions.put(messageUtil.getBundle("specilities.null.code"), new Exception(messageUtil.getBundle("specilities.null.message")));
+									} else {
+										if(!Util.isNumeric(roomVsSpecialitiesModel.getSpecialtiesModel().getSpecialtiesId())){
+											exceptions.put(messageUtil.getBundle("specilities.id.numeric.code"), new Exception(messageUtil.getBundle("specilities.id.numeric.message")));
+										} else {
+											  SpecialtiesEntity specialtiesEntity = specialtiesDAO.find(Long.valueOf(roomVsSpecialitiesModel.getSpecialtiesModel().getSpecialtiesId()));
+											  if(Objects.isNull(specialtiesEntity) && specialtiesEntity.getStatus() != Status.ACTIVE.ordinal()){
+												  exceptions.put(messageUtil.getBundle("specilities.id.invalid.code"), new Exception(messageUtil.getBundle("specilities.id.invalid.message")));
+											  }
+										}
+									}
+								} else{
+									exceptions.put(messageUtil.getBundle("specilities.null.code"), new Exception(messageUtil.getBundle("specilities.null.message")));
+								}
+							}
+							
+						} else {
+							exceptions.put(messageUtil.getBundle("specilities.null.code"), new Exception(messageUtil.getBundle("specilities.null.message")));
+						}
 						
 						//Room Vs Meal
-						
+						if(Objects.nonNull(roomModel.getRoomVsMealModels())){
+							for(RoomVsMealModel roomVsMealModel:roomModel.getRoomVsMealModels()) {
+								MealCategoryEntity mealCategoryEntity = null;
+								//Meal Category Validation 
+								if(Objects.nonNull(roomVsMealModel.getMealCategoryModel())){
+									if(StringUtils.isEmpty(roomVsMealModel.getMealCategoryModel().getMealCategoryId())){
+										exceptions.put(messageUtil.getBundle("meal.category.null.code"), new Exception(messageUtil.getBundle("meal.category.null.message")));
+									} else {
+										if(!Util.isNumeric(roomVsMealModel.getMealCategoryModel().getMealCategoryId())){
+											exceptions.put(messageUtil.getBundle("meal.category.numeric.code"), new Exception(messageUtil.getBundle("meal.category.numeric.message")));
+										} else {
+											   mealCategoryEntity = mealCategoryDAO.find(Long.valueOf(roomVsMealModel.getMealCategoryModel().getMealCategoryId()));
+											  if(Objects.isNull(mealCategoryEntity) && mealCategoryEntity.getStatus() != Status.ACTIVE.ordinal()){
+												  exceptions.put(messageUtil.getBundle("meal.category.id.invalid.code"), new Exception(messageUtil.getBundle("meal.category.id.invalid.message")));
+											  }
+										}
+									}
+								} else{
+									exceptions.put(messageUtil.getBundle("meal.category.null.code"), new Exception(messageUtil.getBundle("meal.category.null.message")));
+								}
+								
+								if(Objects.nonNull(mealCategoryEntity)){
+									if(mealCategoryEntity.getMealCatName() == String.valueOf(MealCategory.Daily.ordinal())) {
+										// Meal Days Validation
+										if(Objects.nonNull(roomVsMealModel.getMealDaysModel())){
+											if(StringUtils.isEmpty(roomVsMealModel.getMealDaysModel().getMealDaysId())){
+												exceptions.put(messageUtil.getBundle("meal.days.null.code"), new Exception(messageUtil.getBundle("meal.days.null.message")));
+											} else {
+												if(!Util.isNumeric(roomVsMealModel.getMealDaysModel().getMealDaysId())){
+													exceptions.put(messageUtil.getBundle("meal.days.numeric.code"), new Exception(messageUtil.getBundle("meal.days.numeric.message")));
+												} else {
+													  MealDaysEntity mealDaysEntity = mealDaysDAO.find(Long.valueOf(roomVsMealModel.getMealDaysModel().getMealDaysId()));
+													  if(Objects.isNull(mealDaysEntity) && mealDaysEntity.getStatus() != Status.ACTIVE.ordinal()){
+														  exceptions.put(messageUtil.getBundle("meal.days.id.invalid.code"), new Exception(messageUtil.getBundle("meal.days.id.invalid.message")));
+													  }
+												}
+											}
+										} else{
+											exceptions.put(messageUtil.getBundle("meal.days.null.code"), new Exception(messageUtil.getBundle("meal.days.null.message")));
+										}
+									}
+								}
+								
+								// Master Meal Price Category 
+									if(Objects.nonNull(roomVsMealModel.getMealPriceCategoryModel())){
+										if(StringUtils.isEmpty(roomVsMealModel.getMealPriceCategoryModel().getMmpcId())){
+											exceptions.put(messageUtil.getBundle("meal.price.null.code"), new Exception(messageUtil.getBundle("meal.price.null.message")));
+										} else {
+											if(!Util.isNumeric(roomVsMealModel.getMealPriceCategoryModel().getMmpcId())){
+												exceptions.put(messageUtil.getBundle("meal.price.numeric.code"), new Exception(messageUtil.getBundle("meal.price.numeric.message")));
+											} else {
+												  MealPriceCategoryEntity mealPriceCategoryEntity = mealPriceCategoryDAO.find(Long.valueOf(roomVsMealModel.getMealPriceCategoryModel().getMmpcId()));
+												  if(Objects.isNull(mealPriceCategoryEntity) && mealPriceCategoryEntity.getStatus() != Status.ACTIVE.ordinal()){
+													  exceptions.put(messageUtil.getBundle("meal.price.id.invalid.code"), new Exception(messageUtil.getBundle("meal.price.id.invalid.message")));
+												  }
+											}
+										}
+									} else{
+										exceptions.put(messageUtil.getBundle("meal.price.null.code"), new Exception(messageUtil.getBundle("meal.price.null.message")));
+									}
+									
+									// Meal Type Validation
+									if(Objects.nonNull(roomVsMealModel.getMealTypeModel())){
+										if(StringUtils.isEmpty(roomVsMealModel.getMealTypeModel().getMealTypeId())){
+											exceptions.put(messageUtil.getBundle("meal.type.null.code"), new Exception(messageUtil.getBundle("meal.type.null.message")));
+										} else {
+											if(!Util.isNumeric(roomVsMealModel.getMealTypeModel().getMealTypeId())){
+												exceptions.put(messageUtil.getBundle("meal.type.numeric.code"), new Exception(messageUtil.getBundle("meal.type.numeric.message")));
+											} else {
+												  MealTypeEntity mealTypeEntity = mealTypeDAO.find(Long.valueOf(roomVsMealModel.getMealTypeModel().getMealTypeId()));
+												  if(Objects.isNull(mealTypeEntity) && mealTypeEntity.getStatus() != Status.ACTIVE.ordinal()){
+													  exceptions.put(messageUtil.getBundle("meal.type.id.invalid.code"), new Exception(messageUtil.getBundle("meal.type.id.invalid.message")));
+												  }
+											}
+										}
+									} else{
+										exceptions.put(messageUtil.getBundle("meal.type.null.code"), new Exception(messageUtil.getBundle("meal.type.null.message")));
+									}
+									
+								
+							}
+							
+						} else {
+							exceptions.put(messageUtil.getBundle("meal.category.null.code"), new Exception(messageUtil.getBundle("meal.category.null.message")));
+						}
 						
 						
 					}
 					
+				} else {
+					exceptions.put(messageUtil.getBundle("property.room.null.code"), new Exception(messageUtil.getBundle("property.room.null.message")));
 				}
 				
 			}
