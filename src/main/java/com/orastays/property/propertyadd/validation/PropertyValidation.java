@@ -22,6 +22,7 @@ import com.orastays.property.propertyadd.model.PropertyVsGuestAccessModel;
 import com.orastays.property.propertyadd.model.PropertyVsNearbyModel;
 import com.orastays.property.propertyadd.model.PropertyVsSpaceRuleModel;
 import com.orastays.property.propertyadd.model.PropertyVsSpecialExperienceModel;
+import com.orastays.property.propertyadd.model.RoomModel;
 import com.orastays.property.propertyadd.model.UserModel;
 
 @Component
@@ -399,6 +400,133 @@ public class PropertyValidation extends AuthorizeUserValidation {
 				}
 				
 				
+				
+				
+				////////////////////////////////////////////////////////////////// Room Data Validation //////////////////////////////////////////////////////
+				
+				if(Objects.nonNull(propertyModel.getRoomModels())){
+					
+					for(RoomModel roomModel:propertyModel.getRoomModels()){
+						
+						//Shared Space
+						if(StringUtils.isBlank(roomModel.getSharedSpace())){
+							exceptions.put(messageUtil.getBundle("room.sharedSpace.null.code"), new Exception(messageUtil.getBundle("room.sharedSpace.null.message")));
+						} else {
+							
+							if(!(roomModel.getSharedSpace().equals(PropertyAddConstant.STR_Y) || roomModel.getSharedSpace().equals(PropertyAddConstant.STR_N))){
+								exceptions.put(messageUtil.getBundle("room.sharedSpace.invalid.code"), new Exception(messageUtil.getBundle("room.sharedSpace.invalid.message")));
+							} else {
+								if(roomModel.getSharedSpace().equals(PropertyAddConstant.STR_Y)){
+									//Logic For Shared Space Logic
+								}
+							} 
+						}
+						
+						// CotAvailable
+						if(StringUtils.isBlank(roomModel.getCotAvailable())){
+							exceptions.put(messageUtil.getBundle("room.cotavail.null.code"), new Exception(messageUtil.getBundle("room.cotavail.null.message")));
+						} else {
+							
+							if(!(roomModel.getCotAvailable().equals(PropertyAddConstant.STR_Y) || roomModel.getCotAvailable().equals(PropertyAddConstant.STR_N))){
+								exceptions.put(messageUtil.getBundle("room.cotavail.invalid.code"), new Exception(messageUtil.getBundle("room.cotavail.invalid.message")));
+							} else {
+								if(roomModel.getCotAvailable().equals(PropertyAddConstant.STR_Y)){
+									//Logic For Cot Available Logic
+								}
+							} 
+						}
+						
+						//No Of Guest
+						if(StringUtils.isBlank(roomModel.getNoOfGuest())){
+							exceptions.put(messageUtil.getBundle("room.noofguest.null.code"), new Exception(messageUtil.getBundle("room.noofguest.null.message")));
+						} else {
+							if(!Util.isNumeric(roomModel.getNoOfGuest())){
+								exceptions.put(messageUtil.getBundle("room.noofguest.numeric.code"), new Exception(messageUtil.getBundle("room.noofguest.numeric.message")));
+							}
+						}
+						
+						//No of Child
+						if(StringUtils.isBlank(roomModel.getNoOfChild())){
+							exceptions.put(messageUtil.getBundle("room.noofchild.null.code"), new Exception(messageUtil.getBundle("room.noofchild.null.message")));
+						} else {
+							if(!Util.isNumeric(roomModel.getNoOfChild())){
+								exceptions.put(messageUtil.getBundle("room.noofchild.numeric.code"), new Exception(messageUtil.getBundle("room.noofchild.numeric.message")));
+							}
+						}
+						
+						// not of Cot
+						if(StringUtils.isBlank(roomModel.getNumOfCot())){
+							exceptions.put(messageUtil.getBundle("room.numofCot.null.code"), new Exception(messageUtil.getBundle("room.numofCot.null.message")));
+						} else {
+							if(!Util.isNumeric(roomModel.getNumOfCot())){
+								exceptions.put(messageUtil.getBundle("room.numofCot.numeric.code"), new Exception(messageUtil.getBundle("room.numofCot.numeric.message")));
+							}
+						}
+						
+						// Room Current Status
+						if(StringUtils.isBlank(roomModel.getRoomCurrentStatus())){
+							exceptions.put(messageUtil.getBundle("room.roomcstatus.null.code"), new Exception(messageUtil.getBundle("room.roomcstatus.null.message")));
+						} else {
+							if(!(roomModel.getRoomCurrentStatus().equals(PropertyAddConstant.STR_Y) || roomModel.getRoomCurrentStatus().equals(PropertyAddConstant.STR_N))){
+								exceptions.put(messageUtil.getBundle("room.roomcstatus.invalid.code"), new Exception(messageUtil.getBundle("room.roomcstatus.invalid.message")));
+							} else {
+								if(roomModel.getRoomCurrentStatus().equals(PropertyAddConstant.STR_Y)){
+									//Logic For Room Current Status
+								}
+							} 
+						}
+						
+						// Accommodation Check
+						if(Objects.isNull(roomModel.getAccommodationModel())){
+							exceptions.put(messageUtil.getBundle("room.accommodation.null.code"), new Exception(messageUtil.getBundle("room.accommodation.null.message")));
+						} else {
+							
+							if(StringUtils.isEmpty(roomModel.getAccommodationModel().getAccommodationId())){
+								exceptions.put(messageUtil.getBundle("room.accommodation.null.code"), new Exception(messageUtil.getBundle("room.accommodation.null.message")));
+							} else {
+								if(!Util.isNumeric(roomModel.getAccommodationModel().getAccommodationId())){
+									exceptions.put(messageUtil.getBundle("room.accommodation.invalid.code"), new Exception(messageUtil.getBundle("room.accommodation.invalid.message")));
+								} else {
+									if(Objects.isNull(accommodationDAO.find(Long.parseLong(roomModel.getAccommodationModel().getAccommodationId())))) {
+										exceptions.put(messageUtil.getBundle("room.accommodation.invalid.code"), new Exception(messageUtil.getBundle("room.accommodation.invalid.message")));
+									}
+								}
+							}
+							
+						}
+						
+						// Discount Category Ora Validation
+						
+						
+						//Room Category Validation
+						
+						// Room Standard Validation
+						
+						//Room Vs Bed
+						
+						//Room Vs Amenities
+						
+						//Room Vs Cancellation
+						
+						//Room Vs Image
+						
+						//Room Vs Price
+						
+						//Room vs host discount
+						
+						//Room Vs Ora discount
+						
+						//Room Vs Ora Price Percentage
+						
+						//Room Vs Specilities
+						
+						//Room Vs Meal
+						
+						
+						
+					}
+					
+				}
 				
 			}
 		/*} else {

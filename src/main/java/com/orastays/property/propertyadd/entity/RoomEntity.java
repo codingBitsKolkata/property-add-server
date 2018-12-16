@@ -78,7 +78,7 @@ public class RoomEntity extends CommonEntity {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_id", nullable = false)
 	@JsonProperty("property")
-	private PropertyTypeEntity propertyEntity;
+	private PropertyEntity propertyEntity;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomEntity", cascade = { CascadeType.ALL })
 	@JsonProperty("roomVsAmenities")

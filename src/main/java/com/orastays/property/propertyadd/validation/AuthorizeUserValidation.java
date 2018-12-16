@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import com.orastays.property.propertyadd.dao.AccommodationDAO;
 import com.orastays.property.propertyadd.dao.DocumentDAO;
 import com.orastays.property.propertyadd.dao.PGCategorySexDAO;
 import com.orastays.property.propertyadd.dao.PropertyTypeDAO;
@@ -54,6 +55,9 @@ public class AuthorizeUserValidation {
 	
 	@Autowired
 	protected DocumentDAO documentDAO;
+	
+	@Autowired
+	protected AccommodationDAO accommodationDAO;
 
 	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {

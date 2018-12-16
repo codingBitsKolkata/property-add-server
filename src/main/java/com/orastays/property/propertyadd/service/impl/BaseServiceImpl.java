@@ -21,6 +21,16 @@ import com.orastays.property.propertyadd.converter.PropertyVsPriceDropConverter;
 import com.orastays.property.propertyadd.converter.PropertyVsSpaceRuleConverter;
 import com.orastays.property.propertyadd.converter.PropertyVsSpecialExperienceConverter;
 import com.orastays.property.propertyadd.converter.RoomCategoryConverter;
+import com.orastays.property.propertyadd.converter.RoomConverter;
+import com.orastays.property.propertyadd.converter.RoomVsAmenitiesConverter;
+import com.orastays.property.propertyadd.converter.RoomVsCancellationConverter;
+import com.orastays.property.propertyadd.converter.RoomVsHostDiscountConverter;
+import com.orastays.property.propertyadd.converter.RoomVsImageConverter;
+import com.orastays.property.propertyadd.converter.RoomVsMealConverter;
+import com.orastays.property.propertyadd.converter.RoomVsOraDiscountConverter;
+import com.orastays.property.propertyadd.converter.RoomVsOraPricePercentageConverter;
+import com.orastays.property.propertyadd.converter.RoomVsPriceConverter;
+import com.orastays.property.propertyadd.converter.RoomVsSpecialitiesConverter;
 import com.orastays.property.propertyadd.converter.SpaceRuleConverter;
 import com.orastays.property.propertyadd.converter.SpecialExperienceConverter;
 import com.orastays.property.propertyadd.converter.SpecialtiesConverter;
@@ -44,6 +54,16 @@ import com.orastays.property.propertyadd.dao.PropertyVsPriceDropDAO;
 import com.orastays.property.propertyadd.dao.PropertyVsSpaceRuleDAO;
 import com.orastays.property.propertyadd.dao.PropertyVsSpecialExperienceDAO;
 import com.orastays.property.propertyadd.dao.RoomCategoryDAO;
+import com.orastays.property.propertyadd.dao.RoomDAO;
+import com.orastays.property.propertyadd.dao.RoomVsAmenitiesDAO;
+import com.orastays.property.propertyadd.dao.RoomVsCancellationDAO;
+import com.orastays.property.propertyadd.dao.RoomVsHostDiscountDAO;
+import com.orastays.property.propertyadd.dao.RoomVsImageDAO;
+import com.orastays.property.propertyadd.dao.RoomVsMealDAO;
+import com.orastays.property.propertyadd.dao.RoomVsOraDiscountDAO;
+import com.orastays.property.propertyadd.dao.RoomVsOraPricePercentageDAO;
+import com.orastays.property.propertyadd.dao.RoomVsPriceDAO;
+import com.orastays.property.propertyadd.dao.RoomVsSpecialitiesDAO;
 import com.orastays.property.propertyadd.dao.SpaceRuleDAO;
 import com.orastays.property.propertyadd.dao.SpecialExperienceDAO;
 import com.orastays.property.propertyadd.dao.SpecialtiesDAO;
@@ -196,5 +216,65 @@ public abstract class BaseServiceImpl {
 	
 	@Autowired
 	protected PropertyVsSpaceRuleDAO propertyVsSpaceRuleDAO;
+	
+	@Autowired
+	protected RoomConverter roomConverter;
+	
+	@Autowired
+	protected RoomDAO roomDAO;
+	
+	@Autowired
+	protected RoomVsAmenitiesDAO roomVsAmenitiesDAO;
+	
+	@Autowired
+	protected RoomVsAmenitiesConverter roomVsAmenitiesConverter;
+	
+	@Autowired
+	protected RoomVsImageDAO roomVsImageDAO;
+	
+	@Autowired
+	protected RoomVsImageConverter roomVsImageConverter;
+	
+	@Autowired
+	protected RoomVsHostDiscountDAO roomVsHostDiscountDAO;
+	
+	@Autowired
+	protected RoomVsHostDiscountConverter roomVsHostDiscountConverter;
+	
+	@Autowired
+	protected RoomVsOraDiscountConverter roomVsOraDiscountConverter;
+	
+	@Autowired
+	protected RoomVsOraDiscountDAO roomVsOraDiscountDAO;
+	
+	@Autowired
+	protected RoomVsOraPricePercentageConverter roomVsOraPricePercentageConverter;
+	
+	@Autowired
+	protected RoomVsOraPricePercentageDAO roomVsOraPricePercentageDAO;
+	
+	@Autowired
+	protected RoomVsPriceConverter roomVsPriceConverter;
+	
+	@Autowired
+	protected RoomVsPriceDAO roomVsPriceDAO;
+	
+	@Autowired
+	protected RoomVsSpecialitiesConverter roomVsSpecialitiesConverter;
+	
+	@Autowired
+	protected RoomVsSpecialitiesDAO roomVsSpecialitiesDAO;
+	
+	@Autowired
+	protected RoomVsMealConverter roomVsMealConverter;
+	
+	@Autowired
+	protected RoomVsMealDAO roomVsMealDAO;
+	
+	@Autowired
+	protected RoomVsCancellationConverter roomVsCancellationConverter;
+	
+	@Autowired
+	protected RoomVsCancellationDAO roomVsCancellationDAO;
 	
 }
