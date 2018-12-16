@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PropertyVsPriceDropEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyVsPriceDropModel;
 
@@ -21,8 +22,24 @@ public class PropertyVsPriceDropConverter extends CommonConverter
 
 	@Override
 	public PropertyVsPriceDropEntity modelToEntity(PropertyVsPriceDropModel m) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		PropertyVsPriceDropEntity propertyVsPriceDropEntity = new PropertyVsPriceDropEntity();
+		propertyVsPriceDropEntity = (PropertyVsPriceDropEntity) Util.transform(modelMapper, m, propertyVsPriceDropEntity);
+		propertyVsPriceDropEntity.setStatus(Status.ACTIVE.ordinal());
+		propertyVsPriceDropEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		propertyVsPriceDropEntity.setCreatedDate(Util.getCurrentDateTime());
+		
+		propertyVsPriceDropEntity.setPriceDropEntity(priceDropDAO.find(Long.valueOf(m.getPriceDropModel().getPriceDropId())));
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return propertyVsPriceDropEntity;
 	}
 
 	@Override

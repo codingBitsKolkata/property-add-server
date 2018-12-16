@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PropertyVsGuestAccessEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyVsGuestAccessModel;
 
@@ -21,8 +22,22 @@ public class PropertyVsGuestAccessConverter extends CommonConverter
 
 	@Override
 	public PropertyVsGuestAccessEntity modelToEntity(PropertyVsGuestAccessModel m) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		PropertyVsGuestAccessEntity propertyVsGuestAccessEntity = new PropertyVsGuestAccessEntity();
+		propertyVsGuestAccessEntity = (PropertyVsGuestAccessEntity) Util.transform(modelMapper, m, propertyVsGuestAccessEntity);
+		propertyVsGuestAccessEntity.setStatus(Status.ACTIVE.ordinal());
+		propertyVsGuestAccessEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		propertyVsGuestAccessEntity.setCreatedDate(Util.getCurrentDateTime());
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return propertyVsGuestAccessEntity;
 	}
 
 	@Override

@@ -24,6 +24,7 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = false)
 public class PropertyVsDocumentEntity extends CommonEntity {
 
+	private static final long serialVersionUID = 252461737582048082L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

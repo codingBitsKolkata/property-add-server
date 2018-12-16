@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsSpecialitiesEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsSpecialitiesModel;
 
@@ -22,8 +23,23 @@ public class RoomVsSpecialitiesConverter extends CommonConverter
 
 	@Override
 	public RoomVsSpecialitiesEntity modelToEntity(RoomVsSpecialitiesModel m) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- START");
+		}
+
+		RoomVsSpecialitiesEntity roomVsSpecialitiesEntity = new RoomVsSpecialitiesEntity();
+		roomVsSpecialitiesEntity = (RoomVsSpecialitiesEntity) Util.transform(modelMapper, m, roomVsSpecialitiesEntity);
+		roomVsSpecialitiesEntity.setStatus(Status.INACTIVE.ordinal());
+		roomVsSpecialitiesEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsSpecialitiesEntity.setCreatedDate(Util.getCurrentDateTime());
+		roomVsSpecialitiesEntity.setSpecialtiesEntity(specialtiesDAO.find(Long.valueOf(m.getSpecialtiesModel().getSpecialtiesId())));
+
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- END");
+		}
+
+		return roomVsSpecialitiesEntity;
 	}
 
 	@Override

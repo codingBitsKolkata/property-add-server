@@ -29,6 +29,10 @@ public class PropertyConverter extends CommonConverter implements BaseConverter<
 		propertyEntity.setCreatedDate(Util.getCurrentDateTime());
 		
 		propertyEntity.setPropertyTypeEntity(propertyTypeDAO.find(Long.parseLong(m.getPropertyTypeModel().getPropertyTypeId())));
+		propertyEntity.setPgCategorySexEntity(pgCategorySexDAO.find(Long.parseLong(m.getPgCategorySexModel().getPgcsId())));
+		propertyEntity.setStayTypeEntity(stayTypeDAO.find(Long.valueOf(m.getStayTypeModel().getStayTypeId())));
+		
+		
 		
 		return propertyEntity;
 	}

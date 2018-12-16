@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PropertyVsSpaceRuleEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyVsSpaceRuleModel;
 
@@ -21,8 +22,24 @@ public class PropertyVsSpaceRuleConverter extends CommonConverter
 
 	@Override
 	public PropertyVsSpaceRuleEntity modelToEntity(PropertyVsSpaceRuleModel m) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		PropertyVsSpaceRuleEntity propertyVsSpaceRuleEntity = new PropertyVsSpaceRuleEntity();
+		propertyVsSpaceRuleEntity = (PropertyVsSpaceRuleEntity) Util.transform(modelMapper, m, propertyVsSpaceRuleEntity);
+		propertyVsSpaceRuleEntity.setStatus(Status.ACTIVE.ordinal());
+		propertyVsSpaceRuleEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		propertyVsSpaceRuleEntity.setCreatedDate(Util.getCurrentDateTime());
+		
+		propertyVsSpaceRuleEntity.setSpaceRuleEntity(spaceRuleDAO.find(Long.valueOf(m.getSpaceRuleModel().getSpruleId())));
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return propertyVsSpaceRuleEntity;
 	}
 
 	@Override

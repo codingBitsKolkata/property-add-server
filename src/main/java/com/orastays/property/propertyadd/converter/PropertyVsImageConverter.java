@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PropertyVsImageEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyVsImageModel;
 
@@ -21,8 +22,22 @@ public class PropertyVsImageConverter extends CommonConverter
 
 	@Override
 	public PropertyVsImageEntity modelToEntity(PropertyVsImageModel m) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		PropertyVsImageEntity propertyVsImageEntity = new PropertyVsImageEntity();
+		propertyVsImageEntity = (PropertyVsImageEntity) Util.transform(modelMapper, m, propertyVsImageEntity);
+		propertyVsImageEntity.setStatus(Status.ACTIVE.ordinal());
+		propertyVsImageEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		propertyVsImageEntity.setCreatedDate(Util.getCurrentDateTime());
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return propertyVsImageEntity;
 	}
 
 	@Override

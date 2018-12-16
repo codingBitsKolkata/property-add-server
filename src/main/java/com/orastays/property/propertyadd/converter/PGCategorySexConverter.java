@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PGCategorySexEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PGCategorySexModel;
 
@@ -21,8 +22,14 @@ public class PGCategorySexConverter extends CommonConverter
 
 	@Override
 	public PGCategorySexEntity modelToEntity(PGCategorySexModel m) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		PGCategorySexEntity categorySexEntity = new PGCategorySexEntity();
+		categorySexEntity = (PGCategorySexEntity) Util.transform(modelMapper, m, categorySexEntity);
+		categorySexEntity.setStatus(Status.ACTIVE.ordinal());
+		categorySexEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		categorySexEntity.setCreatedDate(Util.getCurrentDateTime());
+		
+		return categorySexEntity;
 	}
 
 	@Override

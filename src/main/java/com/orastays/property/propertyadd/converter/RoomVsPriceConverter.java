@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsPriceEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsPriceModel;
 
@@ -21,8 +22,23 @@ public class RoomVsPriceConverter extends CommonConverter
 
 	@Override
 	public RoomVsPriceEntity modelToEntity(RoomVsPriceModel m) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- START");
+		}
+
+		RoomVsPriceEntity roomVsPriceEntity = new RoomVsPriceEntity();
+		roomVsPriceEntity = (RoomVsPriceEntity) Util.transform(modelMapper, m, roomVsPriceEntity);
+		roomVsPriceEntity.setStatus(Status.INACTIVE.ordinal());
+		roomVsPriceEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsPriceEntity.setCreatedDate(Util.getCurrentDateTime());
+		roomVsPriceEntity.setPriceTypeEntity(priceTypeDAO.find(Long.valueOf(m.getPriceTypeModel().getPriceTypeId())));
+
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- END");
+		}
+
+		return roomVsPriceEntity;
 	}
 
 	@Override

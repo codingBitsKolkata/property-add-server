@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsAmenitiesEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsAmenitiesModel;
 
@@ -21,8 +22,25 @@ public class RoomVsAmenitiesConverter extends CommonConverter
 
 	@Override
 	public RoomVsAmenitiesEntity modelToEntity(RoomVsAmenitiesModel m) {
-		// TODO Auto-generated method stub
-		return null;
+
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- START");
+		}
+
+		RoomVsAmenitiesEntity roomVsAmenitiesEntity = new RoomVsAmenitiesEntity();
+		roomVsAmenitiesEntity = (RoomVsAmenitiesEntity) Util.transform(modelMapper, m, roomVsAmenitiesEntity);
+		roomVsAmenitiesEntity.setStatus(Status.INACTIVE.ordinal());
+		roomVsAmenitiesEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsAmenitiesEntity.setCreatedDate(Util.getCurrentDateTime());
+		roomVsAmenitiesEntity.setAmenitiesEntity(amenitiesDAO.find(Long.valueOf(m.getAmenitiesModel().getAminitiesId())));
+
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- END");
+		}
+
+		return roomVsAmenitiesEntity;
+		
 	}
 
 	@Override

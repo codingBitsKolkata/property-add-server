@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsOraPricePercentageEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsOrapricePercModel;
 
@@ -22,8 +23,22 @@ public class RoomVsOraPricePercentageConverter extends CommonConverter
 
 	@Override
 	public RoomVsOraPricePercentageEntity modelToEntity(RoomVsOrapricePercModel m) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- START");
+		}
+
+		RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = new RoomVsOraPricePercentageEntity();
+		roomVsOraPricePercentageEntity = (RoomVsOraPricePercentageEntity) Util.transform(modelMapper, m, roomVsOraPricePercentageEntity);
+		roomVsOraPricePercentageEntity.setStatus(Status.INACTIVE.ordinal());
+		roomVsOraPricePercentageEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsOraPricePercentageEntity.setCreatedDate(Util.getCurrentDateTime());
+
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- END");
+		}
+
+		return roomVsOraPricePercentageEntity;
 	}
 
 	@Override

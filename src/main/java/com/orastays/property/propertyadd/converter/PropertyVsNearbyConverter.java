@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PropertyVsNearbyEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyVsNearbyModel;
 
@@ -21,8 +22,22 @@ public class PropertyVsNearbyConverter extends CommonConverter
 
 	@Override
 	public PropertyVsNearbyEntity modelToEntity(PropertyVsNearbyModel m) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- START");
+		}
+		
+		PropertyVsNearbyEntity propertyVsNearbyEntity = new PropertyVsNearbyEntity();
+		propertyVsNearbyEntity = (PropertyVsNearbyEntity) Util.transform(modelMapper, m, propertyVsNearbyEntity);
+		propertyVsNearbyEntity.setStatus(Status.ACTIVE.ordinal());
+		propertyVsNearbyEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		propertyVsNearbyEntity.setCreatedDate(Util.getCurrentDateTime());
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("entityToModel -- END");
+		}
+		
+		return propertyVsNearbyEntity;
 	}
 
 	@Override

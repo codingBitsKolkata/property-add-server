@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString
 public class PGCategorySexModel extends CommonModel {
 
-	@JsonProperty("")
+	@JsonProperty("pgcsId")
 	private String pgcsId;
 	
 	@JsonProperty("languageId")

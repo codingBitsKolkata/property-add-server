@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsCancellationEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsCancellationModel;
 
@@ -21,8 +22,23 @@ public class RoomVsCancellationConverter extends CommonConverter
 
 	@Override
 	public RoomVsCancellationEntity modelToEntity(RoomVsCancellationModel m) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- START");
+		}
+
+		RoomVsCancellationEntity roomVsCancellationEntity = new RoomVsCancellationEntity();
+		roomVsCancellationEntity = (RoomVsCancellationEntity) Util.transform(modelMapper, m, roomVsCancellationEntity);
+		roomVsCancellationEntity.setStatus(Status.INACTIVE.ordinal());
+		roomVsCancellationEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsCancellationEntity.setCreatedDate(Util.getCurrentDateTime());
+		roomVsCancellationEntity.setCancellationSlabEntity(cancellationSlabDAO.find(Long.valueOf(m.getCancellationSlabModel().getCancellationSlabId())));
+
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- END");
+		}
+
+		return roomVsCancellationEntity;
 	}
 
 	@Override

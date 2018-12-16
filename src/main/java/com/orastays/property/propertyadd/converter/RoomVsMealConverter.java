@@ -9,21 +9,41 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsMealEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsMealModel;
 
 @Component
-public class RoomVsMealEntityConverter extends CommonConverter
+public class RoomVsMealConverter extends CommonConverter
 		implements BaseConverter<RoomVsMealEntity, RoomVsMealModel> {
 
 	private static final long serialVersionUID = -4627576649206466658L;
 	
-	private static final Logger logger = LogManager.getLogger(RoomVsMealEntityConverter.class);
+	private static final Logger logger = LogManager.getLogger(RoomVsMealConverter.class);
 
 	@Override
 	public RoomVsMealEntity modelToEntity(RoomVsMealModel m) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- START");
+		}
+
+		RoomVsMealEntity roomVsMealEntity = new RoomVsMealEntity();
+		roomVsMealEntity = (RoomVsMealEntity) Util.transform(modelMapper, m, roomVsMealEntity);
+		roomVsMealEntity.setStatus(Status.INACTIVE.ordinal());
+		roomVsMealEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsMealEntity.setCreatedDate(Util.getCurrentDateTime());
+		roomVsMealEntity.setMealCategoryEntity(mealCategoryDAO.find(Long.valueOf(m.getMealCategoryModel().getMealCategoryId())));
+		roomVsMealEntity.setMealDaysEntity(mealDaysDAO.find(Long.valueOf(m.getMealDaysModel().getMealDaysId())));
+		roomVsMealEntity.setMealPlanCatVsMealPlanEntity(mealPlanCatVsMealPlanDAO.find(Long.valueOf(m.getMealPlanCategoryVsMealPlanModel().getMpcmpId())));
+		roomVsMealEntity.setMealPriceCategoryEntity(mealPriceCategoryDAO.find(Long.valueOf(m.getMealPriceCategoryModel().getMmpcId())));
+		roomVsMealEntity.setMealTypeEntity(mealTypeDAO.find(Long.valueOf(m.getMealTypeModel().getMealTypeId())));
+
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- END");
+		}
+
+		return roomVsMealEntity;
 	}
 
 	@Override
@@ -35,6 +55,7 @@ public class RoomVsMealEntityConverter extends CommonConverter
 		
 		RoomVsMealModel roomVsMealModel = new RoomVsMealModel();
 		roomVsMealModel = (RoomVsMealModel) Util.transform(modelMapper, e, roomVsMealModel);
+		
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomStandardEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomStandardModel;
 
@@ -21,8 +22,24 @@ public class RoomStandardConverter extends CommonConverter
 
 	@Override
 	public RoomStandardEntity modelToEntity(RoomStandardModel m) {
-		// TODO Auto-generated method stub
-		return null;
+
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- START");
+		}
+
+		RoomStandardEntity roomStandardEntity = new RoomStandardEntity();
+		roomStandardEntity = (RoomStandardEntity) Util.transform(modelMapper, m, roomStandardEntity);
+		roomStandardEntity.setStatus(Status.INACTIVE.ordinal());
+		roomStandardEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomStandardEntity.setCreatedDate(Util.getCurrentDateTime());
+
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- END");
+		}
+
+		return roomStandardEntity;
+		
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsOraDiscountEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsOraDiscountModel;
 
@@ -21,8 +22,23 @@ public class RoomVsOraDiscountConverter extends CommonConverter
 
 	@Override
 	public RoomVsOraDiscountEntity modelToEntity(RoomVsOraDiscountModel m) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- START");
+		}
+
+		RoomVsOraDiscountEntity roomVsOraDiscountEntity = new RoomVsOraDiscountEntity();
+		roomVsOraDiscountEntity = (RoomVsOraDiscountEntity) Util.transform(modelMapper, m, roomVsOraDiscountEntity);
+		roomVsOraDiscountEntity.setStatus(Status.INACTIVE.ordinal());
+		roomVsOraDiscountEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsOraDiscountEntity.setCreatedDate(Util.getCurrentDateTime());
+		roomVsOraDiscountEntity.setDiscountCategoryOraEntity(discountCategoryOraDAO.find(Long.valueOf(m.getDiscountCategoryOraModel().getDcoId())));
+
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- END");
+		}
+
+		return roomVsOraDiscountEntity;
 	}
 
 	@Override

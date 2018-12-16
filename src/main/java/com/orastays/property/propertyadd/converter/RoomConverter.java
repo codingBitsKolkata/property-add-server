@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomModel;
 
@@ -22,8 +23,27 @@ public class RoomConverter extends CommonConverter
 
 	@Override
 	public RoomEntity modelToEntity(RoomModel m) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- START");
+		}
+
+		RoomEntity roomEntity = new RoomEntity();
+		roomEntity = (RoomEntity) Util.transform(modelMapper, m, roomEntity);
+		roomEntity.setStatus(Status.INACTIVE.ordinal());
+		roomEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomEntity.setCreatedDate(Util.getCurrentDateTime());
+		
+		roomEntity.setAccommodationEntity(accommodationDAO.find(Long.valueOf(m.getAccommodationModel().getAccommodationId())));
+		roomEntity.setRoomCategoryEntity(roomCategoryDAO.find(Long.valueOf(m.getRoomCategoryModel().getRoomCatId())));
+		roomEntity.setRoomStandardEntity(roomStandardDAO.find(Long.valueOf(m.getRoomStandardModel().getRoomStandardId())));
+
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- END");
+		}
+
+		return roomEntity;
+		
 	}
 
 	@Override

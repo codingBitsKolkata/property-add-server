@@ -10,6 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.orastays.property.propertyadd.entity.PropertyEntity;
+import com.orastays.property.propertyadd.entity.PropertyVsDescriptionEntity;
+import com.orastays.property.propertyadd.entity.PropertyVsDocumentEntity;
+import com.orastays.property.propertyadd.entity.PropertyVsGuestAccessEntity;
+import com.orastays.property.propertyadd.entity.PropertyVsImageEntity;
+import com.orastays.property.propertyadd.entity.PropertyVsNearbyEntity;
+import com.orastays.property.propertyadd.entity.PropertyVsPriceDropEntity;
+import com.orastays.property.propertyadd.entity.PropertyVsSpaceRuleEntity;
+import com.orastays.property.propertyadd.entity.PropertyVsSpecialExperienceEntity;
+import com.orastays.property.propertyadd.entity.UserVsAccountEntity;
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.helper.PropertyAddConstant;
 import com.orastays.property.propertyadd.helper.Status;
@@ -23,6 +32,14 @@ import com.orastays.property.propertyadd.model.PriceDropModel;
 import com.orastays.property.propertyadd.model.PriceTypeModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
+import com.orastays.property.propertyadd.model.PropertyVsDescriptionModel;
+import com.orastays.property.propertyadd.model.PropertyVsDocumentModel;
+import com.orastays.property.propertyadd.model.PropertyVsGuestAccessModel;
+import com.orastays.property.propertyadd.model.PropertyVsImageModel;
+import com.orastays.property.propertyadd.model.PropertyVsNearbyModel;
+import com.orastays.property.propertyadd.model.PropertyVsPriceDropModel;
+import com.orastays.property.propertyadd.model.PropertyVsSpaceRuleModel;
+import com.orastays.property.propertyadd.model.PropertyVsSpecialExperienceModel;
 import com.orastays.property.propertyadd.model.RoomCategoryModel;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
 import com.orastays.property.propertyadd.model.SpecialExperienceModel;
@@ -479,9 +496,81 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		
 		propertyValidation.validatePropertyAdd(propertyModel);
 		
+		// User vs Account
+		UserVsAccountEntity userVsAccountEntity = userVsAccountConverter.modelToEntity(propertyModel.getUserVsAccountModel());
+		userVsAccountDAO.save(userVsAccountEntity);
+		
+		//Property
 		PropertyEntity propertyEntity = propertyConverter.modelToEntity(propertyModel);
-		Long propertyId = (Long) propertyDAO.save(propertyEntity);
-		System.out.println(propertyId);
+		propertyEntity.setUserVsAccountEntity(userVsAccountEntity);
+		propertyDAO.save(propertyEntity);
+		
+		//Property Vs Description
+		for(PropertyVsDescriptionModel propertyVsDescriptionModel:propertyModel.getPropertyVsDescriptionModels()){
+			PropertyVsDescriptionEntity propertyVsDescriptionEntity = new PropertyVsDescriptionEntity();
+			propertyVsDescriptionEntity = propertyVsDescriptionConverter.modelToEntity(propertyVsDescriptionModel);
+			propertyVsDescriptionEntity.setPropertyEntity(propertyEntity);			
+			propertyVsDescriptionDAO.save(propertyVsDescriptionEntity);
+		}
+		
+		//Property Vs Document
+		for(PropertyVsDocumentModel propertyvsDocumentModel:propertyModel.getPropertyVsDocumentModels()){
+			PropertyVsDocumentEntity propertyVsDocumentEntity = new PropertyVsDocumentEntity();
+			propertyVsDocumentEntity = propertyVsDocumentConverter.modelToEntity(propertyvsDocumentModel);
+			propertyVsDocumentEntity.setPropertyEntity(propertyEntity);
+			propertyVsDocumentDAO.save(propertyVsDocumentEntity);
+		}
+		
+		//Property Vs Special Experience
+		for(PropertyVsSpecialExperienceModel specialExperienceModel:propertyModel.getPropertyVsSpecialExperienceModels()){
+			PropertyVsSpecialExperienceEntity propertyVsSpecialExperienceEntity = new PropertyVsSpecialExperienceEntity();
+			propertyVsSpecialExperienceEntity = pVsSpecialExperienceConverter.modelToEntity(specialExperienceModel);
+			propertyVsSpecialExperienceEntity.setPropertyEntity(propertyEntity);
+			propertyVsSpecialExperienceDAO.save(propertyVsSpecialExperienceEntity);
+		}
+		
+		//Property Vs Guest Access
+		for(PropertyVsGuestAccessModel guestAccessModel:propertyModel.getPropertyVsGuestAccessModels()){
+			PropertyVsGuestAccessEntity propertyVsGuestAccessEntity = new PropertyVsGuestAccessEntity();
+			propertyVsGuestAccessEntity = propertyVsGuestAccessConverter.modelToEntity(guestAccessModel);
+			propertyVsGuestAccessEntity.setPropertyEntity(propertyEntity);
+			propertyVsGuestAccessDAO.save(propertyVsGuestAccessEntity);
+		}
+		
+		//Property Vs Image 
+		for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
+			PropertyVsImageEntity propertyVsImageEntity = new PropertyVsImageEntity();
+			propertyVsImageEntity = propertyVsImageConverter.modelToEntity(propertyVsImageModel);
+			propertyVsImageEntity.setPropertyEntity(propertyEntity);
+			propertyVsImageDAO.save(propertyVsImageEntity);
+		}
+		
+		//Property Vs NearBy
+		for(PropertyVsNearbyModel propertyVsNearbyModel:propertyModel.getPropertyVsNearbyModels()){
+			PropertyVsNearbyEntity propertyVsNearbyEntity = new PropertyVsNearbyEntity();
+			propertyVsNearbyEntity = propertyVsNearbyConverter.modelToEntity(propertyVsNearbyModel);
+			propertyVsNearbyEntity.setPropertyEntity(propertyEntity);
+			propertyVsNearbyDAO.save(propertyVsNearbyEntity);
+		}
+		
+		//Property Vs PriceDrop
+		if(propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_Y)){
+			for(PropertyVsPriceDropModel propertyVsPriceDropModel:propertyModel.getPropertyVsPriceDropModels()){
+				PropertyVsPriceDropEntity propertyVsPriceDropEntity = new PropertyVsPriceDropEntity();
+				propertyVsPriceDropEntity = propertyVsPriceDropConverter.modelToEntity(propertyVsPriceDropModel);
+				propertyVsPriceDropEntity.setPropertyEntity(propertyEntity);
+				propertyVsPriceDropDAO.save(propertyVsPriceDropEntity);
+			}
+		}
+		
+		//Property Vs SpaceRule
+		for(PropertyVsSpaceRuleModel propertyVsSpaceRuleModel:propertyModel.getPropertyVsSpaceRuleModels()){
+			PropertyVsSpaceRuleEntity propertyVsSpaceRuleEntity = new PropertyVsSpaceRuleEntity();
+			propertyVsSpaceRuleEntity = propertyVsSpaceRuleConverter.modelToEntity(propertyVsSpaceRuleModel);
+			propertyVsSpaceRuleEntity.setPropertyEntity(propertyEntity);
+			propertyVsSpaceRuleDAO.save(propertyVsSpaceRuleEntity);
+		}
+		
 		return propertyModel;
 	}
 }

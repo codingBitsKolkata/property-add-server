@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsImageEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsImageModel;
 
@@ -21,8 +22,22 @@ public class RoomVsImageConverter extends CommonConverter
 
 	@Override
 	public RoomVsImageEntity modelToEntity(RoomVsImageModel m) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- START");
+		}
+
+		RoomVsImageEntity roomVsImageEntity = new RoomVsImageEntity();
+		roomVsImageEntity = (RoomVsImageEntity) Util.transform(modelMapper, m, roomVsImageEntity);
+		roomVsImageEntity.setStatus(Status.INACTIVE.ordinal());
+		roomVsImageEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsImageEntity.setCreatedDate(Util.getCurrentDateTime());
+
+		if (logger.isInfoEnabled()) {
+			logger.info("modelToEntity -- END");
+		}
+
+		return roomVsImageEntity;
 	}
 
 	@Override

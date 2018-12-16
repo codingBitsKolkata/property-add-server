@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.PropertyVsDescriptionEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.PropertyVsDescriptionModel;
 
@@ -21,8 +22,13 @@ public class PropertyVsDescriptionConverter extends CommonConverter
 
 	@Override
 	public PropertyVsDescriptionEntity modelToEntity(PropertyVsDescriptionModel m) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		PropertyVsDescriptionEntity propertyVsDescriptionEntity = new PropertyVsDescriptionEntity();
+		propertyVsDescriptionEntity = (PropertyVsDescriptionEntity) Util.transform(modelMapper, m, propertyVsDescriptionEntity);
+		propertyVsDescriptionEntity.setStatus(Status.ACTIVE.ordinal());
+		propertyVsDescriptionEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		propertyVsDescriptionEntity.setCreatedDate(Util.getCurrentDateTime());
+		return propertyVsDescriptionEntity;
 	}
 
 	@Override
@@ -63,5 +69,5 @@ public class PropertyVsDescriptionConverter extends CommonConverter
 		
 		return propertyVsDescriptionModels;
 	}
-
+	
 }
