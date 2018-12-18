@@ -15,7 +15,7 @@
   "priceDrop": "Y",
   "immediateBooking": "Y",
   "languageId": "1",
-  "contactPerson": "Sudeep Chhetri",
+  "contactName": "Sudeep Chhetri",
   "altMobile": "9883741610",
   "landline": "033-25478451",
   "altEmail": "sudeep@orastays.com",
