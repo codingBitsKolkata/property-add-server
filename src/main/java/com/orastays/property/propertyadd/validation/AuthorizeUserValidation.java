@@ -119,6 +119,7 @@ public class AuthorizeUserValidation {
 	@Autowired
 	protected AmenitiesDAO amenitiesDAO;
 	
+	
 
 	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {

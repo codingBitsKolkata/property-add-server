@@ -29,8 +29,7 @@ public class RoomVsPriceConverter extends CommonConverter
 
 		RoomVsPriceEntity roomVsPriceEntity = new RoomVsPriceEntity();
 		roomVsPriceEntity = (RoomVsPriceEntity) Util.transform(modelMapper, m, roomVsPriceEntity);
-		roomVsPriceEntity.setStatus(Status.INACTIVE.ordinal());
-		roomVsPriceEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsPriceEntity.setStatus(Status.ACTIVE.ordinal());
 		roomVsPriceEntity.setCreatedDate(Util.getCurrentDateTime());
 		roomVsPriceEntity.setPriceTypeEntity(priceTypeDAO.find(Long.valueOf(m.getPriceTypeModel().getPriceTypeId())));
 

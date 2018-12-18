@@ -30,7 +30,6 @@ public class PropertyVsPriceDropConverter extends CommonConverter
 		PropertyVsPriceDropEntity propertyVsPriceDropEntity = new PropertyVsPriceDropEntity();
 		propertyVsPriceDropEntity = (PropertyVsPriceDropEntity) Util.transform(modelMapper, m, propertyVsPriceDropEntity);
 		propertyVsPriceDropEntity.setStatus(Status.ACTIVE.ordinal());
-		propertyVsPriceDropEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
 		propertyVsPriceDropEntity.setCreatedDate(Util.getCurrentDateTime());
 		
 		propertyVsPriceDropEntity.setPriceDropEntity(priceDropDAO.find(Long.valueOf(m.getPriceDropModel().getPriceDropId())));

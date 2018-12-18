@@ -30,7 +30,6 @@ public class PropertyVsNearbyConverter extends CommonConverter
 		PropertyVsNearbyEntity propertyVsNearbyEntity = new PropertyVsNearbyEntity();
 		propertyVsNearbyEntity = (PropertyVsNearbyEntity) Util.transform(modelMapper, m, propertyVsNearbyEntity);
 		propertyVsNearbyEntity.setStatus(Status.ACTIVE.ordinal());
-		propertyVsNearbyEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
 		propertyVsNearbyEntity.setCreatedDate(Util.getCurrentDateTime());
 		
 		if (logger.isInfoEnabled()) {

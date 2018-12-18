@@ -30,8 +30,7 @@ public class RoomVsOraPricePercentageConverter extends CommonConverter
 
 		RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = new RoomVsOraPricePercentageEntity();
 		roomVsOraPricePercentageEntity = (RoomVsOraPricePercentageEntity) Util.transform(modelMapper, m, roomVsOraPricePercentageEntity);
-		roomVsOraPricePercentageEntity.setStatus(Status.INACTIVE.ordinal());
-		roomVsOraPricePercentageEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsOraPricePercentageEntity.setStatus(Status.ACTIVE.ordinal());
 		roomVsOraPricePercentageEntity.setCreatedDate(Util.getCurrentDateTime());
 
 		if (logger.isInfoEnabled()) {

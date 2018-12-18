@@ -26,7 +26,6 @@ public class PropertyVsSpecialExperienceConverter extends CommonConverter
 		PropertyVsSpecialExperienceEntity specialExperienceEntity = new PropertyVsSpecialExperienceEntity();
 		specialExperienceEntity = (PropertyVsSpecialExperienceEntity) Util.transform(modelMapper, m, specialExperienceEntity);
 		specialExperienceEntity.setStatus(Status.ACTIVE.ordinal());
-		specialExperienceEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
 		specialExperienceEntity.setCreatedDate(Util.getCurrentDateTime());
 		
 		specialExperienceEntity.setSpecialExperienceEntity(specialExperienceDAO.find(Long.parseLong(m.getSpecialExperienceModel().getExperienceId())));

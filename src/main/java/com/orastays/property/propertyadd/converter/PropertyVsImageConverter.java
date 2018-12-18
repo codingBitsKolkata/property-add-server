@@ -30,7 +30,6 @@ public class PropertyVsImageConverter extends CommonConverter
 		PropertyVsImageEntity propertyVsImageEntity = new PropertyVsImageEntity();
 		propertyVsImageEntity = (PropertyVsImageEntity) Util.transform(modelMapper, m, propertyVsImageEntity);
 		propertyVsImageEntity.setStatus(Status.ACTIVE.ordinal());
-		propertyVsImageEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
 		propertyVsImageEntity.setCreatedDate(Util.getCurrentDateTime());
 		
 		if (logger.isInfoEnabled()) {

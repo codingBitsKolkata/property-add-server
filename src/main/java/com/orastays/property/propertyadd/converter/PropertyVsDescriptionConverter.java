@@ -26,7 +26,6 @@ public class PropertyVsDescriptionConverter extends CommonConverter
 		PropertyVsDescriptionEntity propertyVsDescriptionEntity = new PropertyVsDescriptionEntity();
 		propertyVsDescriptionEntity = (PropertyVsDescriptionEntity) Util.transform(modelMapper, m, propertyVsDescriptionEntity);
 		propertyVsDescriptionEntity.setStatus(Status.ACTIVE.ordinal());
-		propertyVsDescriptionEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
 		propertyVsDescriptionEntity.setCreatedDate(Util.getCurrentDateTime());
 		return propertyVsDescriptionEntity;
 	}

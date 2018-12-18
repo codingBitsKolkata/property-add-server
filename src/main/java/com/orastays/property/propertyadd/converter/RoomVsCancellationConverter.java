@@ -29,8 +29,7 @@ public class RoomVsCancellationConverter extends CommonConverter
 
 		RoomVsCancellationEntity roomVsCancellationEntity = new RoomVsCancellationEntity();
 		roomVsCancellationEntity = (RoomVsCancellationEntity) Util.transform(modelMapper, m, roomVsCancellationEntity);
-		roomVsCancellationEntity.setStatus(Status.INACTIVE.ordinal());
-		roomVsCancellationEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsCancellationEntity.setStatus(Status.ACTIVE.ordinal());
 		roomVsCancellationEntity.setCreatedDate(Util.getCurrentDateTime());
 		roomVsCancellationEntity.setCancellationSlabEntity(cancellationSlabDAO.find(Long.valueOf(m.getCancellationSlabModel().getCancellationSlabId())));
 

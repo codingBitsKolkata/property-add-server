@@ -30,7 +30,6 @@ public class PropertyVsGuestAccessConverter extends CommonConverter
 		PropertyVsGuestAccessEntity propertyVsGuestAccessEntity = new PropertyVsGuestAccessEntity();
 		propertyVsGuestAccessEntity = (PropertyVsGuestAccessEntity) Util.transform(modelMapper, m, propertyVsGuestAccessEntity);
 		propertyVsGuestAccessEntity.setStatus(Status.ACTIVE.ordinal());
-		propertyVsGuestAccessEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
 		propertyVsGuestAccessEntity.setCreatedDate(Util.getCurrentDateTime());
 		
 		if (logger.isInfoEnabled()) {

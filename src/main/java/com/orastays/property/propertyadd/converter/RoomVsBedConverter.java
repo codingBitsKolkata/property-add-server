@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsBedEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsBedModel;
 
@@ -20,8 +21,11 @@ public class RoomVsBedConverter extends CommonConverter implements BaseConverter
 
 	@Override
 	public RoomVsBedEntity modelToEntity(RoomVsBedModel m) {
-		// TODO Auto-generated method stub
-		return null;
+		RoomVsBedEntity roomVsBedEntity = new RoomVsBedEntity();
+		roomVsBedEntity = (RoomVsBedEntity) Util.transform(modelMapper, m, roomVsBedEntity);
+		roomVsBedEntity.setStatus(Status.ACTIVE.ordinal());
+		roomVsBedEntity.setCreatedDate(Util.getCurrentDateTime());
+		return roomVsBedEntity;
 	}
 
 	@Override

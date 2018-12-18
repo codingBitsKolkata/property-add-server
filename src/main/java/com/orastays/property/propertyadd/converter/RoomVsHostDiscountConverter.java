@@ -29,8 +29,7 @@ public class RoomVsHostDiscountConverter extends CommonConverter
 
 		RoomVsHostDiscountEntity roomVsHostDiscountEntity = new RoomVsHostDiscountEntity();
 		roomVsHostDiscountEntity = (RoomVsHostDiscountEntity) Util.transform(modelMapper, m, roomVsHostDiscountEntity);
-		roomVsHostDiscountEntity.setStatus(Status.INACTIVE.ordinal());
-		roomVsHostDiscountEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsHostDiscountEntity.setStatus(Status.ACTIVE.ordinal());
 		roomVsHostDiscountEntity.setCreatedDate(Util.getCurrentDateTime());
 		roomVsHostDiscountEntity.setDiscountCategoryHostEntity(discountCategoryHostDAO.find(Long.valueOf(m.getDiscountCategoryHostModel().getDchId())));
 

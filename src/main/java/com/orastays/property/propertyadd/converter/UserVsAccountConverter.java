@@ -33,8 +33,7 @@ public class UserVsAccountConverter extends CommonConverter
 
 		UserVsAccountEntity userVsAccountEntity = new UserVsAccountEntity();
 		userVsAccountEntity = (UserVsAccountEntity) Util.transform(modelMapper, m, userVsAccountEntity);
-		userVsAccountEntity.setStatus(Status.INACTIVE.ordinal());
-		userVsAccountEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		userVsAccountEntity.setStatus(Status.ACTIVE.ordinal());
 		userVsAccountEntity.setCreatedDate(Util.getCurrentDateTime());
 
 		if (logger.isInfoEnabled()) {

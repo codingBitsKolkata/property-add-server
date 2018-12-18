@@ -24,8 +24,7 @@ public class PropertyConverter extends CommonConverter implements BaseConverter<
 		
 		PropertyEntity propertyEntity = new PropertyEntity();
 		propertyEntity = (PropertyEntity) Util.transform(modelMapper, m, propertyEntity);
-		propertyEntity.setStatus(Status.ACTIVE.ordinal());
-		propertyEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		propertyEntity.setStatus(Status.INACTIVE.ordinal());
 		propertyEntity.setCreatedDate(Util.getCurrentDateTime());
 		
 		propertyEntity.setPropertyTypeEntity(propertyTypeDAO.find(Long.parseLong(m.getPropertyTypeModel().getPropertyTypeId())));

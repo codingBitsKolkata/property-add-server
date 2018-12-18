@@ -30,7 +30,6 @@ public class PropertyVsSpaceRuleConverter extends CommonConverter
 		PropertyVsSpaceRuleEntity propertyVsSpaceRuleEntity = new PropertyVsSpaceRuleEntity();
 		propertyVsSpaceRuleEntity = (PropertyVsSpaceRuleEntity) Util.transform(modelMapper, m, propertyVsSpaceRuleEntity);
 		propertyVsSpaceRuleEntity.setStatus(Status.ACTIVE.ordinal());
-		propertyVsSpaceRuleEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
 		propertyVsSpaceRuleEntity.setCreatedDate(Util.getCurrentDateTime());
 		
 		propertyVsSpaceRuleEntity.setSpaceRuleEntity(spaceRuleDAO.find(Long.valueOf(m.getSpaceRuleModel().getSpruleId())));

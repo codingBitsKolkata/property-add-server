@@ -30,8 +30,7 @@ public class RoomVsAmenitiesConverter extends CommonConverter
 
 		RoomVsAmenitiesEntity roomVsAmenitiesEntity = new RoomVsAmenitiesEntity();
 		roomVsAmenitiesEntity = (RoomVsAmenitiesEntity) Util.transform(modelMapper, m, roomVsAmenitiesEntity);
-		roomVsAmenitiesEntity.setStatus(Status.INACTIVE.ordinal());
-		roomVsAmenitiesEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsAmenitiesEntity.setStatus(Status.ACTIVE.ordinal());
 		roomVsAmenitiesEntity.setCreatedDate(Util.getCurrentDateTime());
 		roomVsAmenitiesEntity.setAmenitiesEntity(amenitiesDAO.find(Long.valueOf(m.getAmenitiesModel().getAminitiesId())));
 

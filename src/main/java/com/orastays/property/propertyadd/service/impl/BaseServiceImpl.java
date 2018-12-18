@@ -23,6 +23,7 @@ import com.orastays.property.propertyadd.converter.PropertyVsSpecialExperienceCo
 import com.orastays.property.propertyadd.converter.RoomCategoryConverter;
 import com.orastays.property.propertyadd.converter.RoomConverter;
 import com.orastays.property.propertyadd.converter.RoomVsAmenitiesConverter;
+import com.orastays.property.propertyadd.converter.RoomVsBedConverter;
 import com.orastays.property.propertyadd.converter.RoomVsCancellationConverter;
 import com.orastays.property.propertyadd.converter.RoomVsHostDiscountConverter;
 import com.orastays.property.propertyadd.converter.RoomVsImageConverter;
@@ -57,6 +58,7 @@ import com.orastays.property.propertyadd.dao.PropertyVsSpecialExperienceDAO;
 import com.orastays.property.propertyadd.dao.RoomCategoryDAO;
 import com.orastays.property.propertyadd.dao.RoomDAO;
 import com.orastays.property.propertyadd.dao.RoomVsAmenitiesDAO;
+import com.orastays.property.propertyadd.dao.RoomVsBedDAO;
 import com.orastays.property.propertyadd.dao.RoomVsCancellationDAO;
 import com.orastays.property.propertyadd.dao.RoomVsHostDiscountDAO;
 import com.orastays.property.propertyadd.dao.RoomVsImageDAO;
@@ -280,5 +282,13 @@ public abstract class BaseServiceImpl {
 	
 	@Autowired
 	protected DiscountCategoryOraDAO discountCategoryOraDAO;
+	
+	@Autowired
+	protected RoomVsBedConverter roomVsBedConverter;
+	
+	@Autowired
+	protected RoomVsBedDAO roomVsBedDAO;
+	
+	
 	
 }

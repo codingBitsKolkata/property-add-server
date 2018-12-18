@@ -1,6 +1,5 @@
 package com.orastays.property.propertyadd.service.impl;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +21,7 @@ import com.orastays.property.propertyadd.entity.PropertyVsSpaceRuleEntity;
 import com.orastays.property.propertyadd.entity.PropertyVsSpecialExperienceEntity;
 import com.orastays.property.propertyadd.entity.RoomEntity;
 import com.orastays.property.propertyadd.entity.RoomVsAmenitiesEntity;
+import com.orastays.property.propertyadd.entity.RoomVsBedEntity;
 import com.orastays.property.propertyadd.entity.RoomVsCancellationEntity;
 import com.orastays.property.propertyadd.entity.RoomVsHostDiscountEntity;
 import com.orastays.property.propertyadd.entity.RoomVsImageEntity;
@@ -55,18 +55,18 @@ import com.orastays.property.propertyadd.model.PropertyVsSpecialExperienceModel;
 import com.orastays.property.propertyadd.model.RoomCategoryModel;
 import com.orastays.property.propertyadd.model.RoomModel;
 import com.orastays.property.propertyadd.model.RoomVsAmenitiesModel;
+import com.orastays.property.propertyadd.model.RoomVsBedModel;
 import com.orastays.property.propertyadd.model.RoomVsCancellationModel;
 import com.orastays.property.propertyadd.model.RoomVsHostDiscountModel;
 import com.orastays.property.propertyadd.model.RoomVsImageModel;
 import com.orastays.property.propertyadd.model.RoomVsMealModel;
-import com.orastays.property.propertyadd.model.RoomVsOraDiscountModel;
-import com.orastays.property.propertyadd.model.RoomVsOrapricePercModel;
 import com.orastays.property.propertyadd.model.RoomVsPriceModel;
 import com.orastays.property.propertyadd.model.RoomVsSpecialitiesModel;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
 import com.orastays.property.propertyadd.model.SpecialExperienceModel;
 import com.orastays.property.propertyadd.model.SpecialtiesModel;
 import com.orastays.property.propertyadd.model.StayTypeModel;
+import com.orastays.property.propertyadd.model.UserModel;
 import com.orastays.property.propertyadd.service.PropertyService;
 
 @Service
@@ -516,13 +516,16 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 	@Override
 	public PropertyModel saveProperty(PropertyModel propertyModel) throws FormExceptions {
 		
-		propertyValidation.validatePropertyAdd(propertyModel);
-		
+		UserModel userModel = propertyValidation.validatePropertyAdd(propertyModel);
+		Long userId = Long.valueOf(userModel.getUserId());
 		// User vs Account
+		propertyModel.getUserVsAccountModel().setCreatedBy(userId);
+		propertyModel.getUserVsAccountModel().setUserId(userModel.getUserId());
 		UserVsAccountEntity userVsAccountEntity = userVsAccountConverter.modelToEntity(propertyModel.getUserVsAccountModel());
 		userVsAccountDAO.save(userVsAccountEntity);
 		
 		//Property
+		propertyModel.setCreatedBy(userId);
 		PropertyEntity propertyEntity = propertyConverter.modelToEntity(propertyModel);
 		propertyEntity.setUserVsAccountEntity(userVsAccountEntity);
 		propertyDAO.save(propertyEntity);
@@ -530,6 +533,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		//Property Vs Description
 		for(PropertyVsDescriptionModel propertyVsDescriptionModel:propertyModel.getPropertyVsDescriptionModels()){
 			PropertyVsDescriptionEntity propertyVsDescriptionEntity = new PropertyVsDescriptionEntity();
+			propertyVsDescriptionModel.setCreatedBy(userId);
 			propertyVsDescriptionEntity = propertyVsDescriptionConverter.modelToEntity(propertyVsDescriptionModel);
 			propertyVsDescriptionEntity.setPropertyEntity(propertyEntity);			
 			propertyVsDescriptionDAO.save(propertyVsDescriptionEntity);
@@ -538,6 +542,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		//Property Vs Document
 		for(PropertyVsDocumentModel propertyvsDocumentModel:propertyModel.getPropertyVsDocumentModels()){
 			PropertyVsDocumentEntity propertyVsDocumentEntity = new PropertyVsDocumentEntity();
+			propertyvsDocumentModel.setCreatedBy(userId);
 			propertyVsDocumentEntity = propertyVsDocumentConverter.modelToEntity(propertyvsDocumentModel);
 			propertyVsDocumentEntity.setPropertyEntity(propertyEntity);
 			propertyVsDocumentDAO.save(propertyVsDocumentEntity);
@@ -546,6 +551,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		//Property Vs Special Experience
 		for(PropertyVsSpecialExperienceModel specialExperienceModel:propertyModel.getPropertyVsSpecialExperienceModels()){
 			PropertyVsSpecialExperienceEntity propertyVsSpecialExperienceEntity = new PropertyVsSpecialExperienceEntity();
+			specialExperienceModel.setCreatedBy(userId);
 			propertyVsSpecialExperienceEntity = pVsSpecialExperienceConverter.modelToEntity(specialExperienceModel);
 			propertyVsSpecialExperienceEntity.setPropertyEntity(propertyEntity);
 			propertyVsSpecialExperienceDAO.save(propertyVsSpecialExperienceEntity);
@@ -554,6 +560,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		//Property Vs Guest Access
 		for(PropertyVsGuestAccessModel guestAccessModel:propertyModel.getPropertyVsGuestAccessModels()){
 			PropertyVsGuestAccessEntity propertyVsGuestAccessEntity = new PropertyVsGuestAccessEntity();
+			guestAccessModel.setCreatedBy(userId);
 			propertyVsGuestAccessEntity = propertyVsGuestAccessConverter.modelToEntity(guestAccessModel);
 			propertyVsGuestAccessEntity.setPropertyEntity(propertyEntity);
 			propertyVsGuestAccessDAO.save(propertyVsGuestAccessEntity);
@@ -562,6 +569,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		//Property Vs Image 
 		for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
 			PropertyVsImageEntity propertyVsImageEntity = new PropertyVsImageEntity();
+			propertyVsImageModel.setCreatedBy(userId);
 			propertyVsImageEntity = propertyVsImageConverter.modelToEntity(propertyVsImageModel);
 			propertyVsImageEntity.setPropertyEntity(propertyEntity);
 			propertyVsImageDAO.save(propertyVsImageEntity);
@@ -570,6 +578,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		//Property Vs NearBy
 		for(PropertyVsNearbyModel propertyVsNearbyModel:propertyModel.getPropertyVsNearbyModels()){
 			PropertyVsNearbyEntity propertyVsNearbyEntity = new PropertyVsNearbyEntity();
+			propertyVsNearbyModel.setCreatedBy(userId);
 			propertyVsNearbyEntity = propertyVsNearbyConverter.modelToEntity(propertyVsNearbyModel);
 			propertyVsNearbyEntity.setPropertyEntity(propertyEntity);
 			propertyVsNearbyDAO.save(propertyVsNearbyEntity);
@@ -583,6 +592,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 				PropertyVsPriceDropModel propertyVsPriceDropModel = new PropertyVsPriceDropModel();
 				propertyVsPriceDropModel.setPriceDropModel(priceDropModel);
 				propertyVsPriceDropModel.setPercentage(PropertyAddConstant.STR_ZERO);
+				propertyVsPriceDropModel.setCreatedBy(userId);
 				propertyVsPriceDropEntity = propertyVsPriceDropConverter.modelToEntity(propertyVsPriceDropModel);
 				propertyVsPriceDropEntity.setPropertyEntity(propertyEntity);
 				propertyVsPriceDropDAO.save(propertyVsPriceDropEntity);
@@ -592,6 +602,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		//Property Vs SpaceRule
 		for(PropertyVsSpaceRuleModel propertyVsSpaceRuleModel:propertyModel.getPropertyVsSpaceRuleModels()){
 			PropertyVsSpaceRuleEntity propertyVsSpaceRuleEntity = new PropertyVsSpaceRuleEntity();
+			propertyVsSpaceRuleModel.setCreatedBy(userId);
 			propertyVsSpaceRuleEntity = propertyVsSpaceRuleConverter.modelToEntity(propertyVsSpaceRuleModel);
 			propertyVsSpaceRuleEntity.setPropertyEntity(propertyEntity);
 			propertyVsSpaceRuleDAO.save(propertyVsSpaceRuleEntity);
@@ -601,6 +612,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		//Room 
 		for(RoomModel roomModel:propertyModel.getRoomModels()){
 			RoomEntity roomEntity = new RoomEntity();
+			roomModel.setCreatedBy(userId);
 			roomEntity = roomConverter.modelToEntity(roomModel);
 			roomEntity.setPropertyEntity(propertyEntity);
 			roomDAO.save(roomEntity);
@@ -608,6 +620,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			//Room vs Amenities
 			for(RoomVsAmenitiesModel roomVsAmenitiesModel:roomModel.getRoomVsAmenitiesModels()){
 				RoomVsAmenitiesEntity roomVsAmenitiesEntity = new RoomVsAmenitiesEntity();
+				roomVsAmenitiesModel.setCreatedBy(userId);
 				roomVsAmenitiesEntity = roomVsAmenitiesConverter.modelToEntity(roomVsAmenitiesModel);
 				roomVsAmenitiesEntity.setRoomEntity(roomEntity);
 				roomVsAmenitiesDAO.save(roomVsAmenitiesEntity);
@@ -616,6 +629,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			//Room Vs Image
 			for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
 				RoomVsImageEntity roomVsImageEntity = new RoomVsImageEntity();
+				roomVsImageModel.setCreatedBy(userId);
 				roomVsImageEntity = roomVsImageConverter.modelToEntity(roomVsImageModel);
 				roomVsImageEntity.setRoomEntity(roomEntity);
 				roomVsImageDAO.save(roomVsImageEntity);
@@ -624,6 +638,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			//Room Vs Host Discount
 			for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
 				RoomVsHostDiscountEntity roomVsHostDiscountEntity = new RoomVsHostDiscountEntity();
+				roomVsHostDiscountModel.setCreatedBy(userId);
 				roomVsHostDiscountEntity = roomVsHostDiscountConverter.modelToEntity(roomVsHostDiscountModel);
 				roomVsHostDiscountEntity.setRoomEntity(roomEntity);
 				roomVsHostDiscountDAO.save(roomVsHostDiscountEntity);
@@ -635,17 +650,20 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			roomVsOraDiscountEntity.setDiscountCategoryOraEntity(discountCategoryOraEntity);
 			roomVsOraDiscountEntity.setRoomEntity(roomEntity);
 			roomVsOraDiscountEntity.setDiscount(PropertyAddConstant.STR_ZERO);
+			roomVsOraDiscountEntity.setCreatedBy(userId);
 			roomVsOraDiscountDAO.save(roomVsOraDiscountEntity);
 			
 			//Room Vs Ora Price Percentage
 			RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = new RoomVsOraPricePercentageEntity();
 			roomVsOraPricePercentageEntity.setPercentage(PropertyAddConstant.STR_ZERO);
 			roomVsOraPricePercentageEntity.setRoomEntity(roomEntity);
+			roomVsOraPricePercentageEntity.setCreatedBy(userId);
 			roomVsOraPricePercentageDAO.save(roomVsOraPricePercentageEntity);
 			
 			// Room Vs Price
 			for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
 				RoomVsPriceEntity roomVsPriceEntity = new RoomVsPriceEntity();
+				roomVsPriceModel.setCreatedBy(userId);
 				roomVsPriceEntity = roomVsPriceConverter.modelToEntity(roomVsPriceModel);
 				roomVsPriceEntity.setRoomEntity(roomEntity);
 				roomVsPriceDAO.save(roomVsPriceEntity);
@@ -654,6 +672,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			// Room vs Specilities
 			for(RoomVsSpecialitiesModel roomVsSpecialitiesModel:roomModel.getRoomVsSpecialitiesModels()){
 				RoomVsSpecialitiesEntity roomVsSpecialitiesEntity = new RoomVsSpecialitiesEntity();
+				roomVsSpecialitiesModel.setCreatedBy(userId);
 				roomVsSpecialitiesEntity = roomVsSpecialitiesConverter.modelToEntity(roomVsSpecialitiesModel);
 				roomVsSpecialitiesEntity.setRoomEntity(roomEntity);
 				roomVsSpecialitiesDAO.save(roomVsSpecialitiesEntity);
@@ -662,6 +681,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			//Room Vs Meal
 			for(RoomVsMealModel roomVsMeal:roomModel.getRoomVsMealModels()){
 				RoomVsMealEntity roomVsMealEntity = new RoomVsMealEntity();
+				roomVsMeal.setCreatedBy(userId);
 				roomVsMealEntity = roomVsMealConverter.modelToEntity(roomVsMeal);
 				roomVsMealEntity.setRoomEntity(roomEntity);
 				roomVsMealDAO.save(roomVsMealEntity);
@@ -670,10 +690,19 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			//Room vs Cancellation
 			for(RoomVsCancellationModel roomVsCancellationModel:roomModel.getRoomVsCancellationModels()){
 				RoomVsCancellationEntity roomVsCancellationEntity = new RoomVsCancellationEntity();
+				roomVsCancellationModel.setCreatedBy(userId);
 				roomVsCancellationEntity = roomVsCancellationConverter.modelToEntity(roomVsCancellationModel);
 				roomVsCancellationEntity.setRoomEntity(roomEntity);
 				roomVsCancellationDAO.save(roomVsCancellationEntity);
 			}
+			
+			//// Room Vs Bed
+			RoomVsBedModel roomVsBedModel = roomModel.getRoomVsBedModel();
+			RoomVsBedEntity roomVsBedEntity = new RoomVsBedEntity();
+			roomVsBedModel.setCreatedBy(userId);
+			roomVsBedEntity = roomVsBedConverter.modelToEntity(roomVsBedModel);
+			roomVsBedEntity.setRoomEntity(roomEntity);
+			roomVsBedDAO.save(roomVsBedEntity);	
 		}
 		
 		

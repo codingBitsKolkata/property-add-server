@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Setter
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class PropertyVsDocumentModel {
+public class PropertyVsDocumentModel extends CommonModel{
 
 	@JsonProperty("userVsDocumentId")
 	private Long userVsDocumentId;

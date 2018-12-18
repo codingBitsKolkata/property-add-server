@@ -30,8 +30,7 @@ public class RoomConverter extends CommonConverter
 
 		RoomEntity roomEntity = new RoomEntity();
 		roomEntity = (RoomEntity) Util.transform(modelMapper, m, roomEntity);
-		roomEntity.setStatus(Status.INACTIVE.ordinal());
-		roomEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomEntity.setStatus(Status.ACTIVE.ordinal());
 		roomEntity.setCreatedDate(Util.getCurrentDateTime());
 		
 		roomEntity.setAccommodationEntity(accommodationDAO.find(Long.valueOf(m.getAccommodationModel().getAccommodationId())));

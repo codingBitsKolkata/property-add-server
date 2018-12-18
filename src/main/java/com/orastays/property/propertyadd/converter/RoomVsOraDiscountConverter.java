@@ -29,8 +29,7 @@ public class RoomVsOraDiscountConverter extends CommonConverter
 
 		RoomVsOraDiscountEntity roomVsOraDiscountEntity = new RoomVsOraDiscountEntity();
 		roomVsOraDiscountEntity = (RoomVsOraDiscountEntity) Util.transform(modelMapper, m, roomVsOraDiscountEntity);
-		roomVsOraDiscountEntity.setStatus(Status.INACTIVE.ordinal());
-		roomVsOraDiscountEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsOraDiscountEntity.setStatus(Status.ACTIVE.ordinal());
 		roomVsOraDiscountEntity.setCreatedDate(Util.getCurrentDateTime());
 		roomVsOraDiscountEntity.setDiscountCategoryOraEntity(discountCategoryOraDAO.find(Long.valueOf(m.getDiscountCategoryOraModel().getDcoId())));
 

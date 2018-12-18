@@ -30,8 +30,7 @@ public class RoomVsSpecialitiesConverter extends CommonConverter
 
 		RoomVsSpecialitiesEntity roomVsSpecialitiesEntity = new RoomVsSpecialitiesEntity();
 		roomVsSpecialitiesEntity = (RoomVsSpecialitiesEntity) Util.transform(modelMapper, m, roomVsSpecialitiesEntity);
-		roomVsSpecialitiesEntity.setStatus(Status.INACTIVE.ordinal());
-		roomVsSpecialitiesEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsSpecialitiesEntity.setStatus(Status.ACTIVE.ordinal());
 		roomVsSpecialitiesEntity.setCreatedDate(Util.getCurrentDateTime());
 		roomVsSpecialitiesEntity.setSpecialtiesEntity(specialtiesDAO.find(Long.valueOf(m.getSpecialtiesModel().getSpecialtiesId())));
 

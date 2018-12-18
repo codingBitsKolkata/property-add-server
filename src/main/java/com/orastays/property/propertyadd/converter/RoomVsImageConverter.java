@@ -29,8 +29,7 @@ public class RoomVsImageConverter extends CommonConverter
 
 		RoomVsImageEntity roomVsImageEntity = new RoomVsImageEntity();
 		roomVsImageEntity = (RoomVsImageEntity) Util.transform(modelMapper, m, roomVsImageEntity);
-		roomVsImageEntity.setStatus(Status.INACTIVE.ordinal());
-		roomVsImageEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsImageEntity.setStatus(Status.ACTIVE.ordinal());
 		roomVsImageEntity.setCreatedDate(Util.getCurrentDateTime());
 
 		if (logger.isInfoEnabled()) {

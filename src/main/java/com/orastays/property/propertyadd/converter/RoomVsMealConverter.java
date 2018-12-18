@@ -32,8 +32,7 @@ public class RoomVsMealConverter extends CommonConverter
 
 		RoomVsMealEntity roomVsMealEntity = new RoomVsMealEntity();
 		roomVsMealEntity = (RoomVsMealEntity) Util.transform(modelMapper, m, roomVsMealEntity);
-		roomVsMealEntity.setStatus(Status.INACTIVE.ordinal());
-		roomVsMealEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
+		roomVsMealEntity.setStatus(Status.ACTIVE.ordinal());
 		roomVsMealEntity.setCreatedDate(Util.getCurrentDateTime());
 		roomVsMealEntity.setMealCategoryEntity(mealCategoryDAO.find(Long.valueOf(m.getMealCategoryModel().getMealCategoryId())));
 		if(Objects.nonNull(m.getMealCategoryModel())){

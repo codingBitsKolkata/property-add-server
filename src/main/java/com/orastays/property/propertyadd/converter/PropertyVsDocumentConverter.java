@@ -30,7 +30,6 @@ BaseConverter<PropertyVsDocumentEntity, PropertyVsDocumentModel> {
 		PropertyVsDocumentEntity propertyVsDocumentEntity = new PropertyVsDocumentEntity();
 		propertyVsDocumentEntity = (PropertyVsDocumentEntity) Util.transform(modelMapper, m, propertyVsDocumentEntity);
 		propertyVsDocumentEntity.setStatus(Status.ACTIVE.ordinal());
-		propertyVsDocumentEntity.setCreatedBy(Long.parseLong(String.valueOf(Status.ZERO.ordinal())));
 		propertyVsDocumentEntity.setCreatedDate(Util.getCurrentDateTime());
 		propertyVsDocumentEntity.setDocumentEntity(documentDAO.find(Long.valueOf(m.getDocumentModel().getDocumentId())));
 		
