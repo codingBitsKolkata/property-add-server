@@ -34,7 +34,7 @@ public interface PropertyService {
 	List<PriceTypeModel> fetchPriceTypeList(CommonModel commonModel) throws FormExceptions;
 	List<CancellationSlabModel> fetchCancellationSlabList() throws FormExceptions;
 	List<PriceDropModel> fetchPriceDropList() throws FormExceptions;
-	PropertyModel saveProperty(PropertyModel propertyModel) throws FormExceptions;
+	void saveProperty(PropertyModel propertyModel) throws FormExceptions;
 	
 	
 }

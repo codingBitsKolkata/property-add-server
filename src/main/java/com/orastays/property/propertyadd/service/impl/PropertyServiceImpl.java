@@ -82,7 +82,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("fetchPropertyTypes -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(commonModel,"Fetch Property Type");
+		propertyValidation.validateLanguageWithUserToken(commonModel);
 		List<PropertyTypeModel> propertyTypeModels = null;
 		
 		try {
@@ -116,7 +116,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("fetchStayTypeList -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(commonModel,"Fetch Stay Type");
+		propertyValidation.validateLanguageWithUserToken(commonModel);
 		List<StayTypeModel> stayTypeModels = null;
 		
 		try {
@@ -150,7 +150,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("fetchAccommodationByLanguage -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(commonModel,"Fetch Accomodation");
+		propertyValidation.validateLanguageWithUserToken(commonModel);
 		List<AccommodationModel> accommodationModels = null;
 		
 		try {
@@ -184,7 +184,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("fetchPgCategorySexListByLanguage -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(commonModel,"Fetch PG Category Sex");
+		propertyValidation.validateLanguageWithUserToken(commonModel);
 		List<PGCategorySexModel> pgCategorySexModels = null;
 		
 		try {
@@ -218,7 +218,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("fetchAmenitiesTypeList -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(null,"Fetch Amenities Type");
+		propertyValidation.validateLanguageWithUserToken(null);
 		List<AmenitiesTypeModel> amenitiesTypeModels = null;
 		
 		try {
@@ -251,7 +251,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("fetchAmenitiesList -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(commonModel,"Fetch Amenities List");
+		propertyValidation.validateLanguageWithUserToken(commonModel);
 		List<AmenitiesModel> amenitiesModels = null;
 		
 		try {
@@ -285,7 +285,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("fetchSpecialExperienceList -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(commonModel,"Fetch Special Experience");
+		propertyValidation.validateLanguageWithUserToken(commonModel);
 		List<SpecialExperienceModel> specialExperienceModels = null;
 		
 		try {
@@ -319,7 +319,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("fetchSpaceRuleList -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(commonModel,"Fetch Space Rule");
+		propertyValidation.validateLanguageWithUserToken(commonModel);
 		List<SpaceRuleModel> spaceRuleModels = null;
 		
 		try {
@@ -353,7 +353,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("fetchSpecialtiesList -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(commonModel,"Fetch Specialties");
+		propertyValidation.validateLanguageWithUserToken(commonModel);
 		List<SpecialtiesModel> specialtiesModels = null;
 		
 		try {
@@ -387,7 +387,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("fetchRoomCategoryList -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(commonModel,"Fetch Room Category");
+		propertyValidation.validateLanguageWithUserToken(commonModel);
 		List<RoomCategoryModel> roomCategoryModels = null;
 		
 		try {
@@ -421,7 +421,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("fetchPriceTypeList -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(commonModel,"Fetch Price Type");
+		propertyValidation.validateLanguageWithUserToken(commonModel);
 		List<PriceTypeModel> priceTypeModels = null;
 		
 		try {
@@ -455,7 +455,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("fetchCancellationSlabList -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(null,"Fetch Cancellation Slab");
+		propertyValidation.validateLanguageWithUserToken(null);
 		List<CancellationSlabModel> cancellationSlabModels = null;
 		
 		try {
@@ -514,7 +514,11 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 	}
 
 	@Override
-	public PropertyModel saveProperty(PropertyModel propertyModel) throws FormExceptions {
+	public void saveProperty(PropertyModel propertyModel) throws FormExceptions {
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("saveProperty -- Start");
+		}
 		
 		UserModel userModel = propertyValidation.validatePropertyAdd(propertyModel);
 		Long userId = Long.valueOf(userModel.getUserId());
@@ -532,54 +536,48 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		
 		//Property Vs Description
 		for(PropertyVsDescriptionModel propertyVsDescriptionModel:propertyModel.getPropertyVsDescriptionModels()){
-			PropertyVsDescriptionEntity propertyVsDescriptionEntity = new PropertyVsDescriptionEntity();
 			propertyVsDescriptionModel.setCreatedBy(userId);
-			propertyVsDescriptionEntity = propertyVsDescriptionConverter.modelToEntity(propertyVsDescriptionModel);
+			PropertyVsDescriptionEntity propertyVsDescriptionEntity = propertyVsDescriptionConverter.modelToEntity(propertyVsDescriptionModel);
 			propertyVsDescriptionEntity.setPropertyEntity(propertyEntity);			
 			propertyVsDescriptionDAO.save(propertyVsDescriptionEntity);
 		}
 		
 		//Property Vs Document
 		for(PropertyVsDocumentModel propertyvsDocumentModel:propertyModel.getPropertyVsDocumentModels()){
-			PropertyVsDocumentEntity propertyVsDocumentEntity = new PropertyVsDocumentEntity();
 			propertyvsDocumentModel.setCreatedBy(userId);
-			propertyVsDocumentEntity = propertyVsDocumentConverter.modelToEntity(propertyvsDocumentModel);
+			PropertyVsDocumentEntity propertyVsDocumentEntity = propertyVsDocumentConverter.modelToEntity(propertyvsDocumentModel);
 			propertyVsDocumentEntity.setPropertyEntity(propertyEntity);
 			propertyVsDocumentDAO.save(propertyVsDocumentEntity);
 		}
 		
 		//Property Vs Special Experience
 		for(PropertyVsSpecialExperienceModel specialExperienceModel:propertyModel.getPropertyVsSpecialExperienceModels()){
-			PropertyVsSpecialExperienceEntity propertyVsSpecialExperienceEntity = new PropertyVsSpecialExperienceEntity();
 			specialExperienceModel.setCreatedBy(userId);
-			propertyVsSpecialExperienceEntity = pVsSpecialExperienceConverter.modelToEntity(specialExperienceModel);
+			PropertyVsSpecialExperienceEntity propertyVsSpecialExperienceEntity = pVsSpecialExperienceConverter.modelToEntity(specialExperienceModel);
 			propertyVsSpecialExperienceEntity.setPropertyEntity(propertyEntity);
 			propertyVsSpecialExperienceDAO.save(propertyVsSpecialExperienceEntity);
 		}
 		
 		//Property Vs Guest Access
 		for(PropertyVsGuestAccessModel guestAccessModel:propertyModel.getPropertyVsGuestAccessModels()){
-			PropertyVsGuestAccessEntity propertyVsGuestAccessEntity = new PropertyVsGuestAccessEntity();
 			guestAccessModel.setCreatedBy(userId);
-			propertyVsGuestAccessEntity = propertyVsGuestAccessConverter.modelToEntity(guestAccessModel);
+			PropertyVsGuestAccessEntity propertyVsGuestAccessEntity = propertyVsGuestAccessConverter.modelToEntity(guestAccessModel);
 			propertyVsGuestAccessEntity.setPropertyEntity(propertyEntity);
 			propertyVsGuestAccessDAO.save(propertyVsGuestAccessEntity);
 		}
 		
 		//Property Vs Image 
 		for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
-			PropertyVsImageEntity propertyVsImageEntity = new PropertyVsImageEntity();
 			propertyVsImageModel.setCreatedBy(userId);
-			propertyVsImageEntity = propertyVsImageConverter.modelToEntity(propertyVsImageModel);
+			PropertyVsImageEntity propertyVsImageEntity = propertyVsImageConverter.modelToEntity(propertyVsImageModel);
 			propertyVsImageEntity.setPropertyEntity(propertyEntity);
 			propertyVsImageDAO.save(propertyVsImageEntity);
 		}
 		
 		//Property Vs NearBy
 		for(PropertyVsNearbyModel propertyVsNearbyModel:propertyModel.getPropertyVsNearbyModels()){
-			PropertyVsNearbyEntity propertyVsNearbyEntity = new PropertyVsNearbyEntity();
 			propertyVsNearbyModel.setCreatedBy(userId);
-			propertyVsNearbyEntity = propertyVsNearbyConverter.modelToEntity(propertyVsNearbyModel);
+			PropertyVsNearbyEntity propertyVsNearbyEntity = propertyVsNearbyConverter.modelToEntity(propertyVsNearbyModel);
 			propertyVsNearbyEntity.setPropertyEntity(propertyEntity);
 			propertyVsNearbyDAO.save(propertyVsNearbyEntity);
 		}
@@ -588,12 +586,11 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		if(propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_Y)){
 			List<PriceDropModel> priceDropModels = fetchPriceDropList();
 			for(PriceDropModel priceDropModel:priceDropModels){
-				PropertyVsPriceDropEntity propertyVsPriceDropEntity = new PropertyVsPriceDropEntity();
 				PropertyVsPriceDropModel propertyVsPriceDropModel = new PropertyVsPriceDropModel();
 				propertyVsPriceDropModel.setPriceDropModel(priceDropModel);
 				propertyVsPriceDropModel.setPercentage(PropertyAddConstant.STR_ZERO);
 				propertyVsPriceDropModel.setCreatedBy(userId);
-				propertyVsPriceDropEntity = propertyVsPriceDropConverter.modelToEntity(propertyVsPriceDropModel);
+				PropertyVsPriceDropEntity propertyVsPriceDropEntity = propertyVsPriceDropConverter.modelToEntity(propertyVsPriceDropModel);
 				propertyVsPriceDropEntity.setPropertyEntity(propertyEntity);
 				propertyVsPriceDropDAO.save(propertyVsPriceDropEntity);
 			}
@@ -601,9 +598,8 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		
 		//Property Vs SpaceRule
 		for(PropertyVsSpaceRuleModel propertyVsSpaceRuleModel:propertyModel.getPropertyVsSpaceRuleModels()){
-			PropertyVsSpaceRuleEntity propertyVsSpaceRuleEntity = new PropertyVsSpaceRuleEntity();
 			propertyVsSpaceRuleModel.setCreatedBy(userId);
-			propertyVsSpaceRuleEntity = propertyVsSpaceRuleConverter.modelToEntity(propertyVsSpaceRuleModel);
+			PropertyVsSpaceRuleEntity propertyVsSpaceRuleEntity = propertyVsSpaceRuleConverter.modelToEntity(propertyVsSpaceRuleModel);
 			propertyVsSpaceRuleEntity.setPropertyEntity(propertyEntity);
 			propertyVsSpaceRuleDAO.save(propertyVsSpaceRuleEntity);
 		}
@@ -611,35 +607,31 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		///////////////// Room Data Insert Code ///////////////////////////
 		//Room 
 		for(RoomModel roomModel:propertyModel.getRoomModels()){
-			RoomEntity roomEntity = new RoomEntity();
 			roomModel.setCreatedBy(userId);
-			roomEntity = roomConverter.modelToEntity(roomModel);
+			RoomEntity roomEntity = roomConverter.modelToEntity(roomModel);
 			roomEntity.setPropertyEntity(propertyEntity);
 			roomDAO.save(roomEntity);
 			
 			//Room vs Amenities
 			for(RoomVsAmenitiesModel roomVsAmenitiesModel:roomModel.getRoomVsAmenitiesModels()){
-				RoomVsAmenitiesEntity roomVsAmenitiesEntity = new RoomVsAmenitiesEntity();
 				roomVsAmenitiesModel.setCreatedBy(userId);
-				roomVsAmenitiesEntity = roomVsAmenitiesConverter.modelToEntity(roomVsAmenitiesModel);
+				RoomVsAmenitiesEntity roomVsAmenitiesEntity = roomVsAmenitiesConverter.modelToEntity(roomVsAmenitiesModel);
 				roomVsAmenitiesEntity.setRoomEntity(roomEntity);
 				roomVsAmenitiesDAO.save(roomVsAmenitiesEntity);
 			}
 			
 			//Room Vs Image
 			for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
-				RoomVsImageEntity roomVsImageEntity = new RoomVsImageEntity();
 				roomVsImageModel.setCreatedBy(userId);
-				roomVsImageEntity = roomVsImageConverter.modelToEntity(roomVsImageModel);
+				RoomVsImageEntity roomVsImageEntity = roomVsImageConverter.modelToEntity(roomVsImageModel);
 				roomVsImageEntity.setRoomEntity(roomEntity);
 				roomVsImageDAO.save(roomVsImageEntity);
 			}
 			
 			//Room Vs Host Discount
 			for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
-				RoomVsHostDiscountEntity roomVsHostDiscountEntity = new RoomVsHostDiscountEntity();
 				roomVsHostDiscountModel.setCreatedBy(userId);
-				roomVsHostDiscountEntity = roomVsHostDiscountConverter.modelToEntity(roomVsHostDiscountModel);
+				RoomVsHostDiscountEntity roomVsHostDiscountEntity = roomVsHostDiscountConverter.modelToEntity(roomVsHostDiscountModel);
 				roomVsHostDiscountEntity.setRoomEntity(roomEntity);
 				roomVsHostDiscountDAO.save(roomVsHostDiscountEntity);
 			}
@@ -662,51 +654,46 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			
 			// Room Vs Price
 			for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
-				RoomVsPriceEntity roomVsPriceEntity = new RoomVsPriceEntity();
 				roomVsPriceModel.setCreatedBy(userId);
-				roomVsPriceEntity = roomVsPriceConverter.modelToEntity(roomVsPriceModel);
+				RoomVsPriceEntity roomVsPriceEntity = roomVsPriceConverter.modelToEntity(roomVsPriceModel);
 				roomVsPriceEntity.setRoomEntity(roomEntity);
 				roomVsPriceDAO.save(roomVsPriceEntity);
 			}
 			
 			// Room vs Specilities
 			for(RoomVsSpecialitiesModel roomVsSpecialitiesModel:roomModel.getRoomVsSpecialitiesModels()){
-				RoomVsSpecialitiesEntity roomVsSpecialitiesEntity = new RoomVsSpecialitiesEntity();
 				roomVsSpecialitiesModel.setCreatedBy(userId);
-				roomVsSpecialitiesEntity = roomVsSpecialitiesConverter.modelToEntity(roomVsSpecialitiesModel);
+				RoomVsSpecialitiesEntity roomVsSpecialitiesEntity = roomVsSpecialitiesConverter.modelToEntity(roomVsSpecialitiesModel);
 				roomVsSpecialitiesEntity.setRoomEntity(roomEntity);
 				roomVsSpecialitiesDAO.save(roomVsSpecialitiesEntity);
 			}
 			
 			//Room Vs Meal
 			for(RoomVsMealModel roomVsMeal:roomModel.getRoomVsMealModels()){
-				RoomVsMealEntity roomVsMealEntity = new RoomVsMealEntity();
 				roomVsMeal.setCreatedBy(userId);
-				roomVsMealEntity = roomVsMealConverter.modelToEntity(roomVsMeal);
+				RoomVsMealEntity roomVsMealEntity = roomVsMealConverter.modelToEntity(roomVsMeal);
 				roomVsMealEntity.setRoomEntity(roomEntity);
 				roomVsMealDAO.save(roomVsMealEntity);
 			}
 			
 			//Room vs Cancellation
 			for(RoomVsCancellationModel roomVsCancellationModel:roomModel.getRoomVsCancellationModels()){
-				RoomVsCancellationEntity roomVsCancellationEntity = new RoomVsCancellationEntity();
 				roomVsCancellationModel.setCreatedBy(userId);
-				roomVsCancellationEntity = roomVsCancellationConverter.modelToEntity(roomVsCancellationModel);
+				RoomVsCancellationEntity roomVsCancellationEntity = roomVsCancellationConverter.modelToEntity(roomVsCancellationModel);
 				roomVsCancellationEntity.setRoomEntity(roomEntity);
 				roomVsCancellationDAO.save(roomVsCancellationEntity);
 			}
 			
 			//// Room Vs Bed
 			RoomVsBedModel roomVsBedModel = roomModel.getRoomVsBedModel();
-			RoomVsBedEntity roomVsBedEntity = new RoomVsBedEntity();
 			roomVsBedModel.setCreatedBy(userId);
-			roomVsBedEntity = roomVsBedConverter.modelToEntity(roomVsBedModel);
+			RoomVsBedEntity roomVsBedEntity = roomVsBedConverter.modelToEntity(roomVsBedModel);
 			roomVsBedEntity.setRoomEntity(roomEntity);
 			roomVsBedDAO.save(roomVsBedEntity);	
 		}
 		
-		
-		
-		return propertyModel;
+		if (logger.isDebugEnabled()) {
+			logger.debug("saveProperty -- End");
+		}
 	}
 }

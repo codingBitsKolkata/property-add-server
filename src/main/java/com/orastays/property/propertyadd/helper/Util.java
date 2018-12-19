@@ -3,6 +3,8 @@ package com.orastays.property.propertyadd.helper;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
@@ -11,6 +13,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
@@ -53,46 +56,75 @@ public class Util {
 
 	private static final Logger logger = LogManager.getLogger(Util.class);
 
-	public static <T> T transform(Object from, Class<T> valueType)
-			throws Exception {
-
+	public static<T> T transform(Object from, Class<T> valueType) throws Exception {
+		
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		String json = objectMapper.writeValueAsString(from);
 		return objectMapper.readValue(json, valueType);
 	}
-
+	
 	public static String objectToJSON(Object from) throws Exception {
-
+		
 		String json = null;
-		if (Objects.nonNull(from)) {
+		if(Objects.nonNull(from)) {
 			ObjectMapper objectMapper = new ObjectMapper();
-			objectMapper
-					.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 			json = objectMapper.writeValueAsString(from);
 		}
 		return json;
 	}
-
-	public static <T> T jsonToObject(String value, Class<T> t) throws Exception {
-
-		if (t != null && StringUtils.isNotBlank(value)) {
+	
+	public static<T> T jsonToObject(String value, Class<T> t) throws Exception {
+		
+		if(t != null && StringUtils.isNotBlank(value)) {
 			ObjectMapper objectMapper = new ObjectMapper();
-			objectMapper
-					.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 			return objectMapper.readValue(value, t);
 		} else {
 			return null;
 		}
+		
+	}
+	
+	public static boolean checkLatitude(String lat) {
 
+		return lat
+				.matches("^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$");
 	}
 
+	public static boolean checkLongitude(String longi) {
+
+		return longi
+				.matches("^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$");
+	}
+
+	public static boolean checkTimeFormat(String time) {
+		
+		return time.matches("(1[012]|[1-9]):[0-5][0-9](\\s)?(?i):[0-5][0-9](\\s)?(?i)");
+
+	}
+	
+	public static boolean checkDate(String startDate) {
+
+		boolean flag = false;
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			formatter.parse(startDate);
+			flag = true;
+		} catch (Exception e) {
+
+			return false;
+		}
+
+		return flag;
+	}
+	
 	public static boolean checkDate(String startDate, String endDate) {
 
 		boolean flag = false;
 		try {
-			SimpleDateFormat formatter = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date stDate = formatter.parse(startDate);
 			Date edDate = formatter.parse(endDate);
 			Date currDate = formatter.parse(Util.getCurrentDateTime());
@@ -147,14 +179,11 @@ public class Util {
 
 	private static final String PHONE_NUMBER_GARBAGE_REGEX = "[()\\s-]+";
 	private static final String PHONE_NUMBER_REGEX = "^((\\+[1-9]?[0-9])|0)?[7-9][0-9]{9}$";
-	private static final Pattern PHONE_NUMBER_PATTERN = Pattern
-			.compile(PHONE_NUMBER_REGEX);
+	private static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile(PHONE_NUMBER_REGEX);
 
 	public static boolean validatePhoneNumber(String phoneNumber) {
 		return phoneNumber != null
-				&& PHONE_NUMBER_PATTERN.matcher(
-						phoneNumber.replaceAll(PHONE_NUMBER_GARBAGE_REGEX, ""))
-						.matches();
+				&& PHONE_NUMBER_PATTERN.matcher(phoneNumber.replaceAll(PHONE_NUMBER_GARBAGE_REGEX, "")).matches();
 	}
 
 	public static void saveHttpRequestDataInLogFile(HttpServletRequest request) {
@@ -200,8 +229,7 @@ public class Util {
 
 				if (logger.isDebugEnabled()) {
 
-					logger.debug("Exception In Receiving Request Data, Exception Message is :: "
-							+ e.getMessage());
+					logger.debug("Exception In Receiving Request Data, Exception Message is :: " + e.getMessage());
 
 				}
 
@@ -211,8 +239,7 @@ public class Util {
 
 			if (logger.isDebugEnabled()) {
 
-				logger.debug("Exception In Receiving Request Data, Exception Message is :: "
-						+ e.getMessage());
+				logger.debug("Exception In Receiving Request Data, Exception Message is :: " + e.getMessage());
 
 			}
 		}
@@ -273,18 +300,17 @@ public class Util {
 
 	public static boolean emailValidator(String email) {
 
+
 		String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-		java.util.regex.Pattern p = java.util.regex.Pattern
-				.compile(emailPattern);
+		java.util.regex.Pattern p = java.util.regex.Pattern.compile(emailPattern);
 		java.util.regex.Matcher m = p.matcher(email);
 
 		return m.matches();
 	}
 
-	public static Date getDatefromTimestamp(String timestamp, String dateFormate)
-			throws ParseException {
-
+	public static Date getDatefromTimestamp(String timestamp, String dateFormate) throws ParseException {
+		
 		long time = Long.parseLong(timestamp);
 		Date date = new Date(time);
 		Format format = new SimpleDateFormat(dateFormate);
@@ -294,18 +320,17 @@ public class Util {
 	}
 
 	public static String constructAppUrl(HttpServletRequest request) {
-		return request.getScheme() + "://" + request.getServerName() + ":"
-				+ request.getServerPort() + request.getContextPath();
+		return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+				+ request.getContextPath();
 
 	}
 
 	public static String currentDay() {
-
+		
 		Calendar calendar = Calendar.getInstance();
 		Date date = calendar.getTime();
-		String day = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date
-				.getTime());
-
+		String day = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime());
+		
 		return day.toUpperCase();
 	}
 
@@ -353,110 +378,93 @@ public class Util {
 
 	}
 
-	public static String getDateAfterNumberOfDays(String numberOfWeeks,
-			String numberOfMonths) {
+	public static String getDateAfterNumberOfDays(String numberOfWeeks, String numberOfMonths) {
 
 		final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 		final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-		@SuppressWarnings("unused")
-		final DateTimeFormatter dateFormat8 = DateTimeFormatter
-				.ofPattern(DATE_FORMAT);
+		final DateTimeFormatter dateFormat8 = DateTimeFormatter.ofPattern(DATE_FORMAT);
 		Date currentDate = new Date();
 
 		// convert date to localdatetime
-		LocalDateTime localDateTime = currentDate.toInstant()
-				.atZone(ZoneId.systemDefault()).toLocalDateTime();
+		LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
 		// plus one
 		if (!Objects.isNull(numberOfWeeks)) {
-			localDateTime = localDateTime.minusWeeks(Integer
-					.valueOf(numberOfWeeks));
+			localDateTime = localDateTime.minusWeeks(Integer.valueOf(numberOfWeeks));
 		}
 		if (!Objects.isNull(numberOfMonths)) {
-			localDateTime = localDateTime.minusMonths(Integer
-					.valueOf(numberOfMonths));
+			localDateTime = localDateTime.minusMonths(Integer.valueOf(numberOfMonths));
 		}
 
 		// convert LocalDateTime to date
-		Date currentDatePlusOneDay = Date.from(localDateTime.atZone(
-				ZoneId.systemDefault()).toInstant());
-
+		Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		
 		return dateFormat.format(currentDatePlusOneDay).toString();
 	}
 
-	public static String getDateAfterNumberOfMonths(String numberOfMonths,
-			Date currentDate) {
+	public static String getDateAfterNumberOfMonths(String numberOfMonths, Date currentDate) {
 
 		final String DATE_FORMAT = "yyyy-MM-dd";
 		final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
 		// convert date to localdatetime
-		LocalDateTime localDateTime = currentDate.toInstant()
-				.atZone(ZoneId.systemDefault()).toLocalDateTime();
+		LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
 		// minus one
 
 		if (!numberOfMonths.equalsIgnoreCase("6")) {
 			if (!Objects.isNull(numberOfMonths)) {
-				localDateTime = localDateTime.minusMonths(Integer
-						.valueOf(numberOfMonths));
+				localDateTime = localDateTime.minusMonths(Integer.valueOf(numberOfMonths));
 				localDateTime = localDateTime.plusDays(1);
 			}
 		} else {
 			if (!Objects.isNull(numberOfMonths)) {
-				localDateTime = localDateTime.minusMonths(Integer
-						.valueOf(numberOfMonths));
+				localDateTime = localDateTime.minusMonths(Integer.valueOf(numberOfMonths));
 				localDateTime = localDateTime.plusDays(1);
 			}
 		}
 
 		// convert LocalDateTime to date
-		Date currentDatePlusOneDay = Date.from(localDateTime.atZone(
-				ZoneId.systemDefault()).toInstant());
+		Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
 		return dateFormat.format(currentDatePlusOneDay);
 	}
 
-	public static String getDateAfterNumberOfMonths1(String numberOfMonths,
-			Date currentDate) {
+	public static String getDateAfterNumberOfMonths1(String numberOfMonths, Date currentDate) {
 
 		final String DATE_FORMAT = "yyyy-MM-dd";
 		final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
 		// convert date to localdatetime
-		LocalDateTime localDateTime = currentDate.toInstant()
-				.atZone(ZoneId.systemDefault()).toLocalDateTime();
+		LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
 		// minus one
 
 		if (!numberOfMonths.equalsIgnoreCase("6")) {
 			if (!Objects.isNull(numberOfMonths)) {
-				localDateTime = localDateTime.plusMonths(Integer
-						.valueOf(numberOfMonths));
+				localDateTime = localDateTime.plusMonths(Integer.valueOf(numberOfMonths));
 			}
 		} else {
 			if (!Objects.isNull(numberOfMonths)) {
-				localDateTime = localDateTime.plusMonths(Integer
-						.valueOf(numberOfMonths));
+				localDateTime = localDateTime.plusMonths(Integer.valueOf(numberOfMonths));
 				localDateTime = localDateTime.plusDays(1);
 			}
 		}
 
 		// convert LocalDateTime to date
-		Date currentDatePlusOneDay = Date.from(localDateTime.atZone(
-				ZoneId.systemDefault()).toInstant());
+		Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
 		return dateFormat.format(currentDatePlusOneDay);
 	}
 
 	public static Date changeTime(Date date) {
-
+		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.set(Calendar.HOUR_OF_DAY, 23);
 		cal.set(Calendar.MINUTE, 59);
 		cal.set(Calendar.SECOND, 59);
-
+		
 		return cal.getTime();
 	}
 
@@ -467,15 +475,13 @@ public class Util {
 		Date currentDate = new Date();
 
 		// convert date to localdatetime
-		LocalDateTime localDateTime = currentDate.toInstant()
-				.atZone(ZoneId.systemDefault()).toLocalDateTime();
+		LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
 		localDateTime = localDateTime.minusDays(Integer.valueOf(numberOfDays));
 
 		// convert LocalDateTime to date
-		Date currentDatePlusOneDay = Date.from(localDateTime.atZone(
-				ZoneId.systemDefault()).toInstant());
-
+		Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		
 		return dateFormat.format(currentDatePlusOneDay).toString();
 	}
 
@@ -531,7 +537,7 @@ public class Util {
 	}
 
 	public static boolean isUTF8MisInterpreted(String input) {
-
+		
 		return isUTF8MisInterpreted(input, "Windows-1252");
 	}
 
@@ -556,14 +562,13 @@ public class Util {
 		}
 	}
 
+
 	public static String renameFileName(String fileName) {
-		String imageExtention = fileName
-				.substring(fileName.lastIndexOf(".") + 1);
+		String imageExtention = fileName.substring(fileName.lastIndexOf(".") + 1);
 
 		fileName = fileName.substring(0, fileName.lastIndexOf("."));
 
-		fileName = fileName.replaceAll("[^\\w]", "") + "_"
-				+ System.currentTimeMillis() + "." + imageExtention;
+		fileName = fileName.replaceAll("[^\\w]", "") + "_" + System.currentTimeMillis() + "." + imageExtention;
 		return fileName;
 	}
 
@@ -589,8 +594,7 @@ public class Util {
 		return uploadImagePath;
 	}
 
-	public static String generateFileUploadPath(ServletContext context,
-			String folderName) {
+	public static String generateFileUploadPath(ServletContext context, String folderName) {
 
 		if (logger.isInfoEnabled()) {
 			logger.info("generateImageUploadPath-Start");
@@ -613,11 +617,9 @@ public class Util {
 		return uploadImagePath;
 	}
 
-	public static BufferedImage resizeImage(BufferedImage originalImage,
-			int type, int IMG_WIDTH, int IMG_HEIGHT) {
+	public static BufferedImage resizeImage(BufferedImage originalImage, int type, int IMG_WIDTH, int IMG_HEIGHT) {
 
-		BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT,
-				type);
+		BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, type);
 		Graphics2D g = resizedImage.createGraphics();
 		g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
 		g.dispose();
@@ -638,13 +640,13 @@ public class Util {
 	Cipher ecipher;
 	Cipher dcipher;
 	// 8-byte Salt
-	byte[] salt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32,
-			(byte) 0x56, (byte) 0x35, (byte) 0xE3, (byte) 0x03 };
+	byte[] salt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35, (byte) 0xE3,
+			(byte) 0x03 };
 	// Iteration count
 	int iterationCount = 19;
 
 	public static String getFinancialYear() {
-
+		
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		String finYear = "";
 		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
@@ -701,8 +703,7 @@ public class Util {
 		String output = "";
 		try {
 
-			SimpleDateFormat sdf = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss.SSS");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 			Date date1 = sdf.parse(firstDate);
 			Calendar c = Calendar.getInstance();
 			c.setTime(date1); // Now use today date.
@@ -721,8 +722,7 @@ public class Util {
 		String output = "";
 		try {
 
-			SimpleDateFormat sdf = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss.SSS");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 			Calendar c = Calendar.getInstance();
 			c.setTime(firstDate); // Now use today date.
 			c.add(Calendar.MINUTE, Integer.parseInt(time)); // Adding Minute
@@ -743,8 +743,7 @@ public class Util {
 			Date date1 = format.parse(firstDate);
 			String currentDate = format.format(new Date());
 			Date date2 = format.parse(currentDate);
-			Double diffInMillies = (date2.getTime() - date1.getTime())
-					/ (1000.0 * 60 * 60 * 24);
+			Double diffInMillies = (date2.getTime() - date1.getTime()) / (1000.0 * 60 * 60 * 24);
 			return diffInMillies.intValue();
 
 		} catch (ParseException e) {
@@ -761,8 +760,7 @@ public class Util {
 			Date date1 = format.parse(firstDate);
 			String currentDate = format.format(new Date());
 			Date date2 = format.parse(currentDate);
-			Double diffInMillies = (date2.getTime() - date1.getTime())
-					/ (1000.0 * 60);
+			Double diffInMillies = (date2.getTime() - date1.getTime()) / (1000.0 * 60);
 
 			return diffInMillies.intValue();
 
@@ -779,8 +777,7 @@ public class Util {
 			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Date date1 = format.parse(firstDate);
 			Date date2 = format.parse(endDate);
-			Double diffInMillies = (date2.getTime() - date1.getTime())
-					/ (1000.0 * 60 * 60 * 24);
+			Double diffInMillies = (date2.getTime() - date1.getTime()) / (1000.0 * 60 * 60 * 24);
 			return diffInMillies.intValue();
 
 		} catch (ParseException e) {
@@ -793,8 +790,7 @@ public class Util {
 		int count = 0;
 
 		/*
-		 * if(password.length() >= 8){ System.out.println("isAtLeast8");
-		 * count++; }
+		 * if(password.length() >= 8){ System.out.println("isAtLeast8"); count++; }
 		 */
 		if (!password.matches("[A-Za-z0-9 ]*")) {
 			// System.out.println("hasSpecial");
@@ -816,7 +812,7 @@ public class Util {
 	}
 
 	public static String generateMd5Str(String str) {
-
+		
 		StringBuffer sb = null;
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
@@ -828,18 +824,18 @@ public class Util {
 			// convert the byte to hex format method 1
 			sb = new StringBuffer();
 			for (int i = 0; i < byteData.length; i++) {
-				sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16)
-						.substring(1));
+				sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
 			}
-
+			
 			return sb.toString();
-
+			
 		} catch (NoSuchAlgorithmException e) {
 
 		}
-
+		
 		return null;
 	}
+
 
 	static char digits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
@@ -869,8 +865,7 @@ public class Util {
 
 		String FAX_PATTERN = "\\d{1,15}";
 
-		java.util.regex.Pattern p = java.util.regex.Pattern
-				.compile(FAX_PATTERN);
+		java.util.regex.Pattern p = java.util.regex.Pattern.compile(FAX_PATTERN);
 		java.util.regex.Matcher m = p.matcher(fax);
 
 		return m.matches();
@@ -885,8 +880,7 @@ public class Util {
 
 		String PHONE_PATTERN = "\\d{10}";
 
-		java.util.regex.Pattern p = java.util.regex.Pattern
-				.compile(PHONE_PATTERN);
+		java.util.regex.Pattern p = java.util.regex.Pattern.compile(PHONE_PATTERN);
 		java.util.regex.Matcher m = p.matcher(phone);
 
 		return m.matches();
@@ -927,8 +921,7 @@ public class Util {
 
 	}
 
-	public static <T> T findAndRemoveFirst(Iterable<? extends T> collection,
-			Predicate<? super T> test) {
+	public static <T> T findAndRemoveFirst(Iterable<? extends T> collection, Predicate<? super T> test) {
 		T value = null;
 		for (Iterator<? extends T> it = collection.iterator(); it.hasNext();)
 			if (test.test(value = it.next())) {
@@ -974,8 +967,7 @@ public class Util {
 
 			if (input.length() > 4) {
 
-				String input1 = input.substring(input.length() - 4,
-						input.length());
+				String input1 = input.substring(input.length() - 4, input.length());
 				String input2 = "";
 				input = input.substring(0, input.length() - 4);
 				for (int i = 0; i < input.length(); i++)
@@ -1006,8 +998,7 @@ public class Util {
 		List<String> dates = new ArrayList<String>();
 
 		Date date3 = new Date();
-		LocalDateTime localDate = date3.toInstant()
-				.atZone(ZoneId.systemDefault()).toLocalDateTime();
+		LocalDateTime localDate = date3.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 		int year = localDate.getYear();
 		int month = localDate.getMonthValue();
 		int hour = localDate.getHour();
@@ -1017,22 +1008,20 @@ public class Util {
 		YearMonth yearMonthObject = YearMonth.of(year, month);
 		int daysInMonth = yearMonthObject.lengthOfMonth(); // 28
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		String currentDate = dateFormat.format(date);
 
 		String months = "";
-		if (month == 1 || month == 2 || month == 3 || month == 4 || month == 5
-				|| month == 6 || month == 7 || month == 8 || month == 9) {
+		if (month == 1 || month == 2 || month == 3 || month == 4 || month == 5 || month == 6 || month == 7 || month == 8
+				|| month == 9) {
 			months = "0" + month;
 		} else {
 			months = String.valueOf(month);
 		}
 
 		String startDate = year + "-" + months + "-0" + 1 + " 00:00:01";
-		String endDate = year + "-" + months + "-" + daysInMonth + " " + hour
-				+ ":" + minute + ":" + second;
+		String endDate = year + "-" + months + "-" + daysInMonth + " " + hour + ":" + minute + ":" + second;
 		Date date1 = null;
 		Date date2 = null;
 		try {
@@ -1056,13 +1045,11 @@ public class Util {
 		List<String> finalOutput = new ArrayList<String>();
 		if (input.equalsIgnoreCase("today")) {
 
-			SimpleDateFormat dateFormat1 = new SimpleDateFormat(
-					"yyyy-MM-dd 00:00:01");
+			SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd 00:00:01");
 			Date date1 = new Date();
 
 			finalOutput.add(dateFormat1.format(date1));
-			SimpleDateFormat dateFormat = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = new Date();
 
 			finalOutput.add(dateFormat.format(date));
@@ -1071,14 +1058,12 @@ public class Util {
 
 			Calendar c = Calendar.getInstance();
 			c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-			SimpleDateFormat dateFormatStart = new SimpleDateFormat(
-					"yyyy-MM-dd 00:00:01");
+			SimpleDateFormat dateFormatStart = new SimpleDateFormat("yyyy-MM-dd 00:00:01");
 			String firstDayOfWeek = dateFormatStart.format(c.getTime());
 
 			finalOutput.add(firstDayOfWeek);
 
-			SimpleDateFormat dateFormat = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = new Date();
 			finalOutput.add(dateFormat.format(date));
 
@@ -1090,14 +1075,12 @@ public class Util {
 			int day = 1;
 			c.set(year, month, day);
 
-			SimpleDateFormat dateFormatStart = new SimpleDateFormat(
-					"yyyy-MM-dd 00:00:01");
+			SimpleDateFormat dateFormatStart = new SimpleDateFormat("yyyy-MM-dd 00:00:01");
 			String firstDayOfMonth = dateFormatStart.format(c.getTime());
 
 			finalOutput.add(firstDayOfMonth);
 
-			SimpleDateFormat dateFormat = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = new Date();
 			finalOutput.add(dateFormat.format(date));
 
@@ -1107,7 +1090,6 @@ public class Util {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	public static Date getLastDate() {
 
 		try {
@@ -1190,8 +1172,7 @@ public class Util {
 
 	public static String authGenerator(String credentials) {
 		try {
-			byte[] encodedBytes = Base64.getEncoder().encode(
-					credentials.getBytes());
+			byte[] encodedBytes = Base64.getEncoder().encode(credentials.getBytes());
 			credentials = new String(encodedBytes);
 			credentials = "Basic " + credentials;
 		} catch (Exception e) {
@@ -1218,8 +1199,7 @@ public class Util {
 			Date date1 = format.parse(firstDate);
 			String currentDate = format.format(new Date());
 			Date date2 = format.parse(currentDate);
-			Double diffInMillies = (date2.getTime() - date1.getTime())
-					/ (1000.0 * 60 * 60 * 24);
+			Double diffInMillies = (date2.getTime() - date1.getTime()) / (1000.0 * 60 * 60 * 24);
 			return diffInMillies.intValue();
 
 		} catch (ParseException e) {
@@ -1228,68 +1208,60 @@ public class Util {
 		}
 	}
 
-	public static Object transform(ModelMapper modelMapper, Object input,
-			Object output) {
+	public static Object transform(ModelMapper modelMapper, Object input, Object output) {
 
-		if (Objects.nonNull(input))
+		if(Objects.nonNull(input))
 			return modelMapper.map(input, output.getClass());
 		else
 			return null;
 	}
-
-	public static void printLog(Object model, String type, String apiName,
-			HttpServletRequest request) {
-
+	
+	public static void printLog(Object model, String type, String apiName, HttpServletRequest request) {
+		
 		try {
-
+			
 			if (logger.isDebugEnabled()) {
-				logger.debug(type + " -- " + apiName + " -- "
-						+ request.getRemoteAddr() + " -- "
-						+ new ObjectMapper().writeValueAsString(model));
+				logger.debug(type+" -- " + apiName +  " -- " + request.getRemoteAddr() + " -- " 
+				+ new ObjectMapper().writeValueAsString(model) );
 			}
-			System.out.println(type + " -- " + apiName + " -- "
-					+ request.getRemoteAddr() + " -- "
-					+ new ObjectMapper().writeValueAsString(model));
-
+			System.out.println(type+" -- " + apiName +  " -- " + request.getRemoteAddr() + " -- " 
+					+ new ObjectMapper().writeValueAsString(model) );
+			
 		} catch (Exception e) {
 		}
 	}
-
+	
 	public static boolean checkEmail(String emailId) {
-
-		String emailPattern = "(^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$)";
-		Pattern pattern = Pattern.compile(emailPattern);
+		
+		String emailPattern = "^(.+)@(.+)$";
+		Pattern pattern = Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(emailId);
 		return matcher.matches();
 	}
-
+	
 	public static int generateOTP() {
-
-		return (int) (Math.random() * 9000) + 1000;
-	}
-
-	public static boolean checkLatitude(String lat) {
-
-		return lat
-				.matches("^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$");
-	}
-
-	public static boolean checkLongitude(String longi) {
-
-		return longi
-				.matches("^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$");
-	}
-
-	public static boolean checkTimeFormat(String time) {
 		
-		return time.matches("(1[012]|[1-9]):[0-5][0-9](\\s)?(?i):[0-5][0-9](\\s)?(?i)");
-
+		return (int)(Math.random() *  9000) + 1000;
+	}
+	
+	public static String errorToString(Exception e) {
+		
+		StringWriter errors = new StringWriter();
+		e.printStackTrace(new PrintWriter(errors));
+		return errors.toString();
+	}
+	
+	public static boolean checkSpecialCharacter(String value) {
+		
+		Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(value);
+		return m.find();
 	}
 
 	public static void main(String[] args) {
 
 		try {
-			 System.out.println(checkTimeFormat("02:00"));
+			System.out.println(new Date().getTime());
 		} catch (Exception e) {
 
 		}

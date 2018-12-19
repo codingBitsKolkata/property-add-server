@@ -40,7 +40,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
-@Api(value = "property", description = "Rest API for Property Add Form", tags = "Property Add Form API")
+@Api(value = "property", tags = "Property Add Form API")
 public class PropertyController extends BaseController{
 	
 	private static final Logger logger = LogManager.getLogger(PropertyController.class);
@@ -60,7 +60,7 @@ public class PropertyController extends BaseController{
 		}
 
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Fetch Property Types", request);
 		try {
 		
 			List<PropertyTypeModel> propertyTypeModels = propertyService.fetchPropertyTypes(commonModel);
@@ -73,10 +73,15 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Fetch Property Types -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Fetch Property Types -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
@@ -109,7 +114,7 @@ public class PropertyController extends BaseController{
 		}
 
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Stay Type Listing", request);
 		try {
 			List<StayTypeModel> stayTypeModels = propertyService.fetchStayTypeList(commonModel);
 			responseModel.setResponseBody(stayTypeModels);
@@ -121,13 +126,20 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Stay Type Listing -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Stay Type Listing -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Stay Type Listing", request);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchStayTypeList -- END");
@@ -155,7 +167,7 @@ public class PropertyController extends BaseController{
 		}
 		
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Accommodation Listing", request);
 		try {
 			List<AccommodationModel> accommodationModels = propertyService.fetchAccommodationByLanguage(commonModel);
 			responseModel.setResponseBody(accommodationModels);
@@ -167,13 +179,20 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Accommodation Listing -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Accommodation Listing -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Accommodation Listing", request);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchAccommodationList -- END");
@@ -201,7 +220,7 @@ public class PropertyController extends BaseController{
 		}
 		
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "PG Category Sex Listing", request);
 		try {
 			List<PGCategorySexModel> pgCategorySexModels = propertyService.fetchPgCategorySexListByLanguage(commonModel);
 			responseModel.setResponseBody(pgCategorySexModels);
@@ -213,13 +232,20 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in PG Category Sex Listing -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in PG Category Sex Listing -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "PG Category Sex Listing", request);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchPgCategorySexList -- END");
@@ -245,7 +271,7 @@ public class PropertyController extends BaseController{
 		}
 		
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Amenities Type Listing", request);
 		try {
 			List<AmenitiesTypeModel> amenitiesTypeModels = propertyService.fetchAmenitiesTypeList();
 			responseModel.setResponseBody(amenitiesTypeModels);
@@ -257,13 +283,20 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Amenities Type Listing -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Amenities Type Listing -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Amenities Type Listing", request);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchAmenitiesTypeList -- END");
@@ -291,7 +324,7 @@ public class PropertyController extends BaseController{
 		}
 		
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Amenities Listing", request);
 		try {
 			List<AmenitiesModel> amenitiesModels = propertyService.fetchAmenitiesList(commonModel);
 			responseModel.setResponseBody(amenitiesModels);
@@ -303,13 +336,20 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Amenities Listing -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Amenities Listing -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Amenities Listing", request);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchAmenitiesList -- END");
@@ -337,7 +377,7 @@ public class PropertyController extends BaseController{
 		}
 		
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Special Experience Listing", request);
 		try {
 			List<SpecialExperienceModel> specialExperienceModels = propertyService.fetchSpecialExperienceList(commonModel);
 			responseModel.setResponseBody(specialExperienceModels);
@@ -349,13 +389,20 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Special Experience Listing -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Special Experience Listing -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Special Experience Listing", request);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchSpecialExperienceList -- END");
@@ -383,7 +430,7 @@ public class PropertyController extends BaseController{
 		}
 		
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Space Rule Listing", request);
 		try {
 			List<SpaceRuleModel> spaceRuleModels = propertyService.fetchSpaceRuleList(commonModel);
 			responseModel.setResponseBody(spaceRuleModels);
@@ -395,13 +442,20 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Space Rule Listing -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Space Rule Listing -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Space Rule Listing", request);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchSpaceRuleList -- END");
@@ -429,7 +483,7 @@ public class PropertyController extends BaseController{
 		}
 		
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Specialties Listing", request);
 		try {
 			List<SpecialtiesModel> specialtiesModels = propertyService.fetchSpecialtiesList(commonModel);
 			responseModel.setResponseBody(specialtiesModels);
@@ -441,13 +495,20 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Specialties Listing -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Specialties Listing -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Specialties Listing", request);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchSpecialtiesList -- END");
@@ -475,7 +536,7 @@ public class PropertyController extends BaseController{
 		}
 		
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Room Category Listing", request);
 		try {
 			List<RoomCategoryModel> roomCategoryModels = propertyService.fetchRoomCategoryList(commonModel);
 			responseModel.setResponseBody(roomCategoryModels);
@@ -487,13 +548,20 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Room Category Listing -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Room Category Listing -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Room Category Listing", request);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchRoomCategoryList -- END");
@@ -521,7 +589,7 @@ public class PropertyController extends BaseController{
 		}
 		
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Price type Listing", request);
 		try {
 			List<PriceTypeModel> priceTypeModels = propertyService.fetchPriceTypeList(commonModel);
 			responseModel.setResponseBody(priceTypeModels);
@@ -533,13 +601,20 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Price type Listing -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Price type Listing -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Price type Listing", request);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchPriceTypeList -- END");
@@ -565,7 +640,7 @@ public class PropertyController extends BaseController{
 		}
 		
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "FCancellation Slab Listing", request);
 		try {
 			List<CancellationSlabModel> cancellationSlabModels = propertyService.fetchCancellationSlabList();
 			responseModel.setResponseBody(cancellationSlabModels);
@@ -577,13 +652,20 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Cancellation Slab Listing -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Cancellation Slab Listing -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Cancellation Slab Listing", request);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchCancellationSlabList -- END");
@@ -612,13 +694,10 @@ public class PropertyController extends BaseController{
 		}
 
 		ResponseModel responseModel = new ResponseModel();
-		
+		Util.printLog(propertyModel, PropertyAddConstant.INCOMING, "Add Property", request);
 		try {
-			System.out.println("propertyMod==>"+propertyModel);
-			
-		
-			PropertyModel propertyModel2 = propertyService.saveProperty(propertyModel);
-			responseModel.setResponseBody(propertyModel2);
+			propertyService.saveProperty(propertyModel);
+			responseModel.setResponseBody(messageUtil.getBundle("property.add.success"));
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 			
@@ -627,15 +706,20 @@ public class PropertyController extends BaseController{
 			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Add Property -- "+Util.errorToString(fe));
+				}
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Add Property -- "+Util.errorToString(e));
+			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
 		}
 		
-		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Fetch Property Types", request);
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Add Property", request);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("addProperty -- END");

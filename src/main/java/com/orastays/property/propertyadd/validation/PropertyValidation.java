@@ -1,5 +1,6 @@
 package com.orastays.property.propertyadd.validation;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -56,16 +57,15 @@ public class PropertyValidation extends AuthorizeUserValidation {
 
 	private static final Logger logger = LogManager.getLogger(PropertyValidation.class);
 
-	public void validateLanguageWithUserToken(Object object, String message) throws FormExceptions {
+	public void validateLanguageWithUserToken(Object object) throws FormExceptions {
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("validateLanguageWithUserToken -- Start");
 		}
 
-		Util.printLog(object, PropertyAddConstant.INCOMING, message, request);
 		if (object instanceof CommonModel) {
 			CommonModel commonModel = (CommonModel) object;
-			validateTokenAndLanguage(commonModel, message);
+			validateTokenAndLanguage(commonModel);
 		}
 
 		if (logger.isDebugEnabled()) {
@@ -73,7 +73,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		}
 	}
 
-	private void validateTokenAndLanguage(CommonModel commonModel, String message) throws FormExceptions {
+	private void validateTokenAndLanguage(CommonModel commonModel) throws FormExceptions {
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("validateLanguageWithUserToken -- Start");
@@ -82,16 +82,14 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
 		// Validate User Token
 		if (StringUtils.isBlank(commonModel.getUserToken())) {
-			exceptions.put(messageUtil.getBundle("token.null.code"),
-					new Exception(messageUtil.getBundle("token.null.message")));
+			exceptions.put(messageUtil.getBundle("token.null.code"), new Exception(messageUtil.getBundle("token.null.message")));
 		} else {
 			getUserDetails(commonModel.getUserToken());
 		}
 
 		// Validate Language
 		if (StringUtils.isBlank(commonModel.getLanguageId())) {
-			exceptions.put(messageUtil.getBundle("language.id.null.code"),
-					new Exception(messageUtil.getBundle("language.id.null.message")));
+			exceptions.put(messageUtil.getBundle("language.id.null.code"), new Exception(messageUtil.getBundle("language.id.null.message")));
 		} else {
 			validateLanguage(commonModel.getLanguageId());
 		}
@@ -122,38 +120,31 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 					// Validate Property Name
 					if (StringUtils.isBlank(propertyModel.getName())) {
-						exceptions.put(messageUtil.getBundle("property.name.null.code"),
-								new Exception(messageUtil.getBundle("property.name.null.message")));
+						exceptions.put(messageUtil.getBundle("property.name.null.code"), new Exception(messageUtil.getBundle("property.name.null.message")));
 					} else {
 						if (!Util.checkAlphabet(propertyModel.getName())) {
-							exceptions.put(messageUtil.getBundle("property.name.invalid.code"),
-									new Exception(messageUtil.getBundle("property.name.invalid.message")));
+							exceptions.put(messageUtil.getBundle("property.name.invalid.code"), new Exception(messageUtil.getBundle("property.name.invalid.message")));
 						}
 					}
 		
-					// Calculation Pending
-					propertyModel.setOraname("ORA000011");
+					propertyModel.setOraname("ORA"+new Date().getTime());
 		
 					// validate Entire Apartment
 					if (StringUtils.isBlank(propertyModel.getEntireApartment())) {
-						exceptions.put(messageUtil.getBundle("entire.appartment.null.code"),
-								new Exception(messageUtil.getBundle("entire.appartment.null.message")));
+						exceptions.put(messageUtil.getBundle("entire.appartment.null.code"), new Exception(messageUtil.getBundle("entire.appartment.null.message")));
 					} else {
 						if (!(propertyModel.getEntireApartment().equals(PropertyAddConstant.STR_Y)
 								|| propertyModel.getEntireApartment().equals(PropertyAddConstant.STR_N))) {
-							exceptions.put(messageUtil.getBundle("entire.appartment.invalid.code"),
-									new Exception(messageUtil.getBundle("entire.appartment.invalid.message")));
+							exceptions.put(messageUtil.getBundle("entire.appartment.invalid.code"), new Exception(messageUtil.getBundle("entire.appartment.invalid.message")));
 						}
 					}
 		
 					// Validate Latitude
 					if (StringUtils.isBlank(propertyModel.getLatitude())) {
-						exceptions.put(messageUtil.getBundle("latitude.null.code"),
-								new Exception(messageUtil.getBundle("latitude.null.message")));
+						exceptions.put(messageUtil.getBundle("latitude.null.code"), new Exception(messageUtil.getBundle("latitude.null.message")));
 					} else {
 						if (!Util.checkLatitude(propertyModel.getLatitude())) {
-							exceptions.put(messageUtil.getBundle("latitude.invalid.code"),
-									new Exception(messageUtil.getBundle("latitude.invalid.message")));
+							exceptions.put(messageUtil.getBundle("latitude.invalid.code"), new Exception(messageUtil.getBundle("latitude.invalid.message")));
 						}
 					}
 		
@@ -1010,7 +1001,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 				}
 			 } else { 
 				 exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message"))); 
-				 }
+			 }
 			
 	
 			if (exceptions.size() > 0)
@@ -1023,5 +1014,4 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			return userModel;
 	
 		}
-
 }
