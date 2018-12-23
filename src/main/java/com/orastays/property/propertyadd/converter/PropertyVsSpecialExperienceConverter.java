@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,8 +41,14 @@ public class PropertyVsSpecialExperienceConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		PropertyVsSpecialExperienceModel propertyVsSpecialExperienceModel = new PropertyVsSpecialExperienceModel();
-		propertyVsSpecialExperienceModel = (PropertyVsSpecialExperienceModel) Util.transform(modelMapper, e, propertyVsSpecialExperienceModel);
+		PropertyVsSpecialExperienceModel propertyVsSpecialExperienceModel = null;
+		
+		if(Objects.nonNull(e)) {
+			
+			propertyVsSpecialExperienceModel = new PropertyVsSpecialExperienceModel();
+			propertyVsSpecialExperienceModel = (PropertyVsSpecialExperienceModel) Util.transform(modelMapper, e, propertyVsSpecialExperienceModel);
+			propertyVsSpecialExperienceModel.setSpecialExperienceModel(specialExperienceConverter.entityToModel(e.getSpecialExperienceEntity()));
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

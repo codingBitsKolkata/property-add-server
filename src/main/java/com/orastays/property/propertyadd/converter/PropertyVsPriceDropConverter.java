@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,8 +49,13 @@ public class PropertyVsPriceDropConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		PropertyVsPriceDropModel propertyVsPriceDropModel = new PropertyVsPriceDropModel();
-		propertyVsPriceDropModel = (PropertyVsPriceDropModel) Util.transform(modelMapper, e, propertyVsPriceDropModel);
+		PropertyVsPriceDropModel propertyVsPriceDropModel = null;
+		
+		if(Objects.nonNull(e)) {
+			propertyVsPriceDropModel = new PropertyVsPriceDropModel();
+			propertyVsPriceDropModel = (PropertyVsPriceDropModel) Util.transform(modelMapper, e, propertyVsPriceDropModel);
+			propertyVsPriceDropModel.setPriceDropModel(priceDropConverter.entityToModel(e.getPriceDropEntity()));
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,8 +49,13 @@ public class RoomVsSpecialitiesConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		RoomVsSpecialitiesModel roomVsSpecialitiesModel = new RoomVsSpecialitiesModel();
-		roomVsSpecialitiesModel = (RoomVsSpecialitiesModel) Util.transform(modelMapper, e, roomVsSpecialitiesModel);
+		RoomVsSpecialitiesModel roomVsSpecialitiesModel = null;
+		
+		if(Objects.nonNull(e)) {
+			roomVsSpecialitiesModel = new RoomVsSpecialitiesModel();
+			roomVsSpecialitiesModel = (RoomVsSpecialitiesModel) Util.transform(modelMapper, e, roomVsSpecialitiesModel);
+			roomVsSpecialitiesModel.setSpecialtiesModel(specialtiesConverter.entityToModel(e.getSpecialtiesEntity()));
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

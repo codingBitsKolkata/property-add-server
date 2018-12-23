@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,8 +54,27 @@ public class RoomConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		RoomModel roomModel = new RoomModel();
-		roomModel = (RoomModel) Util.transform(modelMapper, e, roomModel);
+		RoomModel roomModel = null;
+		
+		if(Objects.nonNull(e)){
+			roomModel = new RoomModel();
+			roomModel = (RoomModel) Util.transform(modelMapper, e, roomModel);
+			roomModel.setAccommodationModel(accommodationConverter.entityToModel(e.getAccommodationEntity()));
+			
+			roomModel.setRoomCategoryModel(roomCategoryConverter.entityToModel(e.getRoomCategoryEntity()));
+			roomModel.setRoomStandardModel(roomStandardConverter.entityToModel(e.getRoomStandardEntity()));
+			roomModel.setRoomVsBedModel(roomVsBedConverter.entityToModel(e.getRoomVsBedEntity()));
+			roomModel.setRoomVsAmenitiesModels(roomVsAmenitiesConverter.entityListToModelList(e.getRoomVsAmenitiesEntities()));
+			roomModel.setRoomVsCancellationModels(roomVsCancellationConverter.entityListToModelList(e.getRoomVsCancellationEntities()));
+			roomModel.setRoomVsImageModels(roomVsImageConverter.entityListToModelList(e.getRoomVsImageEntities()));
+			roomModel.setRoomVsPriceModels(roomVsPriceConverter.entityListToModelList(e.getRoomVsPriceEntities()));
+			roomModel.setRoomVsHostDiscountModels(roomVsHostDiscountConverter.entityListToModelList(e.getRoomVsHostDiscountEntities()));
+			roomModel.setRoomVsOraDiscountModels(roomVsOraDiscountConverter.entityListToModelList(e.getRoomVsOraDiscountEntities()));
+			roomModel.setRoomVsOrapricePercModels(roomVsOraPricePercentageConverter.entityListToModelList(e.getRoomVsOraPricePercentageEntities()));
+			roomModel.setRoomVsSpecialitiesModels(roomVsSpecialitiesConverter.entityListToModelList(e.getRoomVsSpecialitiesEntities()));
+			roomModel.setRoomVsMealModels(roomVsMealConverter.entityListToModelList(e.getRoomVsMealEntities()));
+			
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

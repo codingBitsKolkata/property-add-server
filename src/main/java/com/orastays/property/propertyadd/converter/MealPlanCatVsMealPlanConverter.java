@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +22,6 @@ public class MealPlanCatVsMealPlanConverter extends CommonConverter
 
 	@Override
 	public MealPlanCatVsMealPlanEntity modelToEntity(MealPlanCategoryVsMealPlanModel m) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -32,8 +32,15 @@ public class MealPlanCatVsMealPlanConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		MealPlanCategoryVsMealPlanModel mealPlanCategoryVsMealPlanModel = new MealPlanCategoryVsMealPlanModel();
-		mealPlanCategoryVsMealPlanModel = (MealPlanCategoryVsMealPlanModel) Util.transform(modelMapper, e, mealPlanCategoryVsMealPlanModel);
+		MealPlanCategoryVsMealPlanModel mealPlanCategoryVsMealPlanModel = null;
+		
+		if(Objects.nonNull(e)) {
+			
+			mealPlanCategoryVsMealPlanModel = new MealPlanCategoryVsMealPlanModel();
+			mealPlanCategoryVsMealPlanModel = (MealPlanCategoryVsMealPlanModel) Util.transform(modelMapper, e, mealPlanCategoryVsMealPlanModel);
+			mealPlanCategoryVsMealPlanModel.setMealPlanCategoryModel(mealPlanCategoryConverter.entityToModel(e.getMealPlanCategoryEntity()));
+			mealPlanCategoryVsMealPlanModel.setMealPlanModel(mealPlanConverter.entityToModel(e.getMealPlanEntity()));
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

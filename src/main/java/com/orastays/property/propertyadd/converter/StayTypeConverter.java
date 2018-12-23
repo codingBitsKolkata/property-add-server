@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,9 +32,13 @@ public class StayTypeConverter extends CommonConverter implements BaseConverter<
 			logger.info("entityToModel -- START");
 		}
 
-		StayTypeModel stayTypeModel = new StayTypeModel();
-		stayTypeModel = (StayTypeModel) Util.transform(modelMapper, e, stayTypeModel);
-
+		StayTypeModel stayTypeModel = null;
+		
+		if(Objects.nonNull(e)) {
+			stayTypeModel = new StayTypeModel();
+			stayTypeModel = (StayTypeModel) Util.transform(modelMapper, e, stayTypeModel);
+		}
+		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");
 		}

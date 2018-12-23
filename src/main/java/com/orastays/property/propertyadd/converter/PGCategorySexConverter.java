@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,8 +40,12 @@ public class PGCategorySexConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		PGCategorySexModel pgCategorySexModel = new PGCategorySexModel();
-		pgCategorySexModel = (PGCategorySexModel) Util.transform(modelMapper, e, pgCategorySexModel);
+		PGCategorySexModel pgCategorySexModel = null;
+		
+		if(Objects.nonNull(e)) {
+			pgCategorySexModel = new PGCategorySexModel();
+			pgCategorySexModel = (PGCategorySexModel) Util.transform(modelMapper, e, pgCategorySexModel);
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

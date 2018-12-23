@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,8 +33,12 @@ public class DiscountCategoryHostConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		DiscountCategoryHostModel discountCategoryHostModel = new DiscountCategoryHostModel();
-		discountCategoryHostModel = (DiscountCategoryHostModel) Util.transform(modelMapper, e, discountCategoryHostModel);
+		DiscountCategoryHostModel discountCategoryHostModel = null;
+		
+		if(Objects.nonNull(e)) {
+			discountCategoryHostModel = new DiscountCategoryHostModel();
+			discountCategoryHostModel = (DiscountCategoryHostModel) Util.transform(modelMapper, e, discountCategoryHostModel);
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

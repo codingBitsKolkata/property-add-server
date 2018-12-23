@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,8 +47,13 @@ public class PropertyVsNearbyConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		PropertyVsNearbyModel propertyVsNearbyModel = new PropertyVsNearbyModel();
-		propertyVsNearbyModel = (PropertyVsNearbyModel) Util.transform(modelMapper, e, propertyVsNearbyModel);
+		PropertyVsNearbyModel propertyVsNearbyModel = null;
+		
+		if(Objects.nonNull(e)) {
+			propertyVsNearbyModel = new PropertyVsNearbyModel();
+			propertyVsNearbyModel = (PropertyVsNearbyModel) Util.transform(modelMapper, e, propertyVsNearbyModel);
+		}
+		
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

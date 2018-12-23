@@ -25,6 +25,7 @@ import com.orastays.property.propertyadd.dao.MealPriceCategoryDAO;
 import com.orastays.property.propertyadd.dao.MealTypeDAO;
 import com.orastays.property.propertyadd.dao.PGCategorySexDAO;
 import com.orastays.property.propertyadd.dao.PriceTypeDAO;
+import com.orastays.property.propertyadd.dao.PropertyDAO;
 import com.orastays.property.propertyadd.dao.PropertyTypeDAO;
 import com.orastays.property.propertyadd.dao.RoomCategoryDAO;
 import com.orastays.property.propertyadd.dao.RoomStandardDAO;
@@ -119,6 +120,9 @@ public class AuthorizeUserValidation {
 	
 	@Autowired
 	protected AmenitiesDAO amenitiesDAO;
+	
+	@Autowired
+	protected PropertyDAO propertyDAO;
 	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {
 

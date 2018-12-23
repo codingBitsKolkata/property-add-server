@@ -23,6 +23,7 @@ import com.orastays.property.propertyadd.entity.MealPriceCategoryEntity;
 import com.orastays.property.propertyadd.entity.MealTypeEntity;
 import com.orastays.property.propertyadd.entity.PGCategorySexEntity;
 import com.orastays.property.propertyadd.entity.PriceTypeEntity;
+import com.orastays.property.propertyadd.entity.PropertyEntity;
 import com.orastays.property.propertyadd.entity.PropertyTypeEntity;
 import com.orastays.property.propertyadd.entity.RoomCategoryEntity;
 import com.orastays.property.propertyadd.entity.SpaceRuleEntity;
@@ -101,6 +102,90 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			logger.debug("validateLanguageWithUserToken -- End");
 		}
 	}
+	
+	public void validateUserToken(CommonModel commonModel) throws FormExceptions {
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("validateUserToken -- Start");
+		}
+		
+		
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		// Validate User Token
+		if (StringUtils.isBlank(commonModel.getUserToken())) {
+			exceptions.put(messageUtil.getBundle("token.null.code"), new Exception(messageUtil.getBundle("token.null.message")));
+		} else {
+			getUserDetails(commonModel.getUserToken());
+		}
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("validateUserToken -- End");
+		}
+	} 
+	
+	public void validateFetchPropertyById(PropertyModel propertyModel) throws FormExceptions {
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("validateFetchPropertyById -- Start");
+		}
+		
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		
+		
+		if(Objects.nonNull(propertyModel)){
+			// Validate User Token
+			if (StringUtils.isBlank(propertyModel.getUserToken())) {
+				exceptions.put(messageUtil.getBundle("token.null.code"), new Exception(messageUtil.getBundle("token.null.message")));
+			} else {
+				getUserDetails(propertyModel.getUserToken());
+			}
+			
+			if (StringUtils.isBlank(String.valueOf(propertyModel.getPropertyId()))) {
+				exceptions.put(messageUtil.getBundle("property.id.null.code"), new Exception(messageUtil.getBundle("property.id.null.message")));
+			} else {
+				
+				if (!Util.isNumeric(String.valueOf(propertyModel.getPropertyId()))) {
+					exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
+				} else {
+					PropertyEntity propertyEntity = null;
+					
+					try {
+						Map<String, String> innerMap1 = new LinkedHashMap<>();
+						innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+				
+						Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+						outerMap1.put("eq", innerMap1);
+				
+						Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+						alliasMap.put(entitymanagerPackagesToScan+".PropertyEntity", outerMap1);
+						
+						propertyEntity = propertyDAO.fetchObjectBySubCiteria(alliasMap);
+						
+						if (Objects.isNull(propertyEntity)) {
+							exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
+						}
+
+					} catch (Exception e) {
+						exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
+					}
+					
+				}
+			}
+			
+		} else {
+			 exceptions.put(messageUtil.getBundle("property.null.code"), new Exception(messageUtil.getBundle("property.null.message"))); 
+		}
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("validateFetchPropertyById -- End");
+		}
+	}
 
 	public UserModel validatePropertyAdd(PropertyModel propertyModel) throws FormExceptions {
 
@@ -109,15 +194,15 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		}
 
 		Util.printLog(propertyModel, PropertyAddConstant.INCOMING, "Property Add", request);
-		UserModel userModel =  getUserDetails(propertyModel.getUserToken());
-		//Test to Bypass Auth
-		//UserModel userModel =  new UserModel(); 
-		//userModel.setUserId("1");
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
-
+		UserModel userModel = null;
+		if (Objects.nonNull(propertyModel)) {
+			
+			//Test to Bypass Auth
+			userModel =  getUserDetails(propertyModel.getUserToken());
+			
+			
 			if(Objects.nonNull(userModel)) {
-				if (Objects.nonNull(propertyModel)) {
-		
 					// Validate Property Name
 					if (StringUtils.isBlank(propertyModel.getName())) {
 						exceptions.put(messageUtil.getBundle("property.name.null.code"), new Exception(messageUtil.getBundle("property.name.null.message")));
@@ -161,8 +246,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 					// Validate Address
 					if (StringUtils.isBlank(propertyModel.getAddress())) {
-						exceptions.put(messageUtil.getBundle("address.null.code"),
-								new Exception(messageUtil.getBundle("address.null.message")));
+						exceptions.put(messageUtil.getBundle("address.null.code"),new Exception(messageUtil.getBundle("address.null.message")));
 					}
 		
 					// Validate Start End Date
@@ -231,8 +315,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 									new Exception(messageUtil.getBundle("property.type.id.null.message")));
 						} else {
 							if (!Util.isNumeric(propertyModel.getPropertyTypeModel().getPropertyTypeId())) {
-								exceptions.put(messageUtil.getBundle("property.type.id.invalid.code"),
-										new Exception(messageUtil.getBundle("property.type.id.invalid.message")));
+								exceptions.put(messageUtil.getBundle("property.type.id.invalid.code"), new Exception(messageUtil.getBundle("property.type.id.invalid.message")));
 							} else {
 								PropertyTypeEntity propertyTypeEntity = propertyTypeDAO
 										.find(Long.parseLong(propertyModel.getPropertyTypeModel().getPropertyTypeId()));
@@ -273,8 +356,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								new Exception(messageUtil.getBundle("property.guest.null.message")));
 					} else {
 		
-						for (PropertyVsGuestAccessModel propertyVsGuestAccessModel : propertyModel
-								.getPropertyVsGuestAccessModels()) {
+						for (PropertyVsGuestAccessModel propertyVsGuestAccessModel : propertyModel.getPropertyVsGuestAccessModels()) {
 							if (StringUtils.isBlank(propertyVsGuestAccessModel.getGuestAccess())) {
 								exceptions.put(messageUtil.getBundle("property.guest.null.code"),
 										new Exception(messageUtil.getBundle("property.guest.null.message")));
@@ -447,7 +529,6 @@ public class PropertyValidation extends AuthorizeUserValidation {
 						exceptions.put(messageUtil.getBundle("property.user.null.code"),
 								new Exception(messageUtil.getBundle("property.user.null.message")));
 					} else {
-						// propertyModel.getUserVsAccountModel().setUserId(userModel.getUserId());
 						if (Util.isEmpty(propertyModel.getUserVsAccountModel().getAccountHolderName())) {
 							exceptions.put(messageUtil.getBundle("accholder.name.null.code"),
 									new Exception(messageUtil.getBundle("accholder.name.null.message")));
@@ -504,9 +585,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 						}
 					}
 		
-					////////////////////////////////////////////////////////////////// Room Data
-					////////////////////////////////////////////////////////////////// Validation
-					////////////////////////////////////////////////////////////////// //////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////// Room Data Validation /////////// /////////////////////////////////////////////////////////////////////
 		
 					if (Objects.nonNull(propertyModel.getRoomModels())) {
 		
@@ -527,14 +606,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 							// CotAvailable
 							if (!StringUtils.isBlank(roomModel.getCotAvailable())) {
-								/*
-								 * exceptions.put(messageUtil.getBundle("room.cotavail.null.code"), new
-								 * Exception(messageUtil.getBundle("room.cotavail.null.message"))); } else {
-								 */
-								if (!(roomModel.getCotAvailable().equals(PropertyAddConstant.STR_Y)
-										|| roomModel.getCotAvailable().equals(PropertyAddConstant.STR_N))) {
-									exceptions.put(messageUtil.getBundle("room.cotavail.invalid.code"),
-											new Exception(messageUtil.getBundle("room.cotavail.invalid.message")));
+								if (!(roomModel.getCotAvailable().equals(PropertyAddConstant.STR_Y) || roomModel.getCotAvailable().equals(PropertyAddConstant.STR_N))) {
+									exceptions.put(messageUtil.getBundle("room.cotavail.invalid.code"), new Exception(messageUtil.getBundle("room.cotavail.invalid.message")));
 								}
 							}
 		
@@ -604,7 +677,6 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 							}
 		
-							/////////////////
 							// Room Category Validation
 							if (Objects.isNull(roomModel.getRoomCategoryModel())) {
 								exceptions.put(messageUtil.getBundle("room.category.null.code"),
@@ -692,30 +764,20 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 									// Percentage
 									if (StringUtils.isBlank(roomVsCancellationModel.getPercentage())) {
-										exceptions.put(messageUtil.getBundle("room.vs.cancellation.percentage.null.code"),
-												new Exception(
-														messageUtil.getBundle("room.vs.cancellation.percentage.null.message")));
+										exceptions.put(messageUtil.getBundle("room.vs.cancellation.percentage.null.code"), new Exception(messageUtil.getBundle("room.vs.cancellation.percentage.null.message")));
 									} else {
 										if (!Util.isNumeric(roomVsCancellationModel.getPercentage())) {
-											exceptions.put(
-													messageUtil.getBundle("room.vs.cancellation.percentage.numeric.code"),
-													new Exception(messageUtil
-															.getBundle("room.vs.cancellation.percentage.numeric.message")));
+											exceptions.put(messageUtil.getBundle("room.vs.cancellation.percentage.numeric.code"),new Exception(messageUtil.getBundle("room.vs.cancellation.percentage.numeric.message")));
 										}
 									}
 		
 									// Cancellation Slab Validation
 									if (Objects.nonNull(roomVsCancellationModel.getCancellationSlabModel())) {
-										if (StringUtils.isBlank(
-												roomVsCancellationModel.getCancellationSlabModel().getCancellationSlabId())) {
-											exceptions.put(messageUtil.getBundle("cancellation.slab.null.code"),
-													new Exception(messageUtil.getBundle("cancellation..slab.null.message")));
+										if (StringUtils.isBlank(roomVsCancellationModel.getCancellationSlabModel().getCancellationSlabId())) {
+											exceptions.put(messageUtil.getBundle("cancellation.slab.null.code"),new Exception(messageUtil.getBundle("cancellation..slab.null.message")));
 										} else {
-											if (!Util.isNumeric(roomVsCancellationModel.getCancellationSlabModel()
-													.getCancellationSlabId())) {
-												exceptions.put(messageUtil.getBundle("cancellation.slab.numeric.code"),
-														new Exception(
-																messageUtil.getBundle("cancellation.slab.numeric.message")));
+											if (!Util.isNumeric(roomVsCancellationModel.getCancellationSlabModel().getCancellationSlabId())) {
+												exceptions.put(messageUtil.getBundle("cancellation.slab.numeric.code"),new Exception(messageUtil.getBundle("cancellation.slab.numeric.message")));
 											} else {
 												CancellationSlabEntity cancellationSlabEntity = cancellationSlabDAO
 														.find(Long.parseLong(roomVsCancellationModel.getCancellationSlabModel()
@@ -998,9 +1060,12 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								new Exception(messageUtil.getBundle("property.room.null.message")));
 					}
 		
-				}
+				
 			 } else { 
 				 exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message"))); 
+			 }
+			} else { 
+				 exceptions.put(messageUtil.getBundle("property.null.code"), new Exception(messageUtil.getBundle("property.null.message"))); 
 			 }
 			
 	

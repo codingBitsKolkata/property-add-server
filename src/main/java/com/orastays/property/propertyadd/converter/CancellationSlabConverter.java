@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,8 +33,12 @@ public class CancellationSlabConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		CancellationSlabModel cancellationSlabModel = new CancellationSlabModel();
-		cancellationSlabModel = (CancellationSlabModel) Util.transform(modelMapper, e, cancellationSlabModel);
+		CancellationSlabModel cancellationSlabModel = null;
+		
+		if(Objects.nonNull(e)){
+			cancellationSlabModel = new CancellationSlabModel();
+			cancellationSlabModel = (CancellationSlabModel) Util.transform(modelMapper, e, cancellationSlabModel);
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

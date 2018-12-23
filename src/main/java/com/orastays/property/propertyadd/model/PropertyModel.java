@@ -80,18 +80,18 @@ public class PropertyModel extends CommonModel {
 
 	@JsonProperty("propertyType")
 	private PropertyTypeModel propertyTypeModel;
-
-	@JsonProperty("propertyVsDocuments")
-	private List<PropertyVsDocumentModel> propertyVsDocumentModels;
-
+	
 	@JsonProperty("stayType")
 	private StayTypeModel stayTypeModel;
-
+	
 	@JsonProperty("userVsAccount")
 	private UserVsAccountModel userVsAccountModel;
 
 	@JsonProperty("pgCategorySex")
 	private PGCategorySexModel pgCategorySexModel;
+
+	@JsonProperty("propertyVsDocuments")
+	private List<PropertyVsDocumentModel> propertyVsDocumentModels;
 
 	@JsonProperty("propertyVsDescriptions")
 	private List<PropertyVsDescriptionModel> propertyVsDescriptionModels;

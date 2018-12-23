@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,8 +49,12 @@ public class PropertyVsSpaceRuleConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		PropertyVsSpaceRuleModel propertyVsSpaceRuleModel = new PropertyVsSpaceRuleModel();
-		propertyVsSpaceRuleModel = (PropertyVsSpaceRuleModel) Util.transform(modelMapper, e, propertyVsSpaceRuleModel);
+		PropertyVsSpaceRuleModel propertyVsSpaceRuleModel = null;
+		if(Objects.nonNull(e)) {
+			propertyVsSpaceRuleModel = new PropertyVsSpaceRuleModel();
+			propertyVsSpaceRuleModel = (PropertyVsSpaceRuleModel) Util.transform(modelMapper, e, propertyVsSpaceRuleModel);
+			propertyVsSpaceRuleModel.setSpaceRuleModel(spaceRuleConverter.entityToModel(e.getSpaceRuleEntity()));
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

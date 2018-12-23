@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,8 +32,12 @@ public class MealPlanConverter extends CommonConverter implements BaseConverter<
 			logger.info("entityToModel -- START");
 		}
 		
-		MealPlanModel mealPlanModel = new MealPlanModel();
-		mealPlanModel = (MealPlanModel) Util.transform(modelMapper, e, mealPlanModel);
+		MealPlanModel mealPlanModel = null;
+		
+		if(Objects.nonNull(e)) {
+			mealPlanModel = new MealPlanModel();
+			mealPlanModel = (MealPlanModel) Util.transform(modelMapper, e, mealPlanModel);
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

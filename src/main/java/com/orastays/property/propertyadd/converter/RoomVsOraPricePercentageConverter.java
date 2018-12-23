@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,8 +48,12 @@ public class RoomVsOraPricePercentageConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		RoomVsOrapricePercModel roomVsOrapricePercModel = new RoomVsOrapricePercModel();
-		roomVsOrapricePercModel = (RoomVsOrapricePercModel) Util.transform(modelMapper, e, roomVsOrapricePercModel);
+		RoomVsOrapricePercModel roomVsOrapricePercModel = null;
+		
+		if(Objects.nonNull(e)) {
+			roomVsOrapricePercModel = new RoomVsOrapricePercModel();
+			roomVsOrapricePercModel = (RoomVsOrapricePercModel) Util.transform(modelMapper, e, roomVsOrapricePercModel);
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

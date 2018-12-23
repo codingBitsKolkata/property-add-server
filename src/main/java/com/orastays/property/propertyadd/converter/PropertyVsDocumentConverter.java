@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,8 +49,13 @@ BaseConverter<PropertyVsDocumentEntity, PropertyVsDocumentModel> {
 			logger.info("entityToModel -- START");
 		}
 		
-		PropertyVsDocumentModel propertyVsDocumentModel = new PropertyVsDocumentModel();
-		propertyVsDocumentModel = (PropertyVsDocumentModel) Util.transform(modelMapper, e, propertyVsDocumentModel);
+		PropertyVsDocumentModel propertyVsDocumentModel = null;
+		
+		if(Objects.nonNull(e)){
+			propertyVsDocumentModel = new PropertyVsDocumentModel();
+			propertyVsDocumentModel = (PropertyVsDocumentModel) Util.transform(modelMapper, e, propertyVsDocumentModel);
+			propertyVsDocumentModel.setDocumentModel(documentConverter.entityToModel(e.getDocumentEntity()));
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

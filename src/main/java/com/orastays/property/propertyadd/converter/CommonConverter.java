@@ -105,4 +105,132 @@ public class CommonConverter {
 	@Autowired
 	protected SpecialtiesDAO specialtiesDAO;
 	
+	@Autowired
+	protected PropertyTypeConverter propertyTypeConverter;
+	
+	@Autowired
+	protected PGCategorySexConverter pgCategorySexConverter;
+	
+	@Autowired
+	protected StayTypeConverter stayTypeConverter;
+	
+	@Autowired
+	protected UserVsAccountConverter userVsAccountConverter;
+	
+	@Autowired
+	protected PropertyVsDocumentConverter propertyVsDocumentConverter;
+	
+	@Autowired
+	protected PropertyVsDescriptionConverter propertyVsDescriptionConverter;
+	
+	@Autowired
+	protected PropertyVsGuestAccessConverter propertyVsGuestAccessConverter;
+	
+	@Autowired
+	protected PropertyVsImageConverter propertyVsImageConverter;
+	
+	@Autowired
+	protected PropertyVsNearbyConverter propertyVsNearbyConverter;
+	
+	@Autowired
+	protected PropertyVsPriceDropConverter propertyVsPriceDropConverter;
+	
+	@Autowired
+	protected PropertyVsSpaceRuleConverter propertyVsSpaceRuleConverter;
+	
+	@Autowired
+	protected PropertyVsSpecialExperienceConverter vsSpecialExperienceConverter;
+	
+	@Autowired
+	protected DocumentConverter documentConverter;
+	
+	@Autowired
+	protected PriceDropConverter priceDropConverter;
+	
+	@Autowired
+	protected SpaceRuleConverter spaceRuleConverter;
+	
+	@Autowired
+	protected SpecialExperienceConverter specialExperienceConverter;
+
+	@Autowired
+	protected RoomConverter roomConverter;
+	
+	@Autowired
+	protected AccommodationConverter accommodationConverter;
+	
+	@Autowired
+	protected DiscountCategoryOraConverter discountCategoryOraConverter;
+	
+	@Autowired
+	protected RoomCategoryConverter roomCategoryConverter;
+	
+	@Autowired
+	protected RoomStandardConverter roomStandardConverter;
+	
+	@Autowired
+	protected RoomVsBedConverter roomVsBedConverter;
+	
+	@Autowired
+	protected RoomVsAmenitiesConverter roomVsAmenitiesConverter;
+	
+	@Autowired
+	protected AmenitiesConverter amenitiesConverter;
+	
+	@Autowired
+	protected RoomVsCancellationConverter roomVsCancellationConverter;
+	
+	@Autowired
+	protected CancellationSlabConverter cancellationSlabConverter;
+	
+	@Autowired
+	protected RoomVsImageConverter roomVsImageConverter;
+	
+	@Autowired
+	protected RoomVsPriceConverter roomVsPriceConverter;
+	
+	@Autowired
+	protected PriceTypeConverter priceTypeConverter;
+	
+	@Autowired
+	protected RoomVsHostDiscountConverter roomVsHostDiscountConverter;
+	
+	@Autowired 
+	protected DiscountCategoryHostConverter discountCategoryHostConverter;
+	
+	@Autowired
+	protected RoomVsOraDiscountConverter roomVsOraDiscountConverter;
+	
+	@Autowired
+	protected RoomVsOraPricePercentageConverter roomVsOraPricePercentageConverter;
+	
+	@Autowired
+	protected RoomVsSpecialitiesConverter roomVsSpecialitiesConverter;
+	
+	@Autowired
+	protected SpecialtiesConverter specialtiesConverter;
+	
+	@Autowired
+	protected RoomVsMealConverter roomVsMealConverter;
+	
+	@Autowired
+	protected MealCategoryConverter mealCategoryConverter;
+	
+	@Autowired
+	protected MealDaysConverter mealDaysConverter;
+	
+	@Autowired
+	protected MealPlanCatVsMealPlanConverter mealPlanCatVsMealPlanConverter;
+	
+	@Autowired
+	protected MealPlanCategoryConverter mealPlanCategoryConverter;
+	
+	@Autowired
+	protected MealPlanConverter mealPlanConverter;
+	
+	@Autowired
+	protected MealPriceCategoryConverter mealPriceCategoryConverter;
+	
+	@Autowired
+	protected MealTypeConverter mealTypeConverter;
 }

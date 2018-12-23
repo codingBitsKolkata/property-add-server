@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,8 +47,12 @@ public class PropertyVsGuestAccessConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		PropertyVsGuestAccessModel propertyVsGuestAccessModel = new PropertyVsGuestAccessModel();
-		propertyVsGuestAccessModel = (PropertyVsGuestAccessModel) Util.transform(modelMapper, e, propertyVsGuestAccessModel);
+		PropertyVsGuestAccessModel propertyVsGuestAccessModel = null;
+		
+		if(Objects.nonNull(e)){
+			propertyVsGuestAccessModel = new PropertyVsGuestAccessModel();
+			propertyVsGuestAccessModel = (PropertyVsGuestAccessModel) Util.transform(modelMapper, e, propertyVsGuestAccessModel);
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

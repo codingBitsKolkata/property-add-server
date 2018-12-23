@@ -36,7 +36,7 @@ public class RoomVsMealConverter extends CommonConverter
 		roomVsMealEntity.setCreatedDate(Util.getCurrentDateTime());
 		roomVsMealEntity.setMealCategoryEntity(mealCategoryDAO.find(Long.valueOf(m.getMealCategoryModel().getMealCategoryId())));
 		if(Objects.nonNull(m.getMealCategoryModel())){
-			if(m.getMealCategoryModel().getMealCatName() == String.valueOf(MealCategory.Daily.ordinal())) {
+			if(m.getMealCategoryModel().getMealCatName().equals(String.valueOf(MealCategory.Daily.ordinal()))) {
 				roomVsMealEntity.setMealDaysEntity(mealDaysDAO.find(Long.valueOf(m.getMealDaysModel().getMealDaysId())));
 			}
 		}
@@ -58,9 +58,17 @@ public class RoomVsMealConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		RoomVsMealModel roomVsMealModel = new RoomVsMealModel();
-		roomVsMealModel = (RoomVsMealModel) Util.transform(modelMapper, e, roomVsMealModel);
+		RoomVsMealModel roomVsMealModel = null;
 		
+		if(Objects.nonNull(e)) {
+			roomVsMealModel = new RoomVsMealModel();
+			roomVsMealModel = (RoomVsMealModel) Util.transform(modelMapper, e, roomVsMealModel);
+			roomVsMealModel.setMealCategoryModel(mealCategoryConverter.entityToModel(e.getMealCategoryEntity()));
+			roomVsMealModel.setMealDaysModel(mealDaysConverter.entityToModel(e.getMealDaysEntity()));
+			roomVsMealModel.setMealPlanCategoryVsMealPlanModel(mealPlanCatVsMealPlanConverter.entityToModel(e.getMealPlanCatVsMealPlanEntity()));
+			roomVsMealModel.setMealPriceCategoryModel(mealPriceCategoryConverter.entityToModel(e.getMealPriceCategoryEntity()));
+			roomVsMealModel.setMealTypeModel(mealTypeConverter.entityToModel(e.getMealTypeEntity()));
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

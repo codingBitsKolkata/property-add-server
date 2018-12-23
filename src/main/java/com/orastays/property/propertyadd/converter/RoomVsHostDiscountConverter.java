@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,8 +48,13 @@ public class RoomVsHostDiscountConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		RoomVsHostDiscountModel roomVsHostDiscountModel = new RoomVsHostDiscountModel();
-		roomVsHostDiscountModel = (RoomVsHostDiscountModel) Util.transform(modelMapper, e, roomVsHostDiscountModel);
+		RoomVsHostDiscountModel roomVsHostDiscountModel = null;
+		
+		if(Objects.nonNull(e)){ 
+			roomVsHostDiscountModel = new RoomVsHostDiscountModel();
+			roomVsHostDiscountModel = (RoomVsHostDiscountModel) Util.transform(modelMapper, e, roomVsHostDiscountModel);
+			roomVsHostDiscountModel.setDiscountCategoryHostModel(discountCategoryHostConverter.entityToModel(e.getDiscountCategoryHostEntity()));
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

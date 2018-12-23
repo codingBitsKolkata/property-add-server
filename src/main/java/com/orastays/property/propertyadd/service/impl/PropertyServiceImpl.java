@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.entity.DiscountCategoryOraEntity;
 import com.orastays.property.propertyadd.entity.PropertyEntity;
 import com.orastays.property.propertyadd.entity.PropertyVsDescriptionEntity;
@@ -99,7 +100,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			propertyTypeModels = propertyTypeConverter.entityListToModelList(propertyTypeDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchPropertyTypes -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -133,7 +136,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			stayTypeModels = stayTypeConverter.entityListToModelList(stayTypeDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchStayTypeList -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -167,7 +172,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			accommodationModels = accommodationConverter.entityListToModelList(accommodationDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchAccommodationByLanguage -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -201,7 +208,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			pgCategorySexModels = pgCategorySexConverter.entityListToModelList(pgCategorySexDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchPgCategorySexListByLanguage -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -234,7 +243,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			amenitiesTypeModels = amenitiesTypeConverter.entityListToModelList(amenitiesTypeDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchAmenitiesTypeList -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -268,7 +279,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			amenitiesModels = amenitiesConverter.entityListToModelList(amenitiesDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchAmenitiesList -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -302,7 +315,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			specialExperienceModels = specialExperienceConverter.entityListToModelList(specialExperienceDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchSpecialExperienceList -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -336,7 +351,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			spaceRuleModels = spaceRuleConverter.entityListToModelList(spaceRuleDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchSpaceRuleList -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -370,7 +387,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			specialtiesModels = specialtiesConverter.entityListToModelList(specialtiesDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchSpecialtiesList -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -404,7 +423,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			roomCategoryModels = roomCategoryConverter.entityListToModelList(roomCategoryDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchRoomCategoryList -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -438,7 +459,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			priceTypeModels = priceTypeConverter.entityListToModelList(priceTypeDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchPriceTypeList -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -471,7 +494,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			cancellationSlabModels = cancellationSlabConverter.entityListToModelList(cancellationSlabDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchCancellationSlabList -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -503,7 +528,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			priceDropModels = priceDropConverter.entityListToModelList(priceDropDAO.fetchListBySubCiteria(alliasMap));
 
 		} catch (Exception e) {
-			
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchPriceDropList -- "+Util.errorToString(e));
+			}
 		}
 		
 		if (logger.isDebugEnabled()) {
@@ -696,4 +723,48 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.debug("saveProperty -- End");
 		}
 	}
+
+	@Override
+	public List<PropertyModel> fetchActivePropertyList(CommonModel commonModel) throws FormExceptions {
+			
+			if (logger.isInfoEnabled()) {
+				logger.info("fetchActivePropertyList -- START");
+			}
+			
+			propertyValidation.validateUserToken(commonModel);
+			List<PropertyModel> propertyModels = null;
+			
+			try {
+				Map<String, String> innerMap1 = new LinkedHashMap<>();
+				innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+		
+				Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+				outerMap1.put("eq", innerMap1);
+		
+				Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+				alliasMap.put(entitymanagerPackagesToScan+".PropertyEntity", outerMap1);
+				
+				propertyModels = propertyConverter.entityListToModelList(propertyDAO.fetchListBySubCiteria(alliasMap));
+
+			} catch (Exception e) {
+				if (logger.isInfoEnabled()) {
+					logger.info("Exception in fetchActivePropertyList -- "+Util.errorToString(e));
+				}
+			}
+			
+			if (logger.isInfoEnabled()) {
+				logger.info("fetchActivePropertyList -- END");
+			}
+			
+		return propertyModels;
+	}
+
+	@Override
+	public PropertyModel fetchPropertyById(PropertyModel propertyModel) throws FormExceptions {
+		
+		propertyValidation.validateFetchPropertyById(propertyModel);
+		
+		return propertyConverter.entityToModel(propertyDAO.find(propertyModel.getPropertyId()));
+	}
+
 }

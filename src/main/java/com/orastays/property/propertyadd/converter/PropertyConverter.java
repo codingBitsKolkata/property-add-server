@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,8 +44,27 @@ public class PropertyConverter extends CommonConverter implements BaseConverter<
 			logger.info("entityToModel -- START");
 		}
 		
-		PropertyModel propertyModel = new PropertyModel();
-		propertyModel = (PropertyModel) Util.transform(modelMapper, e, propertyModel);
+		PropertyModel propertyModel = null;
+		if(Objects.nonNull(e)) {
+			propertyModel = new PropertyModel();
+			propertyModel = (PropertyModel) Util.transform(modelMapper, e, propertyModel);
+			propertyModel.setPropertyTypeModel(propertyTypeConverter.entityToModel(e.getPropertyTypeEntity()));
+			propertyModel.setPgCategorySexModel(pgCategorySexConverter.entityToModel(e.getPgCategorySexEntity()));
+			propertyModel.setStayTypeModel(stayTypeConverter.entityToModel(e.getStayTypeEntity()));
+			propertyModel.setUserVsAccountModel(userVsAccountConverter.entityToModel(e.getUserVsAccountEntity()));
+			
+			propertyModel.setPropertyVsDocumentModels(propertyVsDocumentConverter.entityListToModelList(e.getPropertyVsDocumentEntities()));
+			propertyModel.setPropertyVsDescriptionModels(propertyVsDescriptionConverter.entityListToModelList(e.getPropertyVsDescriptionEntities()));
+			propertyModel.setPropertyVsGuestAccessModels(propertyVsGuestAccessConverter.entityListToModelList(e.getPropertyVsGuestAccessEntities()));
+			propertyModel.setPropertyVsImageModels(propertyVsImageConverter.entityListToModelList(e.getPropertyVsImageEntities()));
+			propertyModel.setPropertyVsNearbyModels(propertyVsNearbyConverter.entityListToModelList(e.getPropertyVsNearbyEntities()));
+			propertyModel.setPropertyVsPriceDropModels(propertyVsPriceDropConverter.entityListToModelList(e.getPropertyVsPriceDropEntities()));
+			propertyModel.setPropertyVsSpaceRuleModels(propertyVsSpaceRuleConverter.entityListToModelList(e.getPropertyVsSpaceRuleEntities()));
+			propertyModel.setPropertyVsSpecialExperienceModels(vsSpecialExperienceConverter.entityListToModelList(e.getPropertyVsSpecialExperienceEntities()));
+			
+			// Room Details
+			propertyModel.setRoomModels(roomConverter.entityListToModelList(e.getRoomEntities()));
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

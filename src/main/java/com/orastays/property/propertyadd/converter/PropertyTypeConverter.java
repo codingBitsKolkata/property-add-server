@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,8 +33,12 @@ public class PropertyTypeConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		PropertyTypeModel propertyTypeModel = new PropertyTypeModel();
-		propertyTypeModel = (PropertyTypeModel) Util.transform(modelMapper, e, propertyTypeModel);
+		PropertyTypeModel propertyTypeModel = null;
+		
+		if(Objects.nonNull(e)){
+			propertyTypeModel = new PropertyTypeModel();
+			propertyTypeModel = (PropertyTypeModel) Util.transform(modelMapper, e, propertyTypeModel);
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");
