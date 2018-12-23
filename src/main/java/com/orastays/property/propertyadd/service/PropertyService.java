@@ -37,5 +37,5 @@ public interface PropertyService {
 	void saveProperty(PropertyModel propertyModel) throws FormExceptions;
 	List<PropertyModel> fetchActivePropertyList(CommonModel commonModel) throws FormExceptions;
 	PropertyModel fetchPropertyById(PropertyModel propertyModel) throws FormExceptions;
-	
+	void updateProperty(PropertyModel propertyModel) throws FormExceptions;
 }

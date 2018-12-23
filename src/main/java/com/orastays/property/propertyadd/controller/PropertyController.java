@@ -835,4 +835,57 @@ public class PropertyController extends BaseController{
 		}
 	}
 	
+	@PostMapping(value = "/update-property", produces = "application/json")
+	@ApiOperation(value = "Update Property", response = ResponseModel.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
+			@ApiResponse(code = 202, message = "Token Required"),
+			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue..."),
+			@ApiResponse(code = 204, message = "Language Id Required"),
+			@ApiResponse(code = 205, message = "Invalid Language ID") })
+	public ResponseEntity<ResponseModel> updateProperty(@RequestBody PropertyModel propertyModel) {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("updateProperty -- START");
+		}
+
+		ResponseModel responseModel = new ResponseModel();
+		Util.printLog(propertyModel, PropertyAddConstant.INCOMING, "Update Property", request);
+		try {
+			propertyService.updateProperty(propertyModel);
+			responseModel.setResponseBody(messageUtil.getBundle("property.update.success"));
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+			
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Update Property -- "+Util.errorToString(fe));
+				}
+				break;
+			}
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Update Property -- "+Util.errorToString(e));
+			}
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
+		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Update Property", request);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("updateProperty -- END");
+		}
+		
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
+			return new ResponseEntity<>(responseModel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 }

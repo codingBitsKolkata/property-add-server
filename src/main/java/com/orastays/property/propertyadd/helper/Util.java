@@ -13,7 +13,6 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
@@ -131,7 +130,8 @@ public class Util {
 
 			int i = (currDate.compareTo(stDate));
 			int j = (currDate.compareTo(edDate));
-			flag = (i >= 0 && j <= 0) ? true : false;
+			int k = (stDate.compareTo(edDate));
+			flag = (i <= 0 && j <= 0 && k <=0 ) ? true : false;
 
 		} catch (Exception e) {
 
@@ -139,6 +139,10 @@ public class Util {
 		}
 
 		return flag;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println("checkDate=>" + checkDate("2018-12-24 00:00:00","2018-12-20 23:59:59"));
 	}
 
 	public static boolean checkNullOrSpaceValue(String value) {
@@ -1258,12 +1262,4 @@ public class Util {
 		return m.find();
 	}
 
-	public static void main(String[] args) {
-
-		try {
-			System.out.println(new Date().getTime());
-		} catch (Exception e) {
-
-		}
-	}
 }

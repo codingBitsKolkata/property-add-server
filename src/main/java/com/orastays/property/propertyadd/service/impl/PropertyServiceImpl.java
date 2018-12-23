@@ -61,6 +61,8 @@ import com.orastays.property.propertyadd.model.RoomVsCancellationModel;
 import com.orastays.property.propertyadd.model.RoomVsHostDiscountModel;
 import com.orastays.property.propertyadd.model.RoomVsImageModel;
 import com.orastays.property.propertyadd.model.RoomVsMealModel;
+import com.orastays.property.propertyadd.model.RoomVsOraDiscountModel;
+import com.orastays.property.propertyadd.model.RoomVsOrapricePercModel;
 import com.orastays.property.propertyadd.model.RoomVsPriceModel;
 import com.orastays.property.propertyadd.model.RoomVsSpecialitiesModel;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
@@ -731,12 +733,13 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 				logger.info("fetchActivePropertyList -- START");
 			}
 			
-			propertyValidation.validateUserToken(commonModel);
+			UserModel userModel = propertyValidation.validateUserToken(commonModel);
 			List<PropertyModel> propertyModels = null;
 			
 			try {
 				Map<String, String> innerMap1 = new LinkedHashMap<>();
 				innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+				innerMap1.put(PropertyAddConstant.CREATEDBY, String.valueOf(userModel.getUserId()));
 		
 				Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
 				outerMap1.put("eq", innerMap1);
@@ -765,6 +768,385 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		propertyValidation.validateFetchPropertyById(propertyModel);
 		
 		return propertyConverter.entityToModel(propertyDAO.find(propertyModel.getPropertyId()));
+	}
+	
+	@Override
+	public void updateProperty(PropertyModel propertyModel) throws FormExceptions {
+
+		UserModel userModel = propertyValidation.validatePropertyUpdate(propertyModel);
+		Long userId = Long.valueOf(userModel.getUserId());
+		// User vs Account Delete
+		
+		UserVsAccountEntity userVsAccountEntity = userVsAccountDAO.find(propertyModel.getUserVsAccountModel().getUserVsAccountId());
+		userVsAccountEntity.setModifiedDate(Util.getCurrentDateTime());
+		userVsAccountEntity.setModifiedBy(userId);
+		userVsAccountEntity.setStatus(Status.DELETE.ordinal());
+		userVsAccountDAO.update(userVsAccountEntity);
+		
+		//Property Delete
+		PropertyEntity propertyEntity = propertyDAO.find(propertyModel.getPropertyId());
+		propertyEntity.setModifiedDate(Util.getCurrentDateTime());
+		propertyEntity.setModifiedBy(userId);
+		propertyEntity.setStatus(Status.DELETE.ordinal());
+		propertyDAO.update(propertyEntity);
+		
+				//Property Vs Description Delete
+				for(PropertyVsDescriptionModel propertyVsDescriptionModel:propertyModel.getPropertyVsDescriptionModels()){
+					PropertyVsDescriptionEntity propertyVsDescriptionEntity = propertyVsDescriptionDAO.find(Long.valueOf(propertyVsDescriptionModel.getPropertyDescId()));
+					propertyVsDescriptionEntity.setModifiedBy(userId);
+					propertyVsDescriptionEntity.setModifiedDate(Util.getCurrentDateTime());
+					propertyVsDescriptionEntity.setStatus(Status.DELETE.ordinal());
+					propertyVsDescriptionDAO.update(propertyVsDescriptionEntity);
+				}
+				
+				//Property Vs Document Delete
+				for(PropertyVsDocumentModel propertyvsDocumentModel:propertyModel.getPropertyVsDocumentModels()){
+					PropertyVsDocumentEntity propertyVsDocumentEntity = propertyVsDocumentDAO.find(propertyvsDocumentModel.getUserVsDocumentId());
+					propertyVsDocumentEntity.setModifiedDate(Util.getCurrentDateTime());
+					propertyVsDocumentEntity.setModifiedBy(userId);
+					propertyVsDocumentEntity.setStatus(Status.DELETE.ordinal());
+					propertyVsDocumentDAO.update(propertyVsDocumentEntity);
+				}
+				
+				//Property Vs Special Experience Delete
+				for(PropertyVsSpecialExperienceModel specialExperienceModel:propertyModel.getPropertyVsSpecialExperienceModels()){
+					PropertyVsSpecialExperienceEntity propertyVsSpecialExperienceEntity = propertyVsSpecialExperienceDAO.find(Long.valueOf(specialExperienceModel.getPropertyExpId()));
+					propertyVsSpecialExperienceEntity.setModifiedBy(userId);
+					propertyVsSpecialExperienceEntity.setModifiedDate(Util.getCurrentDateTime());
+					propertyVsSpecialExperienceEntity.setStatus(Status.DELETE.ordinal());
+					propertyVsSpecialExperienceDAO.update(propertyVsSpecialExperienceEntity);
+				}
+				
+				//Property Vs Guest Access Delete
+				for(PropertyVsGuestAccessModel guestAccessModel:propertyModel.getPropertyVsGuestAccessModels()){
+					PropertyVsGuestAccessEntity propertyVsGuestAccessEntity = propertyVsGuestAccessDAO.find(Long.valueOf(guestAccessModel.getPropertyGAccessId()));
+					propertyVsGuestAccessEntity.setModifiedBy(userId);
+					propertyVsGuestAccessEntity.setModifiedDate(Util.getCurrentDateTime());
+					propertyVsGuestAccessEntity.setStatus(Status.DELETE.ordinal());
+					propertyVsGuestAccessDAO.update(propertyVsGuestAccessEntity);
+				}
+				
+				//Property Vs Image  Delete
+				for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
+					PropertyVsImageEntity propertyVsImageEntity = propertyVsImageDAO.find(Long.valueOf(propertyVsImageModel.getPropertyImageId()));
+					propertyVsImageEntity.setModifiedBy(userId);
+					propertyVsImageEntity.setModifiedDate(Util.getCurrentDateTime());
+					propertyVsImageEntity.setStatus(Status.DELETE.ordinal());
+					propertyVsImageDAO.save(propertyVsImageEntity);
+				}
+				
+				//Property Vs NearBy Delete
+				for(PropertyVsNearbyModel propertyVsNearbyModel:propertyModel.getPropertyVsNearbyModels()){
+					PropertyVsNearbyEntity propertyVsNearbyEntity = propertyVsNearbyDAO.find(Long.valueOf(propertyVsNearbyModel.getPropertyNearbyId()));
+					propertyVsNearbyEntity.setModifiedBy(userId);
+					propertyVsNearbyEntity.setModifiedDate(Util.getCurrentDateTime());
+					propertyVsNearbyEntity.setStatus(Status.DELETE.ordinal());
+					propertyVsNearbyDAO.update(propertyVsNearbyEntity);
+				}
+				
+				//Property Vs PriceDrop Delete
+				if(propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_Y)){
+					
+					for(PropertyVsPriceDropModel propertyVsPriceDropModel : propertyModel.getPropertyVsPriceDropModels()){
+						PropertyVsPriceDropEntity propertyVsPriceDropEntity = propertyVsPriceDropDAO.find(Long.valueOf(propertyVsPriceDropModel.getPropertyPDropId()));
+						propertyVsPriceDropEntity.setModifiedBy(userId);
+						propertyVsPriceDropEntity.setModifiedDate(Util.getCurrentDateTime());
+						propertyVsPriceDropEntity.setStatus(Status.DELETE.ordinal());
+						propertyVsPriceDropDAO.update(propertyVsPriceDropEntity);
+					}
+					
+						
+				}
+				
+				//Property Vs SpaceRule Delete
+				for(PropertyVsSpaceRuleModel propertyVsSpaceRuleModel:propertyModel.getPropertyVsSpaceRuleModels()){
+					
+					PropertyVsSpaceRuleEntity propertyVsSpaceRuleEntity = propertyVsSpaceRuleDAO.find(Long.valueOf(propertyVsSpaceRuleModel.getPropertySpaceId()));
+					propertyVsSpaceRuleEntity.setModifiedBy(userId);
+					propertyVsSpaceRuleEntity.setModifiedDate(Util.getCurrentDateTime());
+					propertyVsSpaceRuleEntity.setStatus(Status.DELETE.ordinal());
+					propertyVsSpaceRuleDAO.update(propertyVsSpaceRuleEntity);
+				}
+				
+				///////////////// Room Data Delete Code ///////////////////////////
+				//Room  Delete
+				for(RoomModel roomModel:propertyModel.getRoomModels()){
+					RoomEntity roomEntity = roomDAO.find(Long.valueOf(roomModel.getRoomId()));
+					roomEntity.setModifiedBy(userId);
+					roomEntity.setModifiedDate(Util.getCurrentDateTime());
+					roomEntity.setStatus(Status.DELETE.ordinal());
+					roomDAO.update(roomEntity);
+					
+					//Room vs Amenities Delete
+					for(RoomVsAmenitiesModel roomVsAmenitiesModel:roomModel.getRoomVsAmenitiesModels()){
+						RoomVsAmenitiesEntity roomVsAmenitiesEntity = roomVsAmenitiesDAO.find(Long.valueOf(roomVsAmenitiesModel.getRoomVsAminitiesId()));
+						roomVsAmenitiesEntity.setModifiedBy(userId);
+						roomVsAmenitiesEntity.setModifiedDate(Util.getCurrentDateTime());
+						roomVsAmenitiesEntity.setStatus(Status.DELETE.ordinal());
+						roomVsAmenitiesDAO.save(roomVsAmenitiesEntity);
+					}
+					
+					//Room Vs Image Delete
+					for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
+						RoomVsImageEntity roomVsImageEntity = roomVsImageDAO.find(Long.valueOf(roomVsImageModel.getRoomVsImageId()));
+						roomVsImageEntity.setModifiedBy(userId);
+						roomVsImageEntity.setModifiedDate(Util.getCurrentDateTime());
+						roomVsImageEntity.setStatus(Status.DELETE.ordinal());
+						roomVsImageDAO.update(roomVsImageEntity);
+					}
+					
+					//Room Vs Host Discount Delete
+					for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
+						RoomVsHostDiscountEntity roomVsHostDiscountEntity = roomVsHostDiscountDAO.find(Long.valueOf(roomVsHostDiscountModel.getRhdId()));
+						roomVsHostDiscountEntity.setModifiedBy(userId);
+						roomVsHostDiscountEntity.setStatus(Status.DELETE.ordinal());
+						roomVsHostDiscountEntity.setModifiedDate(Util.getCurrentDateTime());
+						roomVsHostDiscountDAO.update(roomVsHostDiscountEntity);
+					}
+					
+					//Room Vs Ora Discount Delete
+					for(RoomVsOraDiscountModel roomVsOraDiscountModel:roomModel.getRoomVsOraDiscountModels()) {
+						
+						RoomVsOraDiscountEntity roomVsOraDiscountEntity = roomVsOraDiscountDAO.find(Long.valueOf(roomVsOraDiscountModel.getRodId()));
+						roomVsOraDiscountEntity.setModifiedBy(userId);
+						roomVsOraDiscountEntity.setModifiedDate(Util.getCurrentDateTime());
+						roomVsOraDiscountEntity.setStatus(Status.DELETE.ordinal());
+						roomVsOraDiscountDAO.update(roomVsOraDiscountEntity);
+					}
+					
+					//Room Vs Ora Price Percentage Delete
+					for(RoomVsOrapricePercModel roomVsOrapricePercModel:roomModel.getRoomVsOrapricePercModels()) {
+						RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = roomVsOraPricePercentageDAO.find(Long.valueOf(roomVsOrapricePercModel.getRopId()));
+						roomVsOraPricePercentageEntity.setModifiedBy(userId);
+						roomVsOraPricePercentageEntity.setModifiedDate(Util.getCurrentDateTime());
+						roomVsOraPricePercentageEntity.setStatus(Status.DELETE.ordinal());
+						roomVsOraPricePercentageDAO.update(roomVsOraPricePercentageEntity);
+					}
+					
+					
+					// Room Vs Price Delete
+					for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
+						RoomVsPriceEntity roomVsPriceEntity = roomVsPriceDAO.find(Long.valueOf(roomVsPriceModel.getRoomVsPriceId()));
+						roomVsPriceEntity.setModifiedBy(userId);
+						roomVsPriceEntity.setModifiedDate(Util.getCurrentDateTime());
+						roomVsPriceEntity.setStatus(Status.DELETE.ordinal());
+						roomVsPriceDAO.update(roomVsPriceEntity);
+					}
+					
+					// Room vs Specilities Delete
+					for(RoomVsSpecialitiesModel roomVsSpecialitiesModel:roomModel.getRoomVsSpecialitiesModels()){
+						RoomVsSpecialitiesEntity roomVsSpecialitiesEntity = roomVsSpecialitiesDAO.find(Long.valueOf(roomVsSpecialitiesModel.getRoomspecId()));
+						roomVsSpecialitiesEntity.setModifiedBy(userId);
+						roomVsSpecialitiesEntity.setModifiedDate(Util.getCurrentDateTime());
+						roomVsSpecialitiesEntity.setStatus(Status.DELETE.ordinal());
+						roomVsSpecialitiesDAO.update(roomVsSpecialitiesEntity);
+					}
+					
+					//Room Vs Meal Delete
+					for(RoomVsMealModel roomVsMeal:roomModel.getRoomVsMealModels()){
+						RoomVsMealEntity roomVsMealEntity = roomVsMealDAO.find(Long.valueOf(roomVsMeal.getRoomVsMealId()));
+						roomVsMealEntity.setModifiedBy(userId);
+						roomVsMealEntity.setModifiedDate(Util.getCurrentDateTime());
+						roomVsMealEntity.setStatus(Status.DELETE.ordinal());
+						roomVsMealDAO.update(roomVsMealEntity);
+					}
+					
+					//Room vs Cancellation Delete
+					for(RoomVsCancellationModel roomVsCancellationModel:roomModel.getRoomVsCancellationModels()){
+						RoomVsCancellationEntity roomVsCancellationEntity = roomVsCancellationDAO.find(Long.valueOf(roomVsCancellationModel.getRcId()));
+						roomVsCancellationEntity.setModifiedBy(userId);
+						roomVsCancellationEntity.setModifiedDate(Util.getCurrentDateTime());
+						roomVsCancellationEntity.setStatus(Status.DELETE.ordinal());
+						roomVsCancellationDAO.update(roomVsCancellationEntity);
+					}
+					
+					//// Room Vs Bed Delete
+					RoomVsBedEntity roomVsBedEntity = roomVsBedDAO.find(Long.valueOf(roomModel.getRoomVsBedModel().getRbId()));
+					roomVsBedEntity.setModifiedBy(userId);
+					roomVsBedEntity.setModifiedDate(Util.getCurrentDateTime());
+					roomVsBedEntity.setStatus(Status.DELETE.ordinal());
+					roomVsBedDAO.update(roomVsBedEntity);	
+				}
+				
+				
+				
+				
+				
+				
+				//////////////////////////////////////////////////////////// Property Add ////////////////////////////////////////////////
+				
+				
+				// User vs Account
+				propertyModel.getUserVsAccountModel().setCreatedBy(userId);
+				propertyModel.getUserVsAccountModel().setUserId(userModel.getUserId());
+				UserVsAccountEntity userVsAccountEntity2 = userVsAccountConverter.modelToEntity(propertyModel.getUserVsAccountModel());
+				userVsAccountDAO.save(userVsAccountEntity2);
+				
+				//Property
+				propertyModel.setCreatedBy(userId);
+				PropertyEntity propertyEntity2 = propertyConverter.modelToEntity(propertyModel);
+				propertyEntity2.setUserVsAccountEntity(userVsAccountEntity2);
+				propertyDAO.save(propertyEntity2);
+				
+				//Property Vs Description
+				for(PropertyVsDescriptionModel propertyVsDescriptionModel:propertyModel.getPropertyVsDescriptionModels()){
+					propertyVsDescriptionModel.setCreatedBy(userId);
+					PropertyVsDescriptionEntity propertyVsDescriptionEntity = propertyVsDescriptionConverter.modelToEntity(propertyVsDescriptionModel);
+					propertyVsDescriptionEntity.setPropertyEntity(propertyEntity2);			
+					propertyVsDescriptionDAO.save(propertyVsDescriptionEntity);
+				}
+				
+				//Property Vs Document
+				for(PropertyVsDocumentModel propertyvsDocumentModel:propertyModel.getPropertyVsDocumentModels()){
+					propertyvsDocumentModel.setCreatedBy(userId);
+					PropertyVsDocumentEntity propertyVsDocumentEntity = propertyVsDocumentConverter.modelToEntity(propertyvsDocumentModel);
+					propertyVsDocumentEntity.setPropertyEntity(propertyEntity2);
+					propertyVsDocumentDAO.save(propertyVsDocumentEntity);
+				}
+				
+				//Property Vs Special Experience
+				for(PropertyVsSpecialExperienceModel specialExperienceModel:propertyModel.getPropertyVsSpecialExperienceModels()){
+					specialExperienceModel.setCreatedBy(userId);
+					PropertyVsSpecialExperienceEntity propertyVsSpecialExperienceEntity = pVsSpecialExperienceConverter.modelToEntity(specialExperienceModel);
+					propertyVsSpecialExperienceEntity.setPropertyEntity(propertyEntity2);
+					propertyVsSpecialExperienceDAO.save(propertyVsSpecialExperienceEntity);
+				}
+				
+				//Property Vs Guest Access
+				for(PropertyVsGuestAccessModel guestAccessModel:propertyModel.getPropertyVsGuestAccessModels()){
+					guestAccessModel.setCreatedBy(userId);
+					PropertyVsGuestAccessEntity propertyVsGuestAccessEntity = propertyVsGuestAccessConverter.modelToEntity(guestAccessModel);
+					propertyVsGuestAccessEntity.setPropertyEntity(propertyEntity2);
+					propertyVsGuestAccessDAO.save(propertyVsGuestAccessEntity);
+				}
+				
+				//Property Vs Image 
+				for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
+					propertyVsImageModel.setCreatedBy(userId);
+					PropertyVsImageEntity propertyVsImageEntity = propertyVsImageConverter.modelToEntity(propertyVsImageModel);
+					propertyVsImageEntity.setPropertyEntity(propertyEntity2);
+					propertyVsImageDAO.save(propertyVsImageEntity);
+				}
+				
+				//Property Vs NearBy
+				for(PropertyVsNearbyModel propertyVsNearbyModel:propertyModel.getPropertyVsNearbyModels()){
+					propertyVsNearbyModel.setCreatedBy(userId);
+					PropertyVsNearbyEntity propertyVsNearbyEntity = propertyVsNearbyConverter.modelToEntity(propertyVsNearbyModel);
+					propertyVsNearbyEntity.setPropertyEntity(propertyEntity2);
+					propertyVsNearbyDAO.save(propertyVsNearbyEntity);
+				}
+				
+				//Property Vs PriceDrop
+				if(propertyModel.getPriceDrop().equals(PropertyAddConstant.STR_Y)){
+					List<PriceDropModel> priceDropModels = fetchPriceDropList();
+					for(PriceDropModel priceDropModel:priceDropModels){
+						PropertyVsPriceDropModel propertyVsPriceDropModel = new PropertyVsPriceDropModel();
+						propertyVsPriceDropModel.setPriceDropModel(priceDropModel);
+						propertyVsPriceDropModel.setPercentage(PropertyAddConstant.STR_ZERO);
+						propertyVsPriceDropModel.setCreatedBy(userId);
+						PropertyVsPriceDropEntity propertyVsPriceDropEntity = propertyVsPriceDropConverter.modelToEntity(propertyVsPriceDropModel);
+						propertyVsPriceDropEntity.setPropertyEntity(propertyEntity2);
+						propertyVsPriceDropDAO.save(propertyVsPriceDropEntity);
+					}
+				}
+				
+				//Property Vs SpaceRule
+				for(PropertyVsSpaceRuleModel propertyVsSpaceRuleModel:propertyModel.getPropertyVsSpaceRuleModels()){
+					propertyVsSpaceRuleModel.setCreatedBy(userId);
+					PropertyVsSpaceRuleEntity propertyVsSpaceRuleEntity = propertyVsSpaceRuleConverter.modelToEntity(propertyVsSpaceRuleModel);
+					propertyVsSpaceRuleEntity.setPropertyEntity(propertyEntity2);
+					propertyVsSpaceRuleDAO.save(propertyVsSpaceRuleEntity);
+				}
+				
+				///////////////// Room Data Insert Code ///////////////////////////
+				//Room 
+				for(RoomModel roomModel:propertyModel.getRoomModels()){
+					roomModel.setCreatedBy(userId);
+					RoomEntity roomEntity = roomConverter.modelToEntity(roomModel);
+					roomEntity.setPropertyEntity(propertyEntity2);
+					roomDAO.save(roomEntity);
+					
+					//Room vs Amenities
+					for(RoomVsAmenitiesModel roomVsAmenitiesModel:roomModel.getRoomVsAmenitiesModels()){
+						roomVsAmenitiesModel.setCreatedBy(userId);
+						RoomVsAmenitiesEntity roomVsAmenitiesEntity = roomVsAmenitiesConverter.modelToEntity(roomVsAmenitiesModel);
+						roomVsAmenitiesEntity.setRoomEntity(roomEntity);
+						roomVsAmenitiesDAO.save(roomVsAmenitiesEntity);
+					}
+					
+					//Room Vs Image
+					for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
+						roomVsImageModel.setCreatedBy(userId);
+						RoomVsImageEntity roomVsImageEntity = roomVsImageConverter.modelToEntity(roomVsImageModel);
+						roomVsImageEntity.setRoomEntity(roomEntity);
+						roomVsImageDAO.save(roomVsImageEntity);
+					}
+					
+					//Room Vs Host Discount
+					for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
+						roomVsHostDiscountModel.setCreatedBy(userId);
+						RoomVsHostDiscountEntity roomVsHostDiscountEntity = roomVsHostDiscountConverter.modelToEntity(roomVsHostDiscountModel);
+						roomVsHostDiscountEntity.setRoomEntity(roomEntity);
+						roomVsHostDiscountDAO.save(roomVsHostDiscountEntity);
+					}
+					
+					//Room Vs Ora Discount
+					RoomVsOraDiscountEntity roomVsOraDiscountEntity = new RoomVsOraDiscountEntity();
+					DiscountCategoryOraEntity discountCategoryOraEntity= discountCategoryOraDAO.find(Long.valueOf(1));
+					roomVsOraDiscountEntity.setDiscountCategoryOraEntity(discountCategoryOraEntity);
+					roomVsOraDiscountEntity.setRoomEntity(roomEntity);
+					roomVsOraDiscountEntity.setDiscount(PropertyAddConstant.STR_ZERO);
+					roomVsOraDiscountEntity.setCreatedBy(userId);
+					roomVsOraDiscountDAO.save(roomVsOraDiscountEntity);
+					
+					//Room Vs Ora Price Percentage
+					RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = new RoomVsOraPricePercentageEntity();
+					roomVsOraPricePercentageEntity.setPercentage(PropertyAddConstant.STR_ZERO);
+					roomVsOraPricePercentageEntity.setRoomEntity(roomEntity);
+					roomVsOraPricePercentageEntity.setCreatedBy(userId);
+					roomVsOraPricePercentageDAO.save(roomVsOraPricePercentageEntity);
+					
+					// Room Vs Price
+					for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
+						roomVsPriceModel.setCreatedBy(userId);
+						RoomVsPriceEntity roomVsPriceEntity = roomVsPriceConverter.modelToEntity(roomVsPriceModel);
+						roomVsPriceEntity.setRoomEntity(roomEntity);
+						roomVsPriceDAO.save(roomVsPriceEntity);
+					}
+					
+					// Room vs Specilities
+					for(RoomVsSpecialitiesModel roomVsSpecialitiesModel:roomModel.getRoomVsSpecialitiesModels()){
+						roomVsSpecialitiesModel.setCreatedBy(userId);
+						RoomVsSpecialitiesEntity roomVsSpecialitiesEntity = roomVsSpecialitiesConverter.modelToEntity(roomVsSpecialitiesModel);
+						roomVsSpecialitiesEntity.setRoomEntity(roomEntity);
+						roomVsSpecialitiesDAO.save(roomVsSpecialitiesEntity);
+					}
+					
+					//Room Vs Meal
+					for(RoomVsMealModel roomVsMeal:roomModel.getRoomVsMealModels()){
+						roomVsMeal.setCreatedBy(userId);
+						RoomVsMealEntity roomVsMealEntity = roomVsMealConverter.modelToEntity(roomVsMeal);
+						roomVsMealEntity.setRoomEntity(roomEntity);
+						roomVsMealDAO.save(roomVsMealEntity);
+					}
+					
+					//Room vs Cancellation
+					for(RoomVsCancellationModel roomVsCancellationModel:roomModel.getRoomVsCancellationModels()){
+						roomVsCancellationModel.setCreatedBy(userId);
+						RoomVsCancellationEntity roomVsCancellationEntity = roomVsCancellationConverter.modelToEntity(roomVsCancellationModel);
+						roomVsCancellationEntity.setRoomEntity(roomEntity);
+						roomVsCancellationDAO.save(roomVsCancellationEntity);
+					}
+					
+					//// Room Vs Bed
+					RoomVsBedModel roomVsBedModel = roomModel.getRoomVsBedModel();
+					roomVsBedModel.setCreatedBy(userId);
+					RoomVsBedEntity roomVsBedEntity = roomVsBedConverter.modelToEntity(roomVsBedModel);
+					roomVsBedEntity.setRoomEntity(roomEntity);
+					roomVsBedDAO.save(roomVsBedEntity);	
+				}
+
+
 	}
 
 }

@@ -27,14 +27,29 @@ import com.orastays.property.propertyadd.dao.PGCategorySexDAO;
 import com.orastays.property.propertyadd.dao.PriceTypeDAO;
 import com.orastays.property.propertyadd.dao.PropertyDAO;
 import com.orastays.property.propertyadd.dao.PropertyTypeDAO;
+import com.orastays.property.propertyadd.dao.PropertyVsDescriptionDAO;
+import com.orastays.property.propertyadd.dao.PropertyVsDocumentDAO;
+import com.orastays.property.propertyadd.dao.PropertyVsGuestAccessDAO;
+import com.orastays.property.propertyadd.dao.PropertyVsImageDAO;
+import com.orastays.property.propertyadd.dao.PropertyVsNearbyDAO;
+import com.orastays.property.propertyadd.dao.PropertyVsSpaceRuleDAO;
+import com.orastays.property.propertyadd.dao.PropertyVsSpecialExperienceDAO;
 import com.orastays.property.propertyadd.dao.RoomCategoryDAO;
 import com.orastays.property.propertyadd.dao.RoomStandardDAO;
 import com.orastays.property.propertyadd.dao.RoomVsAmenitiesDAO;
 import com.orastays.property.propertyadd.dao.RoomVsBedDAO;
 import com.orastays.property.propertyadd.dao.RoomVsCancellationDAO;
+import com.orastays.property.propertyadd.dao.RoomVsHostDiscountDAO;
+import com.orastays.property.propertyadd.dao.RoomVsImageDAO;
+import com.orastays.property.propertyadd.dao.RoomVsMealDAO;
+import com.orastays.property.propertyadd.dao.RoomVsOraDiscountDAO;
+import com.orastays.property.propertyadd.dao.RoomVsOraPricePercentageDAO;
+import com.orastays.property.propertyadd.dao.RoomVsPriceDAO;
+import com.orastays.property.propertyadd.dao.RoomVsSpecialitiesDAO;
 import com.orastays.property.propertyadd.dao.SpaceRuleDAO;
 import com.orastays.property.propertyadd.dao.SpecialExperienceDAO;
 import com.orastays.property.propertyadd.dao.SpecialtiesDAO;
+import com.orastays.property.propertyadd.dao.UserVsAccountDAO;
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.helper.MessageUtil;
 import com.orastays.property.propertyadd.model.CommonModel;
@@ -123,6 +138,51 @@ public class AuthorizeUserValidation {
 	
 	@Autowired
 	protected PropertyDAO propertyDAO;
+	
+	@Autowired
+	protected PropertyVsDescriptionDAO propertyVsDescriptionDAO;
+	
+	@Autowired
+	protected PropertyVsGuestAccessDAO propertyVsGuestAccessDAO;
+	
+	@Autowired
+	protected PropertyVsNearbyDAO propertyVsNearbyDAO;
+	
+	@Autowired
+	protected PropertyVsSpaceRuleDAO propertyVsSpaceRuleDAO;
+	
+	@Autowired
+	protected PropertyVsSpecialExperienceDAO propertyVsSpecialExperienceDAO;
+	
+	@Autowired
+	protected PropertyVsDocumentDAO propertyVsDocumentDAO;
+	
+	@Autowired
+	protected RoomVsPriceDAO roomVsPriceDAO;
+	
+	@Autowired
+	protected RoomVsHostDiscountDAO roomVsHostDiscountDAO;
+	
+	@Autowired
+	protected RoomVsSpecialitiesDAO roomVsSpecialitiesDAO;
+	
+	@Autowired
+	protected RoomVsMealDAO roomVsMealDAO;
+	
+	@Autowired
+	protected UserVsAccountDAO userVsAccountDAO;
+	
+	@Autowired
+	protected PropertyVsImageDAO propertyVsImageDAO;
+	
+	@Autowired
+	protected RoomVsImageDAO roomVsImageDAO;
+	
+	@Autowired
+	protected RoomVsOraDiscountDAO roomVsOraDiscountDAO;
+	
+	@Autowired
+	protected RoomVsOraPricePercentageDAO roomVsOraPricePercentageDAO;
 	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {
 

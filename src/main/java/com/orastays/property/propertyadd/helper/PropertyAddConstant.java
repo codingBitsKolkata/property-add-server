@@ -16,5 +16,6 @@ public final class PropertyAddConstant {
 	public static final String STR_Y = "Y";
 	public static final String STR_N = "N";
 	public static final String STR_ZERO = "0";
+	public static final String CREATEDBY = "createdBy";
 	
 }
