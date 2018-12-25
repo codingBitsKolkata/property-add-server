@@ -38,6 +38,7 @@ import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.model.AccommodationModel;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.AmenitiesTypeModel;
+import com.orastays.property.propertyadd.model.BookingModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.PGCategorySexModel;
@@ -1147,6 +1148,18 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 				}
 
 
+	}
+
+	@Override
+	public List<BookingModel> viewPropertyBookingList(PropertyModel propertyModel) throws FormExceptions {
+		
+		return  propertyValidation.validatePropertyUserToken(propertyModel);
+	}
+
+	@Override
+	public List<BookingModel> viewUserBookingList(CommonModel commonModel) throws FormExceptions {
+		
+		return propertyValidation.validateUserTokenForBookingList(commonModel);
 	}
 
 }

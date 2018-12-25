@@ -1,11 +1,13 @@
 package com.orastays.property.propertyadd.validation;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.orastays.property.propertyadd.dao.AccommodationDAO;
 import com.orastays.property.propertyadd.dao.AmenitiesDAO;
 import com.orastays.property.propertyadd.dao.CancellationSlabDAO;
@@ -52,6 +56,7 @@ import com.orastays.property.propertyadd.dao.SpecialtiesDAO;
 import com.orastays.property.propertyadd.dao.UserVsAccountDAO;
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.helper.MessageUtil;
+import com.orastays.property.propertyadd.model.BookingModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.ResponseModel;
 import com.orastays.property.propertyadd.model.UserModel;
@@ -193,19 +198,28 @@ public class AuthorizeUserValidation {
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
 		UserModel userModel = null;
 		try {
-			ResponseModel responseModel = restTemplate.getForObject(messageUtil.getBundle("auth.server.url") +"check-token?userToken="+userToken, ResponseModel.class);
-			userModel = (UserModel) responseModel.getResponseBody();
-			if(Objects.isNull(userModel)) {
-				exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+			
+			// Validate User Token
+			if(StringUtils.isBlank(userToken)) {
+				exceptions.put(messageUtil.getBundle("user.token.null.code"), new Exception(messageUtil.getBundle("user.token.null.message")));
+			} else {
+				ResponseModel responseModel = restTemplate.getForObject(messageUtil.getBundle("auth.server.url") +"check-token?userToken="+userToken, ResponseModel.class);
+				Gson gson = new Gson();
+				String jsonString = gson.toJson(responseModel.getResponseBody());
+				userModel = gson.fromJson(jsonString, UserModel.class);
+				if(Objects.isNull(userModel)) {
+					exceptions.put(messageUtil.getBundle("session.expires.code"), new Exception(messageUtil.getBundle("session.expires.message")));
+				}
+				
+				if (logger.isInfoEnabled()) {
+					logger.info("userModel ==>> "+userModel);
+				}
 			}
 			
-			if (logger.isInfoEnabled()) {
-				logger.info("userModel ==>> "+userModel);
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			// Disabled the below line to pass the Token Validation
-			exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+			exceptions.put(messageUtil.getBundle("session.expires.code"), new Exception(messageUtil.getBundle("session.expires.message")));
 		}
 		
 		if (exceptions.size() > 0)
@@ -227,17 +241,24 @@ public class AuthorizeUserValidation {
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
 		CommonModel commonModel = null;
 		try {
-			ResponseModel responseModel = restTemplate.getForObject(messageUtil.getBundle("auth.server.url") +"check-language?languageId="+languageId, ResponseModel.class);
-			commonModel = (CommonModel) responseModel.getResponseBody();
-			if(Objects.isNull(commonModel)) {
-				exceptions.put(messageUtil.getBundle("language.id.invalid.code"), new Exception(messageUtil.getBundle("language.id.invalid.message")));
+			
+			if(StringUtils.isBlank(languageId)) {
+				exceptions.put(messageUtil.getBundle("language.id.null.code"), new Exception(messageUtil.getBundle("language.id.null.message")));
+			} else {
+				ResponseModel responseModel = restTemplate.getForObject(messageUtil.getBundle("auth.server.url") +"check-language?languageId="+languageId, ResponseModel.class);
+				Gson gson = new Gson();
+				String jsonString = gson.toJson(responseModel.getResponseBody());
+				commonModel = gson.fromJson(jsonString, CommonModel.class);
+				if(Objects.isNull(commonModel)) {
+					exceptions.put(messageUtil.getBundle("language.id.invalid.code"), new Exception(messageUtil.getBundle("language.id.invalid.message")));
+				}
+				
+				if (logger.isInfoEnabled()) {
+					logger.info("commonModel ==>> "+commonModel);
+				}
 			}
 			
-			if (logger.isInfoEnabled()) {
-				logger.info("commonModel ==>> "+commonModel);
-			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			// Disabled the below line to pass the Language Validation
 			exceptions.put(messageUtil.getBundle("language.id.invalid.code"), new Exception(messageUtil.getBundle("language.id.invalid.message")));
 		}
@@ -251,4 +272,77 @@ public class AuthorizeUserValidation {
 		
 		return commonModel;
 	}
+	
+	public List<BookingModel> getPropertyBookingList(String propertyId) throws FormExceptions {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("getPropertyBookingList -- START");
+		}
+		
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		List<BookingModel> bookingModels = null;
+		BookingModel bookingModel = new BookingModel();
+		bookingModel.setPropertyId(propertyId);
+		try {
+			String url = messageUtil.getBundle("booking.server.url") +"get-property-bookings";
+			ResponseModel responseModel = restTemplate.postForObject(url, bookingModel,ResponseModel.class);
+			
+			Gson gson = new Gson();
+			String jsonString = gson.toJson(responseModel.getResponseBody());
+			bookingModels = gson.fromJson(jsonString,new TypeToken<List<BookingModel>>(){}.getType());
+			
+			if (logger.isInfoEnabled()) {
+				logger.info("bookingModels ==>> "+bookingModels);
+			}
+		} catch (Exception e) {
+			// Disabled the below line to pass the Token Validation
+			e.printStackTrace();
+		}
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("getPropertyBookingList -- END");
+		}
+		
+		return bookingModels;
+	}
+	
+	public List<BookingModel> getUserBookingList(String userId) throws FormExceptions {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("getUserBookingList -- START");
+		}
+		
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		List<BookingModel> bookingModels = null;
+		BookingModel bookingModel = new BookingModel();
+		bookingModel.setUserId(userId);
+		try {
+			String url = messageUtil.getBundle("booking.server.url") +"get-user-bookings";
+			ResponseModel responseModel = restTemplate.postForObject(url, bookingModel,ResponseModel.class);
+			
+			Gson gson = new Gson();
+			String jsonString = gson.toJson(responseModel.getResponseBody());
+			bookingModels = gson.fromJson(jsonString,new TypeToken<List<BookingModel>>(){}.getType());
+			
+			if (logger.isInfoEnabled()) {
+				logger.info("bookingModels ==>> "+bookingModels);
+			}
+		} catch (Exception e) {
+			// Disabled the below line to pass the Token Validation
+			e.printStackTrace();
+		}
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("getUserBookingList -- END");
+		}
+		
+		return bookingModels;
+	}
+	
 }

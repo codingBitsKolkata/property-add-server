@@ -3,12 +3,14 @@
  */
 package com.orastays.property.propertyadd.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Getter
 @Setter
@@ -27,4 +29,7 @@ public class UserModel extends CommonModel {
 	
 	@JsonProperty("emailId")
 	private String emailId;
+	
+	@JsonProperty("userVsTypes")
+	private List<UserVsTypeModel> userVsTypeModels;
 }

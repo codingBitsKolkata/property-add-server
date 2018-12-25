@@ -6,6 +6,7 @@ import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.model.AccommodationModel;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.AmenitiesTypeModel;
+import com.orastays.property.propertyadd.model.BookingModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.PGCategorySexModel;
@@ -38,4 +39,6 @@ public interface PropertyService {
 	List<PropertyModel> fetchActivePropertyList(CommonModel commonModel) throws FormExceptions;
 	PropertyModel fetchPropertyById(PropertyModel propertyModel) throws FormExceptions;
 	void updateProperty(PropertyModel propertyModel) throws FormExceptions;
+	List<BookingModel> viewPropertyBookingList(PropertyModel propertyModel) throws FormExceptions;
+	List<BookingModel> viewUserBookingList(CommonModel commonModel) throws FormExceptions;
 }

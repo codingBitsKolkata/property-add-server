@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.validation;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -51,7 +52,9 @@ import com.orastays.property.propertyadd.helper.Accommodation;
 import com.orastays.property.propertyadd.helper.MealCategory;
 import com.orastays.property.propertyadd.helper.PropertyAddConstant;
 import com.orastays.property.propertyadd.helper.Status;
+import com.orastays.property.propertyadd.helper.UserType;
 import com.orastays.property.propertyadd.helper.Util;
+import com.orastays.property.propertyadd.model.BookingModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyVsDescriptionModel;
@@ -72,12 +75,153 @@ import com.orastays.property.propertyadd.model.RoomVsOrapricePercModel;
 import com.orastays.property.propertyadd.model.RoomVsPriceModel;
 import com.orastays.property.propertyadd.model.RoomVsSpecialitiesModel;
 import com.orastays.property.propertyadd.model.UserModel;
+import com.orastays.property.propertyadd.model.UserVsTypeModel;
 
 @Component
 @Transactional
 public class PropertyValidation extends AuthorizeUserValidation {
 
 	private static final Logger logger = LogManager.getLogger(PropertyValidation.class);
+	
+	public List<BookingModel> validateUserTokenForBookingList(CommonModel commonModel) throws FormExceptions {
+		if (logger.isDebugEnabled()) {
+			logger.debug("validatePropertyUserToken -- Start");
+		}
+
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		List<BookingModel> bookingModels = null;
+		UserModel userModel = null;
+		if(Objects.nonNull(commonModel)){
+			// Validate User Token
+			if (StringUtils.isBlank(commonModel.getUserToken())) {
+				exceptions.put(messageUtil.getBundle("token.null.code"), new Exception(messageUtil.getBundle("token.null.message")));
+			} else {
+				userModel = getUserDetails(commonModel.getUserToken());
+			}
+			
+			// Validate User Login Details
+			if(Objects.nonNull(userModel)){
+				if(Objects.nonNull(userModel.getUserVsTypeModels())){
+					boolean flag = false;
+					for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypeModels()){
+						if(Objects.nonNull(userVsTypeModel.getUserTypeModel())) {
+							if(userVsTypeModel.getUserTypeModel().getUserTypeId().equals(String.valueOf(UserType.CUSTOMER.ordinal()))){
+								flag = true;
+							}
+						} else {
+							exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+						}
+					}
+					
+					if(!flag){
+						exceptions.put(messageUtil.getBundle("user.type.invalid.code"), new Exception(messageUtil.getBundle("user.type.invalid.message")));
+					} else {
+						bookingModels = getUserBookingList(userModel.getUserId());
+					}
+				} else {
+					exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+				}
+			} else {
+				exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+			}
+
+		}
+		
+		return bookingModels;
+	}
+	
+	
+	public List<BookingModel> validatePropertyUserToken(PropertyModel propertyModel) throws FormExceptions {
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("validatePropertyUserToken -- Start");
+		}
+
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		List<BookingModel> bookingModels = null;
+		UserModel userModel = null;
+		if(Objects.nonNull(propertyModel)){
+			
+			// Validate User Token
+			if (StringUtils.isBlank(propertyModel.getUserToken())) {
+				exceptions.put(messageUtil.getBundle("token.null.code"), new Exception(messageUtil.getBundle("token.null.message")));
+			} else {
+				userModel = getUserDetails(propertyModel.getUserToken());
+			}
+			
+			// Validate Host Login Details
+			if(Objects.nonNull(userModel)){
+				if(Objects.nonNull(userModel.getUserVsTypeModels())){
+					boolean flag = false;
+					for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypeModels()){
+						if(Objects.nonNull(userVsTypeModel.getUserTypeModel())) {
+							if(userVsTypeModel.getUserTypeModel().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
+								flag = true;
+							}
+						} else {
+							exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+						}
+					}
+					
+					if(!flag){
+						exceptions.put(messageUtil.getBundle("user.type.invalid.code"), new Exception(messageUtil.getBundle("user.type.invalid.message")));
+					}
+				} else {
+					exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+				}
+			} else {
+				exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+			}
+			
+			//Validate Property
+			if (StringUtils.isBlank(String.valueOf(propertyModel.getPropertyId()))) {
+				exceptions.put(messageUtil.getBundle("property.id.null.code"), new Exception(messageUtil.getBundle("property.id.null.message")));
+			} else {
+				
+				if (!Util.isNumeric(String.valueOf(propertyModel.getPropertyId()))) {
+					exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
+				} else {
+					PropertyEntity propertyEntity = null;
+					
+					try {
+						Map<String, String> innerMap1 = new LinkedHashMap<>();
+						innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+				
+						Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+						outerMap1.put("eq", innerMap1);
+				
+						Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+						alliasMap.put(entitymanagerPackagesToScan+".PropertyEntity", outerMap1);
+						
+						propertyEntity = propertyDAO.fetchObjectBySubCiteria(alliasMap);
+						
+						if (Objects.isNull(propertyEntity)) {
+							exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
+						} else {
+							bookingModels = getPropertyBookingList(String.valueOf(propertyModel.getPropertyId()));
+						}
+
+					} catch (Exception e) {
+						exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
+					}
+					
+				}
+			}
+			
+		} else {
+			 exceptions.put(messageUtil.getBundle("property.null.code"), new Exception(messageUtil.getBundle("property.null.message")));
+		}
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("validatePropertyUserToken -- End");
+		}
+		
+		return bookingModels;
+		
+	}
 
 	public void validateLanguageWithUserToken(Object object) throws FormExceptions {
 
@@ -140,6 +284,30 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			userModel = getUserDetails(commonModel.getUserToken());
 		}
 		
+		// Validate Host Login Details
+		if(Objects.nonNull(userModel)){
+			if(Objects.nonNull(userModel.getUserVsTypeModels())){
+				boolean flag = false;
+				for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypeModels()){
+					if(Objects.nonNull(userVsTypeModel.getUserTypeModel())) {
+						if(userVsTypeModel.getUserTypeModel().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
+							flag = true;
+						}
+					} else {
+						exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+					}
+				}
+				
+				if(!flag){
+					exceptions.put(messageUtil.getBundle("user.type.invalid.code"), new Exception(messageUtil.getBundle("user.type.invalid.message")));
+				}
+			} else {
+				exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+			}
+		} else {
+			exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+		}
+		
 		if (exceptions.size() > 0)
 			throw new FormExceptions(exceptions);
 		
@@ -158,15 +326,40 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
 		
-		
+		UserModel userModel = null;
 		if(Objects.nonNull(propertyModel)){
 			// Validate User Token
 			if (StringUtils.isBlank(propertyModel.getUserToken())) {
 				exceptions.put(messageUtil.getBundle("token.null.code"), new Exception(messageUtil.getBundle("token.null.message")));
 			} else {
-				getUserDetails(propertyModel.getUserToken());
+				userModel = getUserDetails(propertyModel.getUserToken());
 			}
 			
+			// Validate Host Login Details
+			if(Objects.nonNull(userModel)){
+				if(Objects.nonNull(userModel.getUserVsTypeModels())){
+					boolean flag = false;
+					for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypeModels()){
+						if(Objects.nonNull(userVsTypeModel.getUserTypeModel())) {
+							if(userVsTypeModel.getUserTypeModel().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
+								flag = true;
+							}
+						} else {
+							exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+						}
+					}
+					
+					if(!flag){
+						exceptions.put(messageUtil.getBundle("user.type.invalid.code"), new Exception(messageUtil.getBundle("user.type.invalid.message")));
+					}
+				} else {
+					exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+				}
+			} else {
+				exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+			}
+			
+			//Validate Property Id
 			if (StringUtils.isBlank(String.valueOf(propertyModel.getPropertyId()))) {
 				exceptions.put(messageUtil.getBundle("property.id.null.code"), new Exception(messageUtil.getBundle("property.id.null.message")));
 			} else {
@@ -228,6 +421,32 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			
 			
 			if(Objects.nonNull(userModel)) {
+					
+				// Validate Host Login Details
+				if(Objects.nonNull(userModel)){
+					if(Objects.nonNull(userModel.getUserVsTypeModels())){
+						boolean flag = false;
+						for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypeModels()){
+							if(Objects.nonNull(userVsTypeModel.getUserTypeModel())) {
+								if(userVsTypeModel.getUserTypeModel().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
+									flag = true;
+								}
+							} else {
+								exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+							}
+						}
+						
+						if(!flag){
+							exceptions.put(messageUtil.getBundle("user.type.invalid.code"), new Exception(messageUtil.getBundle("user.type.invalid.message")));
+						}
+					} else {
+						exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+					}
+				} else {
+					exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+				}
+				
+				
 					// Validate Property Name
 					if (StringUtils.isBlank(propertyModel.getName())) {
 						exceptions.put(messageUtil.getBundle("property.name.null.code"), new Exception(messageUtil.getBundle("property.name.null.message")));
@@ -944,11 +1163,33 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		UserModel userModel = null;
 		if (Objects.nonNull(propertyModel)) {
 			
-			//userModel =  getUserDetails(propertyModel.getUserToken());
-			userModel = new UserModel();
-			userModel.setUserId("1");
+			userModel =  getUserDetails(propertyModel.getUserToken());
 			
 			if(Objects.nonNull(userModel)) {
+				
+				// Validate Host Login Details
+				if(Objects.nonNull(userModel)){
+					if(Objects.nonNull(userModel.getUserVsTypeModels())){
+						boolean flag = false;
+						for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypeModels()){
+							if(Objects.nonNull(userVsTypeModel.getUserTypeModel())) {
+								if(userVsTypeModel.getUserTypeModel().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
+									flag = true;
+								}
+							} else {
+								exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+							}
+						}
+						
+						if(!flag){
+							exceptions.put(messageUtil.getBundle("user.type.invalid.code"), new Exception(messageUtil.getBundle("user.type.invalid.message")));
+						}
+					} else {
+						exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+					}
+				} else {
+					exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+				}				
 					// Validate Property Name
 					if (StringUtils.isBlank(propertyModel.getName())) {
 						exceptions.put(messageUtil.getBundle("property.name.null.code"), new Exception(messageUtil.getBundle("property.name.null.message")));
