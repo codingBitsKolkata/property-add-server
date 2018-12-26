@@ -17,5 +17,9 @@ public final class PropertyAddConstant {
 	public static final String STR_N = "N";
 	public static final String STR_ZERO = "0";
 	public static final String CREATEDBY = "createdBy";
+	public static final String PROPERTYID = "propertyId";
+	public static final String ADVPERCENTAGE = "100";
+	public static final String STR_E = "E";
+	public static final String STR_P = "P";
 	
 }

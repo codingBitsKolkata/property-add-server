@@ -1,5 +1,6 @@
 package com.orastays.property.propertyadd.validation;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ import com.orastays.property.propertyadd.entity.PropertyVsNearbyEntity;
 import com.orastays.property.propertyadd.entity.PropertyVsSpaceRuleEntity;
 import com.orastays.property.propertyadd.entity.PropertyVsSpecialExperienceEntity;
 import com.orastays.property.propertyadd.entity.RoomCategoryEntity;
+import com.orastays.property.propertyadd.entity.RoomStandardEntity;
 import com.orastays.property.propertyadd.entity.RoomVsAmenitiesEntity;
 import com.orastays.property.propertyadd.entity.RoomVsCancellationEntity;
 import com.orastays.property.propertyadd.entity.RoomVsHostDiscountEntity;
@@ -65,6 +67,7 @@ import com.orastays.property.propertyadd.model.PropertyVsNearbyModel;
 import com.orastays.property.propertyadd.model.PropertyVsSpaceRuleModel;
 import com.orastays.property.propertyadd.model.PropertyVsSpecialExperienceModel;
 import com.orastays.property.propertyadd.model.RoomModel;
+import com.orastays.property.propertyadd.model.RoomStandardModel;
 import com.orastays.property.propertyadd.model.RoomVsAmenitiesModel;
 import com.orastays.property.propertyadd.model.RoomVsCancellationModel;
 import com.orastays.property.propertyadd.model.RoomVsHostDiscountModel;
@@ -101,11 +104,11 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			
 			// Validate User Login Details
 			if(Objects.nonNull(userModel)){
-				if(Objects.nonNull(userModel.getUserVsTypeModels())){
+				if(Objects.nonNull(userModel.getUserVsTypes())){
 					boolean flag = false;
-					for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypeModels()){
-						if(Objects.nonNull(userVsTypeModel.getUserTypeModel())) {
-							if(userVsTypeModel.getUserTypeModel().getUserTypeId().equals(String.valueOf(UserType.CUSTOMER.ordinal()))){
+					for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypes()){
+						if(Objects.nonNull(userVsTypeModel.getUserType())) {
+							if(userVsTypeModel.getUserType().getUserTypeId().equals(String.valueOf(UserType.CUSTOMER.ordinal()))){
 								flag = true;
 							}
 						} else {
@@ -151,11 +154,11 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			
 			// Validate Host Login Details
 			if(Objects.nonNull(userModel)){
-				if(Objects.nonNull(userModel.getUserVsTypeModels())){
+				if(Objects.nonNull(userModel.getUserVsTypes())){
 					boolean flag = false;
-					for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypeModels()){
-						if(Objects.nonNull(userVsTypeModel.getUserTypeModel())) {
-							if(userVsTypeModel.getUserTypeModel().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
+					for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypes()){
+						if(Objects.nonNull(userVsTypeModel.getUserType())) {
+							if(userVsTypeModel.getUserType().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
 								flag = true;
 							}
 						} else {
@@ -186,6 +189,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					try {
 						Map<String, String> innerMap1 = new LinkedHashMap<>();
 						innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+						innerMap1.put(PropertyAddConstant.PROPERTYID, String.valueOf(propertyModel.getPropertyId()));
 				
 						Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
 						outerMap1.put("eq", innerMap1);
@@ -286,11 +290,11 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 		// Validate Host Login Details
 		if(Objects.nonNull(userModel)){
-			if(Objects.nonNull(userModel.getUserVsTypeModels())){
+			if(Objects.nonNull(userModel.getUserVsTypes())){
 				boolean flag = false;
-				for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypeModels()){
-					if(Objects.nonNull(userVsTypeModel.getUserTypeModel())) {
-						if(userVsTypeModel.getUserTypeModel().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
+				for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypes()){
+					if(Objects.nonNull(userVsTypeModel.getUserType())) {
+						if(userVsTypeModel.getUserType().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
 							flag = true;
 						}
 					} else {
@@ -337,11 +341,11 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			
 			// Validate Host Login Details
 			if(Objects.nonNull(userModel)){
-				if(Objects.nonNull(userModel.getUserVsTypeModels())){
+				if(Objects.nonNull(userModel.getUserVsTypes())){
 					boolean flag = false;
-					for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypeModels()){
-						if(Objects.nonNull(userVsTypeModel.getUserTypeModel())) {
-							if(userVsTypeModel.getUserTypeModel().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
+					for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypes()){
+						if(Objects.nonNull(userVsTypeModel.getUserType())) {
+							if(userVsTypeModel.getUserType().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
 								flag = true;
 							}
 						} else {
@@ -372,6 +376,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					try {
 						Map<String, String> innerMap1 = new LinkedHashMap<>();
 						innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+						innerMap1.put(PropertyAddConstant.PROPERTYID, String.valueOf(propertyModel.getPropertyId()));
 				
 						Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
 						outerMap1.put("eq", innerMap1);
@@ -424,11 +429,11 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					
 				// Validate Host Login Details
 				if(Objects.nonNull(userModel)){
-					if(Objects.nonNull(userModel.getUserVsTypeModels())){
+					if(Objects.nonNull(userModel.getUserVsTypes())){
 						boolean flag = false;
-						for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypeModels()){
-							if(Objects.nonNull(userVsTypeModel.getUserTypeModel())) {
-								if(userVsTypeModel.getUserTypeModel().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
+						for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypes()){
+							if(Objects.nonNull(userVsTypeModel.getUserType())) {
+								if(userVsTypeModel.getUserType().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
 									flag = true;
 								}
 							} else {
@@ -649,7 +654,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					if (Objects.isNull(propertyModel.getPropertyVsSpaceRuleModels())) {
 						exceptions.put(messageUtil.getBundle("property.spacerule.null.code"), new Exception(messageUtil.getBundle("property.spacerule.null.message")));
 					} else {
-						// Answer Validation
+						// Space Rule Validation
 						for (PropertyVsSpaceRuleModel propertyVsSpaceRuleModel : propertyModel.getPropertyVsSpaceRuleModels()) {
 							if (StringUtils.isBlank(propertyVsSpaceRuleModel.getAnswer())) {
 								exceptions.put(messageUtil.getBundle("property.spacerule.answer.null.code"), new Exception(messageUtil.getBundle("property.sp.answer.null.message")));
@@ -855,30 +860,13 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								}
 		
 							}
-							// Room Standard Validation
-							/*
-							 * if(Objects.isNull(roomModel.getRoomStandardModel())){
-							 * exceptions.put(messageUtil.getBundle("room.standard.null.code"), new
-							 * Exception(messageUtil.getBundle("room.standard.null.message"))); } else {
-							 * 
-							 * if(StringUtils.isEmpty(roomModel.getRoomStandardModel().getRoomStandardId()))
-							 * { exceptions.put(messageUtil.getBundle("room.standard.null.code"), new
-							 * Exception(messageUtil.getBundle("room.standard.null.message"))); } else {
-							 * if(!Util.isNumeric(roomModel.getRoomStandardModel().getRoomStandardId())){
-							 * exceptions.put(messageUtil.getBundle("room.standard.numeric.code"), new
-							 * Exception(messageUtil.getBundle("room.standard.numeric.message"))); } else {
-							 * RoomStandardEntity roomStandardEntity =
-							 * roomStandardDAO.find(Long.parseLong(roomModel.getRoomStandardModel().
-							 * getRoomStandardId())); if(Objects.isNull(roomStandardEntity) &&
-							 * roomStandardEntity.getStatus() != Status.ACTIVE.ordinal()) {
-							 * exceptions.put(messageUtil.getBundle("room.standard.invalid.code"), new
-							 * Exception(messageUtil.getBundle("room.standard.invalid.message"))); } } } }
-							 */
 		
 							// Room Vs Amenities
 							if (Objects.isNull(roomModel.getRoomVsAmenitiesModels())) {
 								exceptions.put(messageUtil.getBundle("room.vs.amenities.null.code"), new Exception(messageUtil.getBundle("room.vs.amenities.null.message")));
 							} else {
+								int expressFlagY = 0;
+								int premiumFlagY = 0;
 								for (RoomVsAmenitiesModel roomVsAmenitiesModel : roomModel.getRoomVsAmenitiesModels()) {
 									if (Objects.nonNull(roomVsAmenitiesModel.getAmenitiesModel())) {
 										if (StringUtils.isBlank(roomVsAmenitiesModel.getAmenitiesModel().getAminitiesId())) {
@@ -890,7 +878,17 @@ public class PropertyValidation extends AuthorizeUserValidation {
 												AmenitiesEntity amenitiesEntity = amenitiesDAO.find(Long.parseLong(roomVsAmenitiesModel.getAmenitiesModel().getAminitiesId()));
 												if (Objects.isNull(amenitiesEntity) && amenitiesEntity.getStatus() != Status.ACTIVE.ordinal()) {
 													exceptions.put(messageUtil.getBundle("amenities.invalid.code"), new Exception(messageUtil.getBundle("amenities.invalid.message")));
-												}
+												} else {
+													//
+													if(amenitiesEntity.getExpressFlag().equals(PropertyAddConstant.STR_Y)){
+														expressFlagY++;
+													}
+													if(amenitiesEntity.getPremiumFlag().equals(PropertyAddConstant.STR_Y)){
+														premiumFlagY++;
+													}
+													
+												} 
+												
 											}
 		
 										}
@@ -898,6 +896,26 @@ public class PropertyValidation extends AuthorizeUserValidation {
 										exceptions.put(messageUtil.getBundle("amenities.null.code"), new Exception(messageUtil.getBundle("amenities.null.message")));
 									}
 								}
+								// Room Standard Validation
+								//Logic For Room Stand
+								/*String expressCount = messageUtil.getBundle("express.flag.count");
+								String premiumCount = messageUtil.getBundle("premium.flg.count");
+								List<RoomStandardModel> roomStandardModels = roomStandardConverter.entityListToModelList(roomStandardDAO.findAll());
+								
+								for(RoomStandardModel roomStandardModel:roomStandardModels){
+									//Same Logic for Update
+									if(roomStandardModel.getFlagCount().equals(PropertyAddConstant.STR_P) && premiumFlagY >= Integer.valueOf(roomStandardModel.getFlagCount())) {
+										// Premium
+										// fetch Premium Id from Room Standard Table and set to roomModel.RoomStandardModel.roomStandardId
+									} else if(roomStandardModel.getFlagCount().equals(PropertyAddConstant.STR_E) && expressFlagY >= Integer.valueOf(roomStandardModel.getFlagCount())) {
+										// Express
+										// fetch Express Id from Room Standard Table and set to roomModel.RoomStandardModel.roomStandardId
+									} else {
+										// Normal
+										// fetch Normal Id from Room Standard Table and set to roomModel.RoomStandardModel.roomStandardId
+									}
+								}*/
+								
 							}
 		
 							// Room Vs Cancellation
@@ -1169,11 +1187,11 @@ public class PropertyValidation extends AuthorizeUserValidation {
 				
 				// Validate Host Login Details
 				if(Objects.nonNull(userModel)){
-					if(Objects.nonNull(userModel.getUserVsTypeModels())){
+					if(Objects.nonNull(userModel.getUserVsTypes())){
 						boolean flag = false;
-						for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypeModels()){
-							if(Objects.nonNull(userVsTypeModel.getUserTypeModel())) {
-								if(userVsTypeModel.getUserTypeModel().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
+						for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypes()){
+							if(Objects.nonNull(userVsTypeModel.getUserType())) {
+								if(userVsTypeModel.getUserType().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
 									flag = true;
 								}
 							} else {
@@ -1741,24 +1759,22 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 							}
 							// Room Standard Validation
-							/*
-							 * if(Objects.isNull(roomModel.getRoomStandardModel())){
-							 * exceptions.put(messageUtil.getBundle("room.standard.null.code"), new
-							 * Exception(messageUtil.getBundle("room.standard.null.message"))); } else {
-							 * 
-							 * if(StringUtils.isEmpty(roomModel.getRoomStandardModel().getRoomStandardId()))
-							 * { exceptions.put(messageUtil.getBundle("room.standard.null.code"), new
-							 * Exception(messageUtil.getBundle("room.standard.null.message"))); } else {
-							 * if(!Util.isNumeric(roomModel.getRoomStandardModel().getRoomStandardId())){
-							 * exceptions.put(messageUtil.getBundle("room.standard.numeric.code"), new
-							 * Exception(messageUtil.getBundle("room.standard.numeric.message"))); } else {
-							 * RoomStandardEntity roomStandardEntity =
-							 * roomStandardDAO.find(Long.parseLong(roomModel.getRoomStandardModel().
-							 * getRoomStandardId())); if(Objects.isNull(roomStandardEntity) &&
-							 * roomStandardEntity.getStatus() != Status.ACTIVE.ordinal()) {
-							 * exceptions.put(messageUtil.getBundle("room.standard.invalid.code"), new
-							 * Exception(messageUtil.getBundle("room.standard.invalid.message"))); } } } }
-							 */
+							/*if(Objects.isNull(roomModel.getRoomStandardModel())) {
+								  exceptions.put(messageUtil.getBundle("room.standard.null.code"), new Exception(messageUtil.getBundle("room.standard.null.message"))); 
+								  } else {
+									  if(StringUtils.isEmpty(roomModel.getRoomStandardModel().getRoomStandardId()))  { 
+										  exceptions.put(messageUtil.getBundle("room.standard.null.code"), new Exception(messageUtil.getBundle("room.standard.null.message"))); 
+										  } else {
+											  	if(!Util.isNumeric(roomModel.getRoomStandardModel().getRoomStandardId())){
+											  		exceptions.put(messageUtil.getBundle("room.standard.numeric.code"), new Exception(messageUtil.getBundle("room.standard.numeric.message"))); 
+											  	} else {
+											  			RoomStandardEntity roomStandardEntity = roomStandardDAO.find(Long.parseLong(roomModel.getRoomStandardModel().getRoomStandardId())); 
+											  			if(Objects.isNull(roomStandardEntity) && roomStandardEntity.getStatus() != Status.ACTIVE.ordinal()) {
+											  				exceptions.put(messageUtil.getBundle("room.standard.invalid.code"), new  Exception(messageUtil.getBundle("room.standard.invalid.message"))); 
+											  			} 
+											  	} 
+									  } 
+							  }*/
 		
 							// Room Vs Amenities
 							if (Objects.isNull(roomModel.getRoomVsAmenitiesModels())) {

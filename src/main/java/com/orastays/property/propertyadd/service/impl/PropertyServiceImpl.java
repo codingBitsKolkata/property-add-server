@@ -560,6 +560,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		
 		//Property
 		propertyModel.setCreatedBy(userId);
+		propertyModel.setAdvancePercentage(PropertyAddConstant.ADVPERCENTAGE);
 		PropertyEntity propertyEntity = propertyConverter.modelToEntity(propertyModel);
 		propertyEntity.setUserVsAccountEntity(userVsAccountEntity);
 		propertyDAO.save(propertyEntity);
@@ -970,10 +971,6 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 				}
 				
 				
-				
-				
-				
-				
 				//////////////////////////////////////////////////////////// Property Add ////////////////////////////////////////////////
 				
 				
@@ -985,7 +982,9 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 				
 				//Property
 				propertyModel.setCreatedBy(userId);
+				propertyModel.setAdvancePercentage(PropertyAddConstant.ADVPERCENTAGE);
 				PropertyEntity propertyEntity2 = propertyConverter.modelToEntity(propertyModel);
+				propertyEntity2.setStatus(Status.ACTIVE.ordinal());
 				propertyEntity2.setUserVsAccountEntity(userVsAccountEntity2);
 				propertyDAO.save(propertyEntity2);
 				

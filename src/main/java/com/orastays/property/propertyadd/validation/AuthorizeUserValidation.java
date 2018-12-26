@@ -13,10 +13,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orastays.property.propertyadd.converter.RoomStandardConverter;
 import com.orastays.property.propertyadd.dao.AccommodationDAO;
 import com.orastays.property.propertyadd.dao.AmenitiesDAO;
 import com.orastays.property.propertyadd.dao.CancellationSlabDAO;
@@ -189,6 +191,9 @@ public class AuthorizeUserValidation {
 	@Autowired
 	protected RoomVsOraPricePercentageDAO roomVsOraPricePercentageDAO;
 	
+	@Autowired
+	protected RoomStandardConverter roomStandardConverter; 
+	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {
 
 		if (logger.isInfoEnabled()) {
@@ -203,11 +208,15 @@ public class AuthorizeUserValidation {
 			if(StringUtils.isBlank(userToken)) {
 				exceptions.put(messageUtil.getBundle("user.token.null.code"), new Exception(messageUtil.getBundle("user.token.null.message")));
 			} else {
-				ResponseModel responseModel = restTemplate.getForObject(messageUtil.getBundle("auth.server.url") +"check-token?userToken="+userToken, ResponseModel.class);
-				Gson gson = new Gson();
-				String jsonString = gson.toJson(responseModel.getResponseBody());
-				userModel = gson.fromJson(jsonString, UserModel.class);
-				if(Objects.isNull(userModel)) {
+				try{
+					ResponseModel responseModel = restTemplate.getForObject(messageUtil.getBundle("auth.server.url") +"check-token?userToken="+userToken, ResponseModel.class);
+					Gson gson = new Gson();
+					String jsonString = gson.toJson(responseModel.getResponseBody());
+					userModel = gson.fromJson(jsonString, UserModel.class);
+					if(Objects.isNull(userModel)) {
+						exceptions.put(messageUtil.getBundle("session.expires.code"), new Exception(messageUtil.getBundle("session.expires.message")));
+					}
+				} catch(HttpClientErrorException e) {
 					exceptions.put(messageUtil.getBundle("session.expires.code"), new Exception(messageUtil.getBundle("session.expires.message")));
 				}
 				
@@ -295,8 +304,7 @@ public class AuthorizeUserValidation {
 				logger.info("bookingModels ==>> "+bookingModels);
 			}
 		} catch (Exception e) {
-			// Disabled the below line to pass the Token Validation
-			e.printStackTrace();
+			logger.error("Error in getPropertyBookingList ==>> "+bookingModels);
 		}
 		
 		if (exceptions.size() > 0)
@@ -331,8 +339,7 @@ public class AuthorizeUserValidation {
 				logger.info("bookingModels ==>> "+bookingModels);
 			}
 		} catch (Exception e) {
-			// Disabled the below line to pass the Token Validation
-			e.printStackTrace();
+				logger.error("Error in getUserBookingList ==>> "+bookingModels);
 		}
 		
 		if (exceptions.size() > 0)

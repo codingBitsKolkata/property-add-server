@@ -27,6 +27,12 @@ public class AmenitiesModel extends CommonModel {
 	@JsonProperty("priority")
 	private String priority;
 	
+	@JsonProperty("expressFlag")
+	private String expressFlag;
+	
+	@JsonProperty("premiumFlag")
+	private String premiumFlag;
+	
 	@JsonProperty("languageId")
 	private String languageId;
 	

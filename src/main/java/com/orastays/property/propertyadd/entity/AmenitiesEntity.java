@@ -47,6 +47,14 @@ public class AmenitiesEntity extends CommonEntity{
 	@JsonProperty("priority")
 	private String priority;
 	
+	@Column(name = "express_flag")
+	@JsonProperty("expressFlag")
+	private String expressFlag;
+	
+	@Column(name = "premium_flag")
+	@JsonProperty("premiumFlag")
+	private String premiumFlag;
+	
 	@Column(name = "language_id")
 	@JsonProperty("languageId")
 	private Long languageId;

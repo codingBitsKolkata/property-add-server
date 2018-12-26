@@ -27,6 +27,12 @@ public class RoomStandardModel extends CommonModel {
 	@JsonProperty("parentId")
 	private String parentId;
 	
+/*	@JsonProperty("flagCount")
+	private String flagCount;
+	
+	@JsonProperty("flagInd")
+	private String flagInd;*/
+	
 	@JsonProperty("rooms")
 	private List<RoomModel> roomModels;
 }

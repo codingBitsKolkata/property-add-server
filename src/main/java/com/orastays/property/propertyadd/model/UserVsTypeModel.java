@@ -26,5 +26,5 @@ public class UserVsTypeModel extends CommonModel {
 	private UserModel userModel;
 	
 	@JsonProperty("userType")
-	private UserTypeModel userTypeModel;
+	private UserTypeModel userType;
 }

@@ -31,5 +31,5 @@ public class UserModel extends CommonModel {
 	private String emailId;
 	
 	@JsonProperty("userVsTypes")
-	private List<UserVsTypeModel> userVsTypeModels;
+	private List<UserVsTypeModel> userVsTypes;
 }

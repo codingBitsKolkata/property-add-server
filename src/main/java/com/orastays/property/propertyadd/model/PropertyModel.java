@@ -77,6 +77,9 @@ public class PropertyModel extends CommonModel {
 
 	@JsonProperty("landline")
 	private String landline;
+	
+	@JsonProperty("advancePercentage")
+	private String advancePercentage;
 
 	@JsonProperty("propertyType")
 	private PropertyTypeModel propertyTypeModel;

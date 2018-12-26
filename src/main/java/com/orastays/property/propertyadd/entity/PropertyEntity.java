@@ -114,6 +114,10 @@ public class PropertyEntity extends CommonEntity {
 	@Column(name = "landline")
 	@JsonProperty("landline")
 	private String landline;
+	
+	@Column(name = "advance_percentage")
+	@JsonProperty("advancePercentage")
+	private String advancePercentage;
 
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
