@@ -45,6 +45,14 @@ public class RoomStandardEntity extends CommonEntity {
 	@JsonProperty("parentId")
 	private Long parentId;
 	
+	@Column(name = "flag_count")
+	@JsonProperty("flagCount")
+	private String flagCount;
+	
+	@Column(name = "flag_ind")
+	@JsonProperty("flagInd")
+	private String flagInd;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roomStandardEntity", cascade = { CascadeType.ALL })
 	@JsonProperty("rooms")
 	private List<RoomEntity> roomEntities;

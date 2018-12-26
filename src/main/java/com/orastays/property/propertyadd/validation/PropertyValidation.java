@@ -77,6 +77,7 @@ import com.orastays.property.propertyadd.model.RoomVsOraDiscountModel;
 import com.orastays.property.propertyadd.model.RoomVsOrapricePercModel;
 import com.orastays.property.propertyadd.model.RoomVsPriceModel;
 import com.orastays.property.propertyadd.model.RoomVsSpecialitiesModel;
+import com.orastays.property.propertyadd.model.SpaceRuleModel;
 import com.orastays.property.propertyadd.model.UserModel;
 import com.orastays.property.propertyadd.model.UserVsTypeModel;
 
@@ -898,26 +899,63 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								}
 								// Room Standard Validation
 								//Logic For Room Stand
-								/*String expressCount = messageUtil.getBundle("express.flag.count");
-								String premiumCount = messageUtil.getBundle("premium.flg.count");
-								List<RoomStandardModel> roomStandardModels = roomStandardConverter.entityListToModelList(roomStandardDAO.findAll());
+								List<RoomStandardModel> roomStandardModels = null;
 								
-								for(RoomStandardModel roomStandardModel:roomStandardModels){
-									//Same Logic for Update
-									if(roomStandardModel.getFlagCount().equals(PropertyAddConstant.STR_P) && premiumFlagY >= Integer.valueOf(roomStandardModel.getFlagCount())) {
-										// Premium
-										// fetch Premium Id from Room Standard Table and set to roomModel.RoomStandardModel.roomStandardId
-									} else if(roomStandardModel.getFlagCount().equals(PropertyAddConstant.STR_E) && expressFlagY >= Integer.valueOf(roomStandardModel.getFlagCount())) {
-										// Express
-										// fetch Express Id from Room Standard Table and set to roomModel.RoomStandardModel.roomStandardId
-									} else {
-										// Normal
-										// fetch Normal Id from Room Standard Table and set to roomModel.RoomStandardModel.roomStandardId
+								try {
+									Map<String, String> innerMap1 = new LinkedHashMap<>();
+									innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+							
+									Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+									outerMap1.put("eq", innerMap1);
+							
+									Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+									alliasMap.put(entitymanagerPackagesToScan+".RoomStandardEntity", outerMap1);
+							
+									roomStandardModels = roomStandardConverter.entityListToModelList(roomStandardDAO.fetchListBySubCiteria(alliasMap));
+
+								} catch (Exception e) {
+									if (logger.isInfoEnabled()) {
+										logger.info("Exception in Add Property -- "+Util.errorToString(e));
 									}
-								}*/
+								}
 								
+								String roomStdId = "";
+								boolean flag = true;
+								for(RoomStandardModel roomStandardModel:roomStandardModels){
+									if(roomStandardModel.getFlagInd().equals(PropertyAddConstant.STR_P)) {
+										// Premium
+										if(premiumFlagY >= Integer.valueOf(roomStandardModel.getFlagCount())) {
+											roomStdId = roomStandardModel.getRoomStandardId();
+											flag = false;
+										} 
+									} 
+								}
+								if(flag) {
+									for(RoomStandardModel roomStandardModel:roomStandardModels){
+										if(roomStandardModel.getFlagInd().equals(PropertyAddConstant.STR_E)) {
+											// Express
+											if(expressFlagY >= Integer.valueOf(roomStandardModel.getFlagCount())) {
+												roomStdId = roomStandardModel.getRoomStandardId();
+												flag = false;
+											} 
+										} 
+									} 
+								}
+								
+								if(flag) {
+									for(RoomStandardModel roomStandardModel:roomStandardModels){
+										if(roomStandardModel.getFlagInd().equals(PropertyAddConstant.STR_N)) {
+											// Normal
+												roomStdId = roomStandardModel.getRoomStandardId();
+										} 
+									} 
+								}
+								
+								RoomStandardModel roomStandardModel = new RoomStandardModel();
+								roomStandardModel.setRoomStandardId(roomStdId);
+								roomModel.setRoomStandardModel(roomStandardModel);
 							}
-		
+							
 							// Room Vs Cancellation
 							if (Objects.isNull(roomModel.getRoomVsCancellationModels())) {
 								exceptions.put(messageUtil.getBundle("room.vs.cancellation.null.code"), new Exception(messageUtil.getBundle("room.vs.cancellation.null.message")));
@@ -1758,47 +1796,14 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								}
 		
 							}
-							// Room Standard Validation
-							/*if(Objects.isNull(roomModel.getRoomStandardModel())) {
-								  exceptions.put(messageUtil.getBundle("room.standard.null.code"), new Exception(messageUtil.getBundle("room.standard.null.message"))); 
-								  } else {
-									  if(StringUtils.isEmpty(roomModel.getRoomStandardModel().getRoomStandardId()))  { 
-										  exceptions.put(messageUtil.getBundle("room.standard.null.code"), new Exception(messageUtil.getBundle("room.standard.null.message"))); 
-										  } else {
-											  	if(!Util.isNumeric(roomModel.getRoomStandardModel().getRoomStandardId())){
-											  		exceptions.put(messageUtil.getBundle("room.standard.numeric.code"), new Exception(messageUtil.getBundle("room.standard.numeric.message"))); 
-											  	} else {
-											  			RoomStandardEntity roomStandardEntity = roomStandardDAO.find(Long.parseLong(roomModel.getRoomStandardModel().getRoomStandardId())); 
-											  			if(Objects.isNull(roomStandardEntity) && roomStandardEntity.getStatus() != Status.ACTIVE.ordinal()) {
-											  				exceptions.put(messageUtil.getBundle("room.standard.invalid.code"), new  Exception(messageUtil.getBundle("room.standard.invalid.message"))); 
-											  			} 
-											  	} 
-									  } 
-							  }*/
 		
 							// Room Vs Amenities
 							if (Objects.isNull(roomModel.getRoomVsAmenitiesModels())) {
 								exceptions.put(messageUtil.getBundle("room.vs.amenities.null.code"), new Exception(messageUtil.getBundle("room.vs.amenities.null.message")));
 							} else {
+								int expressFlagY = 0;
+								int premiumFlagY = 0;
 								for (RoomVsAmenitiesModel roomVsAmenitiesModel : roomModel.getRoomVsAmenitiesModels()) {
-									
-									
-									//Validate Room Vs Amenities Id
-									if(StringUtils.isBlank(String.valueOf(roomVsAmenitiesModel.getRoomVsAminitiesId()))){
-										exceptions.put(messageUtil.getBundle("room.amenities.id.null.code"), new Exception(messageUtil.getBundle("room.amenities.id.null.message")));
-									} else {
-										if(Util.isNumeric(String.valueOf(roomVsAmenitiesModel.getRoomVsAminitiesId()))){
-											
-											RoomVsAmenitiesEntity roomVsAmenitiesEntity = roomVsAmenitiesDAO.find(Long.valueOf(roomVsAmenitiesModel.getRoomVsAminitiesId()));
-											
-											if(Objects.isNull(roomVsAmenitiesEntity)){
-												exceptions.put(messageUtil.getBundle("room.amenities.id.invalid.code"), new Exception(messageUtil.getBundle("room.amenities.id.invalid.message")));
-											}
-										} else {
-											exceptions.put(messageUtil.getBundle("room.amenities.id.numeric.code"), new Exception(messageUtil.getBundle("room.amenities.id.numeric.message")));
-										}
-									}
-									
 									if (Objects.nonNull(roomVsAmenitiesModel.getAmenitiesModel())) {
 										if (StringUtils.isBlank(roomVsAmenitiesModel.getAmenitiesModel().getAminitiesId())) {
 											exceptions.put(messageUtil.getBundle("amenities.id.null.code"), new Exception(messageUtil.getBundle("amenities.id.null.message")));
@@ -1809,7 +1814,18 @@ public class PropertyValidation extends AuthorizeUserValidation {
 												AmenitiesEntity amenitiesEntity = amenitiesDAO.find(Long.parseLong(roomVsAmenitiesModel.getAmenitiesModel().getAminitiesId()));
 												if (Objects.isNull(amenitiesEntity) && amenitiesEntity.getStatus() != Status.ACTIVE.ordinal()) {
 													exceptions.put(messageUtil.getBundle("amenities.invalid.code"), new Exception(messageUtil.getBundle("amenities.invalid.message")));
-												}
+												} else {
+													// Express Flag Calculation
+													if(amenitiesEntity.getExpressFlag().equals(PropertyAddConstant.STR_Y)){
+														expressFlagY++;
+													}
+													//Premium Flag Calculation
+													if(amenitiesEntity.getPremiumFlag().equals(PropertyAddConstant.STR_Y)){
+														premiumFlagY++;
+													}
+													
+												} 
+												
 											}
 		
 										}
@@ -1817,8 +1833,64 @@ public class PropertyValidation extends AuthorizeUserValidation {
 										exceptions.put(messageUtil.getBundle("amenities.null.code"), new Exception(messageUtil.getBundle("amenities.null.message")));
 									}
 								}
-							}
-		
+								// Room Standard Validation
+								//Logic For Room Stand
+								List<RoomStandardModel> roomStandardModels = null;
+								
+								try {
+									Map<String, String> innerMap1 = new LinkedHashMap<>();
+									innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+							
+									Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+									outerMap1.put("eq", innerMap1);
+							
+									Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+									alliasMap.put(entitymanagerPackagesToScan+".RoomStandardEntity", outerMap1);
+							
+									roomStandardModels = roomStandardConverter.entityListToModelList(roomStandardDAO.fetchListBySubCiteria(alliasMap));
+
+								} catch (Exception e) {
+									if (logger.isInfoEnabled()) {
+										logger.info("Exception in Add Property -- "+Util.errorToString(e));
+									}
+								}
+								
+								String roomStdId = "";
+								boolean flag = true;
+								for(RoomStandardModel roomStandardModel:roomStandardModels){
+									if(roomStandardModel.getFlagInd().equals(PropertyAddConstant.STR_P)) {
+										// Premium
+										if(premiumFlagY >= Integer.valueOf(roomStandardModel.getFlagCount())) {
+											roomStdId = roomStandardModel.getRoomStandardId();
+											flag = false;
+										} 
+									} 
+								}
+								if(flag) {
+									for(RoomStandardModel roomStandardModel:roomStandardModels){
+										if(roomStandardModel.getFlagInd().equals(PropertyAddConstant.STR_E)) {
+											// Express
+											if(expressFlagY >= Integer.valueOf(roomStandardModel.getFlagCount())) {
+												roomStdId = roomStandardModel.getRoomStandardId();
+												flag = false;
+											} 
+										} 
+									} 
+								}
+								
+								if(flag) {
+									for(RoomStandardModel roomStandardModel:roomStandardModels){
+										if(roomStandardModel.getFlagInd().equals(PropertyAddConstant.STR_N)) {
+											// Normal
+												roomStdId = roomStandardModel.getRoomStandardId();
+										} 
+									} 
+								}
+								
+								RoomStandardModel roomStandardModel = new RoomStandardModel();
+								roomStandardModel.setRoomStandardId(roomStdId);
+								roomModel.setRoomStandardModel(roomStandardModel);
+							}		
 							// Room Vs Cancellation
 							if (Objects.isNull(roomModel.getRoomVsCancellationModels())) {
 								exceptions.put(messageUtil.getBundle("room.vs.cancellation.null.code"), new Exception(messageUtil.getBundle("room.vs.cancellation.null.message")));
