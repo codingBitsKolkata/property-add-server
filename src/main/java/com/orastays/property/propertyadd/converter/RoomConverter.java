@@ -66,10 +66,10 @@ public class RoomConverter extends CommonConverter
 			roomModel.setRoomVsAmenitiesModels(roomVsAmenitiesConverter.entityListToModelList(e.getRoomVsAmenitiesEntities()));
 			roomModel.setRoomVsCancellationModels(roomVsCancellationConverter.entityListToModelList(e.getRoomVsCancellationEntities()));
 			roomModel.setRoomVsImageModels(roomVsImageConverter.entityListToModelList(e.getRoomVsImageEntities()));
-			roomModel.setRoomVsPriceModels(roomVsPriceConverter.entityListToModelList(e.getRoomVsPriceEntities()));
-			roomModel.setRoomVsHostDiscountModels(roomVsHostDiscountConverter.entityListToModelList(e.getRoomVsHostDiscountEntities()));
+			//roomModel.setRoomVsPriceModels(roomVsPriceConverter.entityListToModelList(e.getRoomVsPriceEntities()));
+			//roomModel.setRoomVsHostDiscountModels(roomVsHostDiscountConverter.entityListToModelList(e.getRoomVsHostDiscountEntities()));
 			roomModel.setRoomVsOraDiscountModels(roomVsOraDiscountConverter.entityListToModelList(e.getRoomVsOraDiscountEntities()));
-			roomModel.setRoomVsOrapricePercModels(roomVsOraPricePercentageConverter.entityListToModelList(e.getRoomVsOraPricePercentageEntities()));
+			//roomModel.setRoomVsOrapricePercModels(roomVsOraPricePercentageConverter.entityListToModelList(e.getRoomVsOraPricePercentageEntities()));
 			roomModel.setRoomVsSpecialitiesModels(roomVsSpecialitiesConverter.entityListToModelList(e.getRoomVsSpecialitiesEntities()));
 			roomModel.setRoomVsMealModels(roomVsMealConverter.entityListToModelList(e.getRoomVsMealEntities()));
 			

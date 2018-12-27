@@ -16,14 +16,12 @@ import org.springframework.stereotype.Component;
 import com.orastays.property.propertyadd.entity.AccommodationEntity;
 import com.orastays.property.propertyadd.entity.AmenitiesEntity;
 import com.orastays.property.propertyadd.entity.CancellationSlabEntity;
-import com.orastays.property.propertyadd.entity.DiscountCategoryHostEntity;
 import com.orastays.property.propertyadd.entity.DocumentEntity;
 import com.orastays.property.propertyadd.entity.MealCategoryEntity;
 import com.orastays.property.propertyadd.entity.MealDaysEntity;
 import com.orastays.property.propertyadd.entity.MealPriceCategoryEntity;
 import com.orastays.property.propertyadd.entity.MealTypeEntity;
 import com.orastays.property.propertyadd.entity.PGCategorySexEntity;
-import com.orastays.property.propertyadd.entity.PriceTypeEntity;
 import com.orastays.property.propertyadd.entity.PropertyEntity;
 import com.orastays.property.propertyadd.entity.PropertyTypeEntity;
 import com.orastays.property.propertyadd.entity.PropertyVsDescriptionEntity;
@@ -35,12 +33,9 @@ import com.orastays.property.propertyadd.entity.PropertyVsSpaceRuleEntity;
 import com.orastays.property.propertyadd.entity.PropertyVsSpecialExperienceEntity;
 import com.orastays.property.propertyadd.entity.RoomCategoryEntity;
 import com.orastays.property.propertyadd.entity.RoomVsCancellationEntity;
-import com.orastays.property.propertyadd.entity.RoomVsHostDiscountEntity;
 import com.orastays.property.propertyadd.entity.RoomVsImageEntity;
 import com.orastays.property.propertyadd.entity.RoomVsMealEntity;
 import com.orastays.property.propertyadd.entity.RoomVsOraDiscountEntity;
-import com.orastays.property.propertyadd.entity.RoomVsOraPricePercentageEntity;
-import com.orastays.property.propertyadd.entity.RoomVsPriceEntity;
 import com.orastays.property.propertyadd.entity.RoomVsSpecialitiesEntity;
 import com.orastays.property.propertyadd.entity.SpaceRuleEntity;
 import com.orastays.property.propertyadd.entity.SpecialExperienceEntity;
@@ -68,12 +63,9 @@ import com.orastays.property.propertyadd.model.RoomModel;
 import com.orastays.property.propertyadd.model.RoomStandardModel;
 import com.orastays.property.propertyadd.model.RoomVsAmenitiesModel;
 import com.orastays.property.propertyadd.model.RoomVsCancellationModel;
-import com.orastays.property.propertyadd.model.RoomVsHostDiscountModel;
 import com.orastays.property.propertyadd.model.RoomVsImageModel;
 import com.orastays.property.propertyadd.model.RoomVsMealModel;
 import com.orastays.property.propertyadd.model.RoomVsOraDiscountModel;
-import com.orastays.property.propertyadd.model.RoomVsOrapricePercModel;
-import com.orastays.property.propertyadd.model.RoomVsPriceModel;
 import com.orastays.property.propertyadd.model.RoomVsSpecialitiesModel;
 import com.orastays.property.propertyadd.model.UserModel;
 import com.orastays.property.propertyadd.model.UserVsTypeModel;
@@ -1164,7 +1156,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							// Room Vs Image
 		
 							// Room Vs Price
-							if (Objects.nonNull(roomModel.getRoomVsPriceModels())) {
+				/*			if (Objects.nonNull(roomModel.getRoomVsPriceModels())) {
 								for (RoomVsPriceModel roomVsPriceModel : roomModel.getRoomVsPriceModels()) {
 		
 									// Value
@@ -1195,11 +1187,11 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 							} else {
 								exceptions.put(messageUtil.getBundle("room.vs.price.null.code"), new Exception(messageUtil.getBundle("room.vs.price.null.message")));
-							}
+							}*/
 		
 							// Room vs host discount
 		
-							if (Objects.nonNull(roomModel.getRoomVsHostDiscountModels())) {
+						/*	if (Objects.nonNull(roomModel.getRoomVsHostDiscountModels())) {
 								for (RoomVsHostDiscountModel roomVsHostDiscountModel : roomModel.getRoomVsHostDiscountModels()) {
 		
 									// Percentage
@@ -1230,7 +1222,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 							} else {
 								exceptions.put(messageUtil.getBundle("discount.category.null.code"), new Exception(messageUtil.getBundle("discount.category.null.message")));
-							}
+							}*/
 							// Room Vs Ora discount
 							// Logic For Code Set
 		
@@ -1556,7 +1548,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							if (StringUtils.isBlank(propertyVsDescriptionModel.getLanguageId())) {
 								exceptions.put(messageUtil.getBundle("language.id.null.code"), new Exception(messageUtil.getBundle("language.id.null.message")));
 							} else {
-								//validateLanguage(propertyVsDescriptionModel.getLanguageId());
+								validateLanguage(propertyVsDescriptionModel.getLanguageId());
 							}
 						}
 					}
@@ -2135,7 +2127,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							}
 		
 							// Room Vs Price
-							if (Objects.nonNull(roomModel.getRoomVsPriceModels())) {
+/*							if (Objects.nonNull(roomModel.getRoomVsPriceModels())) {
 								for (RoomVsPriceModel roomVsPriceModel : roomModel.getRoomVsPriceModels()) {
 									
 									//Validate Room Vs Price Id
@@ -2182,11 +2174,11 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 							} else {
 								exceptions.put(messageUtil.getBundle("room.vs.price.null.code"), new Exception(messageUtil.getBundle("room.vs.price.null.message")));
-							}
+							}*/
 		
 							// Room vs host discount
 		
-							if (Objects.nonNull(roomModel.getRoomVsHostDiscountModels())) {
+				/*			if (Objects.nonNull(roomModel.getRoomVsHostDiscountModels())) {
 								for (RoomVsHostDiscountModel roomVsHostDiscountModel : roomModel.getRoomVsHostDiscountModels()) {
 									
 									//Validate Room Vs Host Discount Id
@@ -2233,7 +2225,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 							} else {
 								exceptions.put(messageUtil.getBundle("discount.category.null.code"), new Exception(messageUtil.getBundle("discount.category.null.message")));
-							}
+							}*/
 							// Room Vs Ora discount
 							if(Objects.nonNull(roomModel.getRoomVsOraDiscountModels())){
 								for(RoomVsOraDiscountModel roomVsOraDiscountModel : roomModel.getRoomVsOraDiscountModels()){
@@ -2259,7 +2251,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 							// Room Vs Ora Price Percentage
 							
-							if(Objects.nonNull(roomModel.getRoomVsOrapricePercModels())){
+							/*if(Objects.nonNull(roomModel.getRoomVsOrapricePercModels())){
 								for(RoomVsOrapricePercModel roomVsOrapricePercModel : roomModel.getRoomVsOrapricePercModels()){
 									
 									//Validate Room Vs Ora Price Percentage Id
@@ -2278,7 +2270,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 										}
 									}
 								}
-							}
+							}*/
 							
 							// Room Vs Specialities
 							if (Objects.nonNull(roomModel.getRoomVsSpecialitiesModels())) {

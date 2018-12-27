@@ -2,12 +2,12 @@ package com.orastays.property.propertyadd.model;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Getter
 @Setter
@@ -36,6 +36,36 @@ public class RoomModel extends CommonModel {
 	@JsonProperty("roomCurrentStatus")
 	private String roomCurrentStatus;
 	
+	@JsonProperty("roomPricePerNight")
+	private String roomPricePerNight;
+	
+	@JsonProperty("roomPricePerMonth")
+	private String roomPricePerMonth;
+	
+	@JsonProperty("sharedBedPricePerNight")
+	private String sharedBedPricePerNight;
+	
+	@JsonProperty("sharedBedPricePerMonth")
+	private String sharedBedPricePerMonth;
+	
+	@JsonProperty("cotPrice")
+	private String cotPrice;
+	
+	@JsonProperty("sharedBedPrice")
+	private String sharedBedPrice;
+	
+	@JsonProperty("commission")
+	private String commission;
+	
+	@JsonProperty("oraPercentage")
+	private String oraPercentage;
+	
+	@JsonProperty("hostDiscountWeekly")
+	private String hostDiscountWeekly;
+	
+	@JsonProperty("hostDiscountMonthly")
+	private String hostDiscountMonthly;
+	
 	@JsonProperty("property")
 	private PropertyModel propertyModel;
 	
@@ -60,17 +90,17 @@ public class RoomModel extends CommonModel {
 	@JsonProperty("roomVsImage")
 	private List<RoomVsImageModel> roomVsImageModels;
 	
-	@JsonProperty("roomVsPrice")
-	private List<RoomVsPriceModel> roomVsPriceModels;
+	/*@JsonProperty("roomVsPrice")
+	private List<RoomVsPriceModel> roomVsPriceModels;*/
 	
-	@JsonProperty("roomVsHostDiscount")
-	private List<RoomVsHostDiscountModel> roomVsHostDiscountModels;
+	/*@JsonProperty("roomVsHostDiscount")
+	private List<RoomVsHostDiscountModel> roomVsHostDiscountModels;*/
 	
 	@JsonProperty("roomVsOraDiscount")
 	private List<RoomVsOraDiscountModel> roomVsOraDiscountModels;
 	
-	@JsonProperty("roomVsOrapricePerc")
-	private List<RoomVsOrapricePercModel> roomVsOrapricePercModels;
+	/*@JsonProperty("roomVsOrapricePerc")
+	private List<RoomVsOrapricePercModel> roomVsOrapricePercModels;*/
 	
 	@JsonProperty("roomVsSpecialities")
 	private List<RoomVsSpecialitiesModel> roomVsSpecialitiesModels;

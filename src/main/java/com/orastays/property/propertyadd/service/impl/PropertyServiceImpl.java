@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.entity.DiscountCategoryOraEntity;
 import com.orastays.property.propertyadd.entity.PropertyEntity;
 import com.orastays.property.propertyadd.entity.PropertyVsDescriptionEntity;
@@ -24,17 +23,15 @@ import com.orastays.property.propertyadd.entity.RoomEntity;
 import com.orastays.property.propertyadd.entity.RoomVsAmenitiesEntity;
 import com.orastays.property.propertyadd.entity.RoomVsBedEntity;
 import com.orastays.property.propertyadd.entity.RoomVsCancellationEntity;
-import com.orastays.property.propertyadd.entity.RoomVsHostDiscountEntity;
 import com.orastays.property.propertyadd.entity.RoomVsImageEntity;
 import com.orastays.property.propertyadd.entity.RoomVsMealEntity;
 import com.orastays.property.propertyadd.entity.RoomVsOraDiscountEntity;
-import com.orastays.property.propertyadd.entity.RoomVsOraPricePercentageEntity;
-import com.orastays.property.propertyadd.entity.RoomVsPriceEntity;
 import com.orastays.property.propertyadd.entity.RoomVsSpecialitiesEntity;
 import com.orastays.property.propertyadd.entity.UserVsAccountEntity;
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.helper.PropertyAddConstant;
 import com.orastays.property.propertyadd.helper.Status;
+import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.AccommodationModel;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.AmenitiesTypeModel;
@@ -60,12 +57,9 @@ import com.orastays.property.propertyadd.model.RoomModel;
 import com.orastays.property.propertyadd.model.RoomVsAmenitiesModel;
 import com.orastays.property.propertyadd.model.RoomVsBedModel;
 import com.orastays.property.propertyadd.model.RoomVsCancellationModel;
-import com.orastays.property.propertyadd.model.RoomVsHostDiscountModel;
 import com.orastays.property.propertyadd.model.RoomVsImageModel;
 import com.orastays.property.propertyadd.model.RoomVsMealModel;
 import com.orastays.property.propertyadd.model.RoomVsOraDiscountModel;
-import com.orastays.property.propertyadd.model.RoomVsOrapricePercModel;
-import com.orastays.property.propertyadd.model.RoomVsPriceModel;
 import com.orastays.property.propertyadd.model.RoomVsSpecialitiesModel;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
 import com.orastays.property.propertyadd.model.SpecialExperienceModel;
@@ -640,6 +634,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		//Room 
 		for(RoomModel roomModel:propertyModel.getRoomModels()){
 			roomModel.setCreatedBy(userId);
+			roomModel.setOraPercentage(PropertyAddConstant.STR_ZERO);
 			RoomEntity roomEntity = roomConverter.modelToEntity(roomModel);
 			roomEntity.setPropertyEntity(propertyEntity);
 			roomDAO.save(roomEntity);
@@ -660,13 +655,14 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 				roomVsImageDAO.save(roomVsImageEntity);
 			}
 			
+		
 			//Room Vs Host Discount
-			for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
+			/*for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
 				roomVsHostDiscountModel.setCreatedBy(userId);
 				RoomVsHostDiscountEntity roomVsHostDiscountEntity = roomVsHostDiscountConverter.modelToEntity(roomVsHostDiscountModel);
 				roomVsHostDiscountEntity.setRoomEntity(roomEntity);
 				roomVsHostDiscountDAO.save(roomVsHostDiscountEntity);
-			}
+			}*/
 			
 			//Room Vs Ora Discount
 			RoomVsOraDiscountEntity roomVsOraDiscountEntity = new RoomVsOraDiscountEntity();
@@ -678,19 +674,19 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			roomVsOraDiscountDAO.save(roomVsOraDiscountEntity);
 			
 			//Room Vs Ora Price Percentage
-			RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = new RoomVsOraPricePercentageEntity();
+			/*RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = new RoomVsOraPricePercentageEntity();
 			roomVsOraPricePercentageEntity.setPercentage(PropertyAddConstant.STR_ZERO);
 			roomVsOraPricePercentageEntity.setRoomEntity(roomEntity);
 			roomVsOraPricePercentageEntity.setCreatedBy(userId);
-			roomVsOraPricePercentageDAO.save(roomVsOraPricePercentageEntity);
+			roomVsOraPricePercentageDAO.save(roomVsOraPricePercentageEntity);*/
 			
 			// Room Vs Price
-			for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
+			/*for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
 				roomVsPriceModel.setCreatedBy(userId);
 				RoomVsPriceEntity roomVsPriceEntity = roomVsPriceConverter.modelToEntity(roomVsPriceModel);
 				roomVsPriceEntity.setRoomEntity(roomEntity);
 				roomVsPriceDAO.save(roomVsPriceEntity);
-			}
+			}*/
 			
 			// Room vs Specilities
 			for(RoomVsSpecialitiesModel roomVsSpecialitiesModel:roomModel.getRoomVsSpecialitiesModels()){
@@ -911,13 +907,13 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 					}
 					
 					//Room Vs Host Discount Delete
-					for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
+					/*for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
 						RoomVsHostDiscountEntity roomVsHostDiscountEntity = roomVsHostDiscountDAO.find(Long.valueOf(roomVsHostDiscountModel.getRhdId()));
 						roomVsHostDiscountEntity.setModifiedBy(userId);
 						roomVsHostDiscountEntity.setStatus(Status.DELETE.ordinal());
 						roomVsHostDiscountEntity.setModifiedDate(Util.getCurrentDateTime());
 						roomVsHostDiscountDAO.update(roomVsHostDiscountEntity);
-					}
+					}*/
 					
 					//Room Vs Ora Discount Delete
 					for(RoomVsOraDiscountModel roomVsOraDiscountModel:roomModel.getRoomVsOraDiscountModels()) {
@@ -930,23 +926,23 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 					}
 					
 					//Room Vs Ora Price Percentage Delete
-					for(RoomVsOrapricePercModel roomVsOrapricePercModel:roomModel.getRoomVsOrapricePercModels()) {
+					/*for(RoomVsOrapricePercModel roomVsOrapricePercModel:roomModel.getRoomVsOrapricePercModels()) {
 						RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = roomVsOraPricePercentageDAO.find(Long.valueOf(roomVsOrapricePercModel.getRopId()));
 						roomVsOraPricePercentageEntity.setModifiedBy(userId);
 						roomVsOraPricePercentageEntity.setModifiedDate(Util.getCurrentDateTime());
 						roomVsOraPricePercentageEntity.setStatus(Status.DELETE.ordinal());
 						roomVsOraPricePercentageDAO.update(roomVsOraPricePercentageEntity);
-					}
+					}*/
 					
 					
 					// Room Vs Price Delete
-					for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
+					/*for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
 						RoomVsPriceEntity roomVsPriceEntity = roomVsPriceDAO.find(Long.valueOf(roomVsPriceModel.getRoomVsPriceId()));
 						roomVsPriceEntity.setModifiedBy(userId);
 						roomVsPriceEntity.setModifiedDate(Util.getCurrentDateTime());
 						roomVsPriceEntity.setStatus(Status.DELETE.ordinal());
 						roomVsPriceDAO.update(roomVsPriceEntity);
-					}
+					}*/
 					
 					// Room vs Specilities Delete
 					for(RoomVsSpecialitiesModel roomVsSpecialitiesModel:roomModel.getRoomVsSpecialitiesModels()){
@@ -1096,12 +1092,12 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 					}
 					
 					//Room Vs Host Discount
-					for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
+					/*for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
 						roomVsHostDiscountModel.setCreatedBy(userId);
 						RoomVsHostDiscountEntity roomVsHostDiscountEntity = roomVsHostDiscountConverter.modelToEntity(roomVsHostDiscountModel);
 						roomVsHostDiscountEntity.setRoomEntity(roomEntity);
 						roomVsHostDiscountDAO.save(roomVsHostDiscountEntity);
-					}
+					}*/
 					
 					//Room Vs Ora Discount
 					RoomVsOraDiscountEntity roomVsOraDiscountEntity = new RoomVsOraDiscountEntity();
@@ -1113,19 +1109,19 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 					roomVsOraDiscountDAO.save(roomVsOraDiscountEntity);
 					
 					//Room Vs Ora Price Percentage
-					RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = new RoomVsOraPricePercentageEntity();
+					/*RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = new RoomVsOraPricePercentageEntity();
 					roomVsOraPricePercentageEntity.setPercentage(PropertyAddConstant.STR_ZERO);
 					roomVsOraPricePercentageEntity.setRoomEntity(roomEntity);
 					roomVsOraPricePercentageEntity.setCreatedBy(userId);
-					roomVsOraPricePercentageDAO.save(roomVsOraPricePercentageEntity);
+					roomVsOraPricePercentageDAO.save(roomVsOraPricePercentageEntity);*/
 					
 					// Room Vs Price
-					for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
+					/*for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
 						roomVsPriceModel.setCreatedBy(userId);
 						RoomVsPriceEntity roomVsPriceEntity = roomVsPriceConverter.modelToEntity(roomVsPriceModel);
 						roomVsPriceEntity.setRoomEntity(roomEntity);
 						roomVsPriceDAO.save(roomVsPriceEntity);
-					}
+					}*/
 					
 					// Room vs Specilities
 					for(RoomVsSpecialitiesModel roomVsSpecialitiesModel:roomModel.getRoomVsSpecialitiesModels()){
