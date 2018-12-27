@@ -22,46 +22,62 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class RoomVsMealEntity extends CommonEntity{
-	
+public class RoomVsMealEntity extends CommonEntity {
+
 	private static final long serialVersionUID = -8324710712961275540L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "room_vs_meal_id")
 	@JsonProperty("roomVsMealId")
 	private Long roomVsMealId;
-	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "meal_category_id", nullable = false)
-	@JsonProperty("mealCategory")
-	private MealCategoryEntity mealCategoryEntity;
-	
+
+	@Column(name = "meal_type")
+	@JsonProperty("mealType")
+	private String mealType;
+
+	@Column(name = "meal_days_sunday")
+	@JsonProperty("mealDaysSunday")
+	private String mealDaysSunday;
+
+	@Column(name = "meal_days_monday")
+	@JsonProperty("mealDaysMonday")
+	private String mealDaysMonday;
+
+	@Column(name = "meal_days_tuesday")
+	@JsonProperty("mealDaysTuesday")
+	private String mealDaysTuesday;
+
+	@Column(name = "meal_days_wednesday")
+	@JsonProperty("mealDaysWednesday")
+	private String mealDaysWednesday;
+
+	@Column(name = "meal_days_thursday")
+	@JsonProperty("mealDaysThursday")
+	private String mealDaysThursday;
+
+	@Column(name = "meal_days_friday")
+	@JsonProperty("mealDaysFriday")
+	private String mealDaysFriday;
+
+	@Column(name = "meal_days_saturday")
+	@JsonProperty("mealDaysSaturday")
+	private String mealDaysSaturday;
+
+	@Column(name = "meal_price_category")
+	@JsonProperty("mealPriceCategory")
+	private String mealPriceCategory;
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_id", nullable = false)
 	@JsonProperty("room")
 	private RoomEntity roomEntity;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "meal_days_id", nullable = true)
-	@JsonProperty("mealDays")
-	private MealDaysEntity mealDaysEntity;
-	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "meal_type_id", nullable = false)
-	@JsonProperty("mealType")
-	private MealTypeEntity mealTypeEntity;
-	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "mpcmp_id", nullable = true)
-	@JsonProperty("mealPlanCatVsMealPlan")
-	private MealPlanCatVsMealPlanEntity mealPlanCatVsMealPlanEntity;
-	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "mmpc_id", nullable = false)
-	@JsonProperty("mealPriceCategory")
-	private MealPriceCategoryEntity mealPriceCategoryEntity;
-	
+	@JoinColumn(name = "meal_plan_id", nullable = false)
+	@JsonProperty("mealPlan")
+	private MealPlanEntity mealPlanEntity;
+
 	@Override
 	public String toString() {
 		return Long.toString(roomVsMealId);

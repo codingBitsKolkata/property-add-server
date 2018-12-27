@@ -1,8 +1,8 @@
 package com.orastays.property.propertyadd.helper;
 
-public enum Accommodation {
-
+public enum AmenitiesType {
+	
 	ZERO,
-	SHARED,
-	PRIVATE
+	BASIC,
+	OTHERS
 }

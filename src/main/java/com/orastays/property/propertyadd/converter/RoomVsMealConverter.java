@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsMealEntity;
-import com.orastays.property.propertyadd.helper.MealCategory;
+import com.orastays.property.propertyadd.helper.MealPriceCategory;
 import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsMealModel;
@@ -34,15 +34,6 @@ public class RoomVsMealConverter extends CommonConverter
 		roomVsMealEntity = (RoomVsMealEntity) Util.transform(modelMapper, m, roomVsMealEntity);
 		roomVsMealEntity.setStatus(Status.ACTIVE.ordinal());
 		roomVsMealEntity.setCreatedDate(Util.getCurrentDateTime());
-		roomVsMealEntity.setMealCategoryEntity(mealCategoryDAO.find(Long.valueOf(m.getMealCategoryModel().getMealCategoryId())));
-		if(Objects.nonNull(m.getMealCategoryModel())){
-			if(m.getMealCategoryModel().getMealCatName().equals(String.valueOf(MealCategory.Daily.ordinal()))) {
-				roomVsMealEntity.setMealDaysEntity(mealDaysDAO.find(Long.valueOf(m.getMealDaysModel().getMealDaysId())));
-			}
-		}
-		//roomVsMealEntity.setMealPlanCatVsMealPlanEntity(mealPlanCatVsMealPlanDAO.find(Long.valueOf(m.getMealPlanCategoryVsMealPlanModel().getMpcmpId())));
-		roomVsMealEntity.setMealPriceCategoryEntity(mealPriceCategoryDAO.find(Long.valueOf(m.getMealPriceCategoryModel().getMmpcId())));
-		roomVsMealEntity.setMealTypeEntity(mealTypeDAO.find(Long.valueOf(m.getMealTypeModel().getMealTypeId())));
 
 		if (logger.isInfoEnabled()) {
 			logger.info("modelToEntity -- END");
@@ -63,11 +54,6 @@ public class RoomVsMealConverter extends CommonConverter
 		if(Objects.nonNull(e)) {
 			roomVsMealModel = new RoomVsMealModel();
 			roomVsMealModel = (RoomVsMealModel) Util.transform(modelMapper, e, roomVsMealModel);
-			roomVsMealModel.setMealCategoryModel(mealCategoryConverter.entityToModel(e.getMealCategoryEntity()));
-			roomVsMealModel.setMealDaysModel(mealDaysConverter.entityToModel(e.getMealDaysEntity()));
-			roomVsMealModel.setMealPlanCategoryVsMealPlanModel(mealPlanCatVsMealPlanConverter.entityToModel(e.getMealPlanCatVsMealPlanEntity()));
-			roomVsMealModel.setMealPriceCategoryModel(mealPriceCategoryConverter.entityToModel(e.getMealPriceCategoryEntity()));
-			roomVsMealModel.setMealTypeModel(mealTypeConverter.entityToModel(e.getMealTypeEntity()));
 		}
 		
 		if (logger.isInfoEnabled()) {

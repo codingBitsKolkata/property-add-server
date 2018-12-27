@@ -16,7 +16,7 @@ import lombok.ToString;
 public class PropertyModel extends CommonModel {
 
 	@JsonProperty("propertyId")
-	private Long propertyId;
+	private String propertyId;
 
 	@JsonProperty("name")
 	private String name;
@@ -27,6 +27,9 @@ public class PropertyModel extends CommonModel {
 	@JsonProperty("entireApartment")
 	private String entireApartment;
 
+	@JsonProperty("sexCategory")
+	private String sexCategory;
+
 	@JsonProperty("apartmentName")
 	private String apartmentName;
 
@@ -36,8 +39,8 @@ public class PropertyModel extends CommonModel {
 	@JsonProperty("latitude")
 	private String latitude;
 
-	@JsonProperty("longitude")
-	private String longitude;
+	@JsonProperty("Stringitude")
+	private String Stringitude;
 
 	@JsonProperty("address")
 	private String address;
@@ -77,21 +80,18 @@ public class PropertyModel extends CommonModel {
 
 	@JsonProperty("landline")
 	private String landline;
-	
+
 	@JsonProperty("advancePercentage")
 	private String advancePercentage;
 
 	@JsonProperty("propertyType")
 	private PropertyTypeModel propertyTypeModel;
-	
+
 	@JsonProperty("stayType")
 	private StayTypeModel stayTypeModel;
-	
-	@JsonProperty("userVsAccount")
-	private UserVsAccountModel userVsAccountModel;
 
-	@JsonProperty("pgCategorySex")
-	private PGCategorySexModel pgCategorySexModel;
+	@JsonProperty("hostVsAccount")
+	private HostVsAccountModel hostVsAccountModel;
 
 	@JsonProperty("propertyVsDocuments")
 	private List<PropertyVsDocumentModel> propertyVsDocumentModels;

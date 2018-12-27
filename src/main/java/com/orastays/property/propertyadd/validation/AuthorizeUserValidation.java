@@ -18,19 +18,10 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.orastays.property.propertyadd.converter.RoomStandardConverter;
-import com.orastays.property.propertyadd.dao.AccommodationDAO;
 import com.orastays.property.propertyadd.dao.AmenitiesDAO;
 import com.orastays.property.propertyadd.dao.CancellationSlabDAO;
-import com.orastays.property.propertyadd.dao.DiscountCategoryHostDAO;
-import com.orastays.property.propertyadd.dao.DiscountCategoryOraDAO;
 import com.orastays.property.propertyadd.dao.DocumentDAO;
-import com.orastays.property.propertyadd.dao.MealCategoryDAO;
-import com.orastays.property.propertyadd.dao.MealDaysDAO;
-import com.orastays.property.propertyadd.dao.MealPriceCategoryDAO;
-import com.orastays.property.propertyadd.dao.MealTypeDAO;
-import com.orastays.property.propertyadd.dao.PGCategorySexDAO;
-import com.orastays.property.propertyadd.dao.PriceTypeDAO;
+import com.orastays.property.propertyadd.dao.HostVsAccountDAO;
 import com.orastays.property.propertyadd.dao.PropertyDAO;
 import com.orastays.property.propertyadd.dao.PropertyTypeDAO;
 import com.orastays.property.propertyadd.dao.PropertyVsDescriptionDAO;
@@ -41,28 +32,21 @@ import com.orastays.property.propertyadd.dao.PropertyVsNearbyDAO;
 import com.orastays.property.propertyadd.dao.PropertyVsSpaceRuleDAO;
 import com.orastays.property.propertyadd.dao.PropertyVsSpecialExperienceDAO;
 import com.orastays.property.propertyadd.dao.RoomCategoryDAO;
-import com.orastays.property.propertyadd.dao.RoomStandardDAO;
 import com.orastays.property.propertyadd.dao.RoomVsAmenitiesDAO;
-import com.orastays.property.propertyadd.dao.RoomVsBedDAO;
 import com.orastays.property.propertyadd.dao.RoomVsCancellationDAO;
-import com.orastays.property.propertyadd.dao.RoomVsHostDiscountDAO;
 import com.orastays.property.propertyadd.dao.RoomVsImageDAO;
 import com.orastays.property.propertyadd.dao.RoomVsMealDAO;
-import com.orastays.property.propertyadd.dao.RoomVsOraDiscountDAO;
-import com.orastays.property.propertyadd.dao.RoomVsOraPricePercentageDAO;
-import com.orastays.property.propertyadd.dao.RoomVsPriceDAO;
 import com.orastays.property.propertyadd.dao.RoomVsSpecialitiesDAO;
 import com.orastays.property.propertyadd.dao.SpaceRuleDAO;
 import com.orastays.property.propertyadd.dao.SpecialExperienceDAO;
 import com.orastays.property.propertyadd.dao.SpecialtiesDAO;
-import com.orastays.property.propertyadd.dao.UserVsAccountDAO;
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.helper.MessageUtil;
-import com.orastays.property.propertyadd.model.BookingModel;
-import com.orastays.property.propertyadd.model.CancellationModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.ResponseModel;
-import com.orastays.property.propertyadd.model.UserModel;
+import com.orastays.property.propertyadd.model.auth.UserModel;
+import com.orastays.property.propertyadd.model.booking.BookingModel;
+import com.orastays.property.propertyadd.model.booking.CancellationModel;
 
 @Component
 public class AuthorizeUserValidation {
@@ -90,26 +74,15 @@ public class AuthorizeUserValidation {
 	@Autowired
 	protected SpecialExperienceDAO specialExperienceDAO;
 	
-	@Autowired
-	protected PGCategorySexDAO pgCategorySexDAO;
 	
 	@Autowired
 	protected DocumentDAO documentDAO;
 	
-	@Autowired
-	protected AccommodationDAO accommodationDAO;
 	
-	@Autowired
-	protected DiscountCategoryOraDAO discountCategoryOraDAO;
 	
 	@Autowired
 	protected RoomCategoryDAO roomCategoryDAO;
 	
-	@Autowired
-	protected RoomStandardDAO roomStandardDAO;
-	
-	@Autowired
-	protected RoomVsBedDAO roomVsBedDAO;
 	
 	@Autowired
 	protected RoomVsAmenitiesDAO roomVsAmenitiesDAO;
@@ -120,26 +93,11 @@ public class AuthorizeUserValidation {
 	@Autowired
 	protected CancellationSlabDAO cancellationSlabDAO;
 	
-	@Autowired
-	protected PriceTypeDAO priceTypeDAO;
-	
-	@Autowired
-	protected DiscountCategoryHostDAO discountCategoryHostDAO;	
 	
 	@Autowired
 	protected SpecialtiesDAO specialtiesDAO;
 	
-	@Autowired
-	protected MealCategoryDAO mealCategoryDAO;
 	
-	@Autowired
-	protected MealDaysDAO mealDaysDAO;
-	
-	@Autowired
-	protected MealPriceCategoryDAO mealPriceCategoryDAO;
-	
-	@Autowired
-	protected MealTypeDAO mealTypeDAO;
 	
 	@Autowired
 	protected AmenitiesDAO amenitiesDAO;
@@ -165,11 +123,6 @@ public class AuthorizeUserValidation {
 	@Autowired
 	protected PropertyVsDocumentDAO propertyVsDocumentDAO;
 	
-	@Autowired
-	protected RoomVsPriceDAO roomVsPriceDAO;
-	
-	@Autowired
-	protected RoomVsHostDiscountDAO roomVsHostDiscountDAO;
 	
 	@Autowired
 	protected RoomVsSpecialitiesDAO roomVsSpecialitiesDAO;
@@ -178,7 +131,7 @@ public class AuthorizeUserValidation {
 	protected RoomVsMealDAO roomVsMealDAO;
 	
 	@Autowired
-	protected UserVsAccountDAO userVsAccountDAO;
+	protected HostVsAccountDAO userVsAccountDAO;
 	
 	@Autowired
 	protected PropertyVsImageDAO propertyVsImageDAO;
@@ -186,14 +139,6 @@ public class AuthorizeUserValidation {
 	@Autowired
 	protected RoomVsImageDAO roomVsImageDAO;
 	
-	@Autowired
-	protected RoomVsOraDiscountDAO roomVsOraDiscountDAO;
-	
-	@Autowired
-	protected RoomVsOraPricePercentageDAO roomVsOraPricePercentageDAO;
-	
-	@Autowired
-	protected RoomStandardConverter roomStandardConverter; 
 	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {
 
