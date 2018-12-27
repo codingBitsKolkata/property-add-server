@@ -59,6 +59,7 @@ import com.orastays.property.propertyadd.dao.UserVsAccountDAO;
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.helper.MessageUtil;
 import com.orastays.property.propertyadd.model.BookingModel;
+import com.orastays.property.propertyadd.model.CancellationModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.ResponseModel;
 import com.orastays.property.propertyadd.model.UserModel;
@@ -350,6 +351,72 @@ public class AuthorizeUserValidation {
 		}
 		
 		return bookingModels;
+	}
+	
+	public List<CancellationModel> getPropertyCancellationList(BookingModel bookingModel) throws FormExceptions {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("getPropertyCancellationList -- START");
+		}
+		
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		List<CancellationModel> cancellationModels = null;
+		try {
+			String url = messageUtil.getBundle("booking.server.url") +"get-property-cancellations";
+			ResponseModel responseModel = restTemplate.postForObject(url, bookingModel,ResponseModel.class);
+			
+			Gson gson = new Gson();
+			String jsonString = gson.toJson(responseModel.getResponseBody());
+			cancellationModels = gson.fromJson(jsonString,new TypeToken<List<CancellationModel>>(){}.getType());
+			
+			if (logger.isInfoEnabled()) {
+				logger.info("cancellationModels ==>> "+cancellationModels);
+			}
+		} catch (Exception e) {
+			logger.error("Error in getPropertyCancellationList ==>> "+cancellationModels);
+		}
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("getPropertyBookingList -- END");
+		}
+		
+		return cancellationModels;
+	}
+	
+	public List<CancellationModel> getUserCancellationList(BookingModel bookingModel) throws FormExceptions {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("getUserCancellationList -- START");
+		}
+		
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		List<CancellationModel> cancellationModels = null;
+		try {
+			String url = messageUtil.getBundle("booking.server.url") +"get-user-calcellations";
+			ResponseModel responseModel = restTemplate.postForObject(url, bookingModel,ResponseModel.class);
+			
+			Gson gson = new Gson();
+			String jsonString = gson.toJson(responseModel.getResponseBody());
+			cancellationModels = gson.fromJson(jsonString,new TypeToken<List<BookingModel>>(){}.getType());
+			
+			if (logger.isInfoEnabled()) {
+				logger.info("cancellationModels ==>> "+cancellationModels);
+			}
+		} catch (Exception e) {
+				logger.error("Error in getUserBookingList ==>> "+cancellationModels);
+		}
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("getUserCancellationList -- END");
+		}
+		
+		return cancellationModels;
 	}
 	
 }

@@ -1,6 +1,5 @@
 package com.orastays.property.propertyadd.validation;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,8 +34,6 @@ import com.orastays.property.propertyadd.entity.PropertyVsNearbyEntity;
 import com.orastays.property.propertyadd.entity.PropertyVsSpaceRuleEntity;
 import com.orastays.property.propertyadd.entity.PropertyVsSpecialExperienceEntity;
 import com.orastays.property.propertyadd.entity.RoomCategoryEntity;
-import com.orastays.property.propertyadd.entity.RoomStandardEntity;
-import com.orastays.property.propertyadd.entity.RoomVsAmenitiesEntity;
 import com.orastays.property.propertyadd.entity.RoomVsCancellationEntity;
 import com.orastays.property.propertyadd.entity.RoomVsHostDiscountEntity;
 import com.orastays.property.propertyadd.entity.RoomVsImageEntity;
@@ -57,6 +54,7 @@ import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.UserType;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.BookingModel;
+import com.orastays.property.propertyadd.model.CancellationModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyVsDescriptionModel;
@@ -77,7 +75,6 @@ import com.orastays.property.propertyadd.model.RoomVsOraDiscountModel;
 import com.orastays.property.propertyadd.model.RoomVsOrapricePercModel;
 import com.orastays.property.propertyadd.model.RoomVsPriceModel;
 import com.orastays.property.propertyadd.model.RoomVsSpecialitiesModel;
-import com.orastays.property.propertyadd.model.SpaceRuleModel;
 import com.orastays.property.propertyadd.model.UserModel;
 import com.orastays.property.propertyadd.model.UserVsTypeModel;
 
@@ -87,9 +84,177 @@ public class PropertyValidation extends AuthorizeUserValidation {
 
 	private static final Logger logger = LogManager.getLogger(PropertyValidation.class);
 	
-	public List<BookingModel> validateUserTokenForBookingList(CommonModel commonModel) throws FormExceptions {
+	
+	public List<CancellationModel> validatePropertyCancellationList(BookingModel bookingModel) throws FormExceptions {
+		
 		if (logger.isDebugEnabled()) {
-			logger.debug("validatePropertyUserToken -- Start");
+			logger.debug("validatePropertyCancellationList -- Start");
+		}
+
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		List<CancellationModel> cancellationModels = null;
+		UserModel userModel = null;
+		if(Objects.nonNull(bookingModel)){
+			
+			// Validate User Token
+			if (StringUtils.isBlank(bookingModel.getUserToken())) {
+				exceptions.put(messageUtil.getBundle("token.null.code"), new Exception(messageUtil.getBundle("token.null.message")));
+			} else {
+				userModel = getUserDetails(bookingModel.getUserToken());
+			}
+			
+			// Validate Host Login Details
+			if(Objects.nonNull(userModel)){
+				if(Objects.nonNull(userModel.getUserVsTypes())){
+					boolean flag = false;
+					for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypes()){
+						if(Objects.nonNull(userVsTypeModel.getUserType())) {
+							if(userVsTypeModel.getUserType().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
+								flag = true;
+							}
+						} else {
+							exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+						}
+					}
+					
+					if(!flag){
+						exceptions.put(messageUtil.getBundle("user.type.invalid.code"), new Exception(messageUtil.getBundle("user.type.invalid.message")));
+					}
+				} else {
+					exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+				}
+			} else {
+				exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+			}
+			
+			//Validate Property
+			if (StringUtils.isBlank(String.valueOf(bookingModel.getPropertyId()))) {
+				exceptions.put(messageUtil.getBundle("property.id.null.code"), new Exception(messageUtil.getBundle("property.id.null.message")));
+			} else {
+				
+				if (!Util.isNumeric(String.valueOf(bookingModel.getPropertyId()))) {
+					exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
+				} else {
+					PropertyEntity propertyEntity = null;
+					
+					try {
+						Map<String, String> innerMap1 = new LinkedHashMap<>();
+						innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+						innerMap1.put(PropertyAddConstant.PROPERTYID, String.valueOf(bookingModel.getPropertyId()));
+				
+						Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+						outerMap1.put("eq", innerMap1);
+				
+						Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+						alliasMap.put(entitymanagerPackagesToScan+".PropertyEntity", outerMap1);
+						
+						propertyEntity = propertyDAO.fetchObjectBySubCiteria(alliasMap);
+						
+						if (Objects.isNull(propertyEntity)) {
+							exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
+						} else {
+							//validate BookingID
+							if(StringUtils.isEmpty(bookingModel.getBookingId())){
+								exceptions.put(messageUtil.getBundle("booking.id.null.code"), new Exception(messageUtil.getBundle("booking.id.null.message")));
+								
+							} else if(StringUtils.isEmpty(bookingModel.getOrabookingId())){ //Validate Ora Booking Id
+								
+								exceptions.put(messageUtil.getBundle("orabooking.id.null.code"), new Exception(messageUtil.getBundle("orabooking.id.null.message")));
+								
+							} else {
+									cancellationModels = getPropertyCancellationList(bookingModel);
+							}
+						}
+
+					} catch (Exception e) {
+						exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
+					}
+					
+				}
+			}
+			
+		} else {
+			 exceptions.put(messageUtil.getBundle("property.null.code"), new Exception(messageUtil.getBundle("property.null.message")));
+		}
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("validatePropertyCancellationList -- End");
+		}
+		
+		return cancellationModels;
+		
+	}
+
+	
+	public List<CancellationModel> validateUserTokenForCancellationList(BookingModel bookingModel) throws FormExceptions {
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("validateUserTokenForCancellationList -- START");
+		}
+
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		List<CancellationModel> cancellationModels = null;
+		UserModel userModel = null;
+		if(Objects.nonNull(bookingModel)){
+			// Validate User Token
+			if (StringUtils.isBlank(bookingModel.getUserToken())) {
+				exceptions.put(messageUtil.getBundle("token.null.code"), new Exception(messageUtil.getBundle("token.null.message")));
+			} else {
+				userModel = getUserDetails(bookingModel.getUserToken());
+			}
+			
+			// Validate User Login Details
+			if(Objects.nonNull(userModel)){
+				if(Objects.nonNull(userModel.getUserVsTypes())){
+					boolean flag = false;
+					for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypes()){
+						if(Objects.nonNull(userVsTypeModel.getUserType())) {
+							if(userVsTypeModel.getUserType().getUserTypeId().equals(String.valueOf(UserType.CUSTOMER.ordinal()))){
+								flag = true;
+							}
+						} else {
+							exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+						}
+					}
+					
+					if(!flag){
+						exceptions.put(messageUtil.getBundle("user.type.invalid.code"), new Exception(messageUtil.getBundle("user.type.invalid.message")));
+					} else {
+						//validate BookingID
+						if(StringUtils.isEmpty(bookingModel.getBookingId())){
+							exceptions.put(messageUtil.getBundle("booking.id.null.code"), new Exception(messageUtil.getBundle("booking.id.null.message")));
+							
+						} else if(StringUtils.isEmpty(bookingModel.getOrabookingId())){ //Validate Ora Booking Id
+							
+							exceptions.put(messageUtil.getBundle("orabooking.id.null.code"), new Exception(messageUtil.getBundle("orabooking.id.null.message")));
+							
+						} else {
+							cancellationModels = getUserCancellationList(bookingModel);
+						}
+					}
+				} else {
+					exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+				}
+			} else {
+				exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+			}
+
+		}
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("validateUserTokenForCancellationList -- End");
+		}
+		
+		return cancellationModels;
+	}
+	
+	public List<BookingModel> validateUserTokenForBookingList(CommonModel commonModel) throws FormExceptions {
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("validatePropertyUserToken -- START");
 		}
 
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
@@ -130,6 +295,11 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			}
 
 		}
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("validatePropertyUserToken -- End");
+		}
+
 		
 		return bookingModels;
 	}

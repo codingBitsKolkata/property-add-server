@@ -39,6 +39,7 @@ import com.orastays.property.propertyadd.model.AccommodationModel;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.AmenitiesTypeModel;
 import com.orastays.property.propertyadd.model.BookingModel;
+import com.orastays.property.propertyadd.model.CancellationModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.PGCategorySexModel;
@@ -767,13 +768,25 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 	@Override
 	public PropertyModel fetchPropertyById(PropertyModel propertyModel) throws FormExceptions {
 		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchPropertyById -- START");
+		}
+		
 		propertyValidation.validateFetchPropertyById(propertyModel);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchPropertyById -- END");
+		}
 		
 		return propertyConverter.entityToModel(propertyDAO.find(propertyModel.getPropertyId()));
 	}
 	
 	@Override
 	public void updateProperty(PropertyModel propertyModel) throws FormExceptions {
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("updateProperty -- START");
+		}
 
 		UserModel userModel = propertyValidation.validatePropertyUpdate(propertyModel);
 		Long userId = Long.valueOf(userModel.getUserId());
@@ -1145,6 +1158,10 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 					roomVsBedEntity.setRoomEntity(roomEntity);
 					roomVsBedDAO.save(roomVsBedEntity);	
 				}
+				
+				if (logger.isInfoEnabled()) {
+					logger.info("updateProperty -- END");
+				}
 
 
 	}
@@ -1152,13 +1169,61 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 	@Override
 	public List<BookingModel> viewPropertyBookingList(PropertyModel propertyModel) throws FormExceptions {
 		
+		if (logger.isInfoEnabled()) {
+			logger.info("viewPropertyBookingList -- START");
+		}
+		
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("viewPropertyBookingList -- END");
+		}
+		
 		return  propertyValidation.validatePropertyUserToken(propertyModel);
 	}
 
 	@Override
 	public List<BookingModel> viewUserBookingList(CommonModel commonModel) throws FormExceptions {
 		
+		if (logger.isInfoEnabled()) {
+			logger.info("viewUserBookingList -- START");
+		}
+		
+		
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("viewUserBookingList -- END");
+		}
+		
 		return propertyValidation.validateUserTokenForBookingList(commonModel);
+	}
+
+	@Override
+	public List<CancellationModel> viewPropertyCancellationList(BookingModel bookingModel) throws FormExceptions {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("viewPropertyCancellationList -- START");
+		}
+		
+
+		if (logger.isInfoEnabled()) {
+			logger.info("viewPropertyCancellationList -- END");
+		}
+		
+		return propertyValidation.getPropertyCancellationList(bookingModel);
+	}
+
+	@Override
+	public List<CancellationModel> viewUserCancellationList(BookingModel bookingModel) throws FormExceptions {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("viewUserCancellationList -- START");
+		}
+		
+
+		if (logger.isInfoEnabled()) {
+			logger.info("viewUserCancellationList -- END");
+		}
+		return propertyValidation.validateUserTokenForCancellationList(bookingModel);
 	}
 
 }
