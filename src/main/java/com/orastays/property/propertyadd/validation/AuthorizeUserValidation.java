@@ -22,6 +22,7 @@ import com.orastays.property.propertyadd.dao.AmenitiesDAO;
 import com.orastays.property.propertyadd.dao.CancellationSlabDAO;
 import com.orastays.property.propertyadd.dao.DocumentDAO;
 import com.orastays.property.propertyadd.dao.HostVsAccountDAO;
+import com.orastays.property.propertyadd.dao.MealPlanDAO;
 import com.orastays.property.propertyadd.dao.PropertyDAO;
 import com.orastays.property.propertyadd.dao.PropertyTypeDAO;
 import com.orastays.property.propertyadd.dao.PropertyVsDescriptionDAO;
@@ -74,15 +75,11 @@ public class AuthorizeUserValidation {
 	@Autowired
 	protected SpecialExperienceDAO specialExperienceDAO;
 	
-	
 	@Autowired
 	protected DocumentDAO documentDAO;
 	
-	
-	
 	@Autowired
 	protected RoomCategoryDAO roomCategoryDAO;
-	
 	
 	@Autowired
 	protected RoomVsAmenitiesDAO roomVsAmenitiesDAO;
@@ -93,11 +90,8 @@ public class AuthorizeUserValidation {
 	@Autowired
 	protected CancellationSlabDAO cancellationSlabDAO;
 	
-	
 	@Autowired
 	protected SpecialtiesDAO specialtiesDAO;
-	
-	
 	
 	@Autowired
 	protected AmenitiesDAO amenitiesDAO;
@@ -123,7 +117,6 @@ public class AuthorizeUserValidation {
 	@Autowired
 	protected PropertyVsDocumentDAO propertyVsDocumentDAO;
 	
-	
 	@Autowired
 	protected RoomVsSpecialitiesDAO roomVsSpecialitiesDAO;
 	
@@ -138,6 +131,9 @@ public class AuthorizeUserValidation {
 	
 	@Autowired
 	protected RoomVsImageDAO roomVsImageDAO;
+	
+	@Autowired
+	protected MealPlanDAO mealPlanDAO;
 	
 	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {

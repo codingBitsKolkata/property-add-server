@@ -39,8 +39,8 @@ public class PropertyModel extends CommonModel {
 	@JsonProperty("latitude")
 	private String latitude;
 
-	@JsonProperty("Stringitude")
-	private String Stringitude;
+	@JsonProperty("longitude")
+	private String longitude;
 
 	@JsonProperty("address")
 	private String address;

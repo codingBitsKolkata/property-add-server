@@ -1261,5 +1261,50 @@ public class Util {
 		Matcher m = p.matcher(value);
 		return m.find();
 	}
+	
+	public static boolean accommodationContains(String accomodation) {
+
+	    for (Accommodation c : Accommodation.values()) {
+	        if (c.name().equals(accomodation)) {
+	            return true;
+	        }
+	    }
+
+	    return false;
+	}
+	
+	public static boolean sexContains(String sex) {
+
+	    for (Sex c : Sex.values()) {
+	        if (c.name().equals(sex)) {
+	            return true;
+	        }
+	    }
+
+	    return false;
+	}
+	
+	public static boolean mealTypeContains(String mealType) {
+
+	    for (MealType c : MealType.values()) {
+	        if (c.name().equals(mealType)) {
+	            return true;
+	        }
+	    }
+
+	    return false;
+	}
+	
+	public static boolean mealPriceContains(String mealPrice) {
+
+	    for (MealPriceCategory c : MealPriceCategory.values()) {
+	        if (c.name().equals(mealPrice)) {
+	            return true;
+	        }
+	    }
+
+	    return false;
+	}
+
 
 }
