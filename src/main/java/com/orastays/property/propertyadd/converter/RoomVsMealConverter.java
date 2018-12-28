@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.RoomVsMealEntity;
-import com.orastays.property.propertyadd.helper.MealPriceCategory;
 import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.RoomVsMealModel;

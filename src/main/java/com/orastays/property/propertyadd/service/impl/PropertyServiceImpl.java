@@ -564,38 +564,6 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			}
 			
 		
-			//Room Vs Host Discount
-			/*for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
-				roomVsHostDiscountModel.setCreatedBy(userId);
-				RoomVsHostDiscountEntity roomVsHostDiscountEntity = roomVsHostDiscountConverter.modelToEntity(roomVsHostDiscountModel);
-				roomVsHostDiscountEntity.setRoomEntity(roomEntity);
-				roomVsHostDiscountDAO.save(roomVsHostDiscountEntity);
-			}*/
-			
-			//Room Vs Ora Discount
-			/*RoomVsOraDiscountEntity roomVsOraDiscountEntity = new RoomVsOraDiscountEntity();
-			DiscountCategoryOraEntity discountCategoryOraEntity= discountCategoryOraDAO.find(Long.valueOf(1));
-			roomVsOraDiscountEntity.setDiscountCategoryOraEntity(discountCategoryOraEntity);
-			roomVsOraDiscountEntity.setRoomEntity(roomEntity);
-			roomVsOraDiscountEntity.setDiscount(PropertyAddConstant.STR_ZERO);
-			roomVsOraDiscountEntity.setCreatedBy(userId);
-			roomVsOraDiscountDAO.save(roomVsOraDiscountEntity);*/
-			
-			//Room Vs Ora Price Percentage
-			/*RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = new RoomVsOraPricePercentageEntity();
-			roomVsOraPricePercentageEntity.setPercentage(PropertyAddConstant.STR_ZERO);
-			roomVsOraPricePercentageEntity.setRoomEntity(roomEntity);
-			roomVsOraPricePercentageEntity.setCreatedBy(userId);
-			roomVsOraPricePercentageDAO.save(roomVsOraPricePercentageEntity);*/
-			
-			// Room Vs Price
-			/*for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
-				roomVsPriceModel.setCreatedBy(userId);
-				RoomVsPriceEntity roomVsPriceEntity = roomVsPriceConverter.modelToEntity(roomVsPriceModel);
-				roomVsPriceEntity.setRoomEntity(roomEntity);
-				roomVsPriceDAO.save(roomVsPriceEntity);
-			}*/
-			
 			// Room vs Specilities
 			for(RoomVsSpecialitiesModel roomVsSpecialitiesModel:roomModel.getRoomVsSpecialitiesModels()){
 				roomVsSpecialitiesModel.setCreatedBy(userId);
@@ -620,12 +588,6 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 				roomVsCancellationDAO.save(roomVsCancellationEntity);
 			}
 			
-			//// Room Vs Bed
-			/*RoomVsBedModel roomVsBedModel = roomModel.getRoomVsBedModel();
-			roomVsBedModel.setCreatedBy(userId);
-			RoomVsBedEntity roomVsBedEntity = roomVsBedConverter.modelToEntity(roomVsBedModel);
-			roomVsBedEntity.setRoomEntity(roomEntity);
-			roomVsBedDAO.save(roomVsBedEntity);	*/
 		}
 		
 		if (logger.isDebugEnabled()) {
@@ -814,43 +776,6 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 						roomVsImageDAO.update(roomVsImageEntity);
 					}
 					
-					//Room Vs Host Discount Delete
-					/*for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
-						RoomVsHostDiscountEntity roomVsHostDiscountEntity = roomVsHostDiscountDAO.find(Long.valueOf(roomVsHostDiscountModel.getRhdId()));
-						roomVsHostDiscountEntity.setModifiedBy(userId);
-						roomVsHostDiscountEntity.setStatus(Status.DELETE.ordinal());
-						roomVsHostDiscountEntity.setModifiedDate(Util.getCurrentDateTime());
-						roomVsHostDiscountDAO.update(roomVsHostDiscountEntity);
-					}*/
-					
-					//Room Vs Ora Discount Delete
-					/*for(RoomVsOraDiscountModel roomVsOraDiscountModel:roomModel.getRoomVsOraDiscountModels()) {
-						
-						RoomVsOraDiscountEntity roomVsOraDiscountEntity = roomVsOraDiscountDAO.find(Long.valueOf(roomVsOraDiscountModel.getRodId()));
-						roomVsOraDiscountEntity.setModifiedBy(userId);
-						roomVsOraDiscountEntity.setModifiedDate(Util.getCurrentDateTime());
-						roomVsOraDiscountEntity.setStatus(Status.DELETE.ordinal());
-						roomVsOraDiscountDAO.update(roomVsOraDiscountEntity);
-					}*/
-					
-					//Room Vs Ora Price Percentage Delete
-					/*for(RoomVsOrapricePercModel roomVsOrapricePercModel:roomModel.getRoomVsOrapricePercModels()) {
-						RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = roomVsOraPricePercentageDAO.find(Long.valueOf(roomVsOrapricePercModel.getRopId()));
-						roomVsOraPricePercentageEntity.setModifiedBy(userId);
-						roomVsOraPricePercentageEntity.setModifiedDate(Util.getCurrentDateTime());
-						roomVsOraPricePercentageEntity.setStatus(Status.DELETE.ordinal());
-						roomVsOraPricePercentageDAO.update(roomVsOraPricePercentageEntity);
-					}*/
-					
-					
-					// Room Vs Price Delete
-					/*for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
-						RoomVsPriceEntity roomVsPriceEntity = roomVsPriceDAO.find(Long.valueOf(roomVsPriceModel.getRoomVsPriceId()));
-						roomVsPriceEntity.setModifiedBy(userId);
-						roomVsPriceEntity.setModifiedDate(Util.getCurrentDateTime());
-						roomVsPriceEntity.setStatus(Status.DELETE.ordinal());
-						roomVsPriceDAO.update(roomVsPriceEntity);
-					}*/
 					
 					// Room vs Specilities Delete
 					for(RoomVsSpecialitiesModel roomVsSpecialitiesModel:roomModel.getRoomVsSpecialitiesModels()){
@@ -879,12 +804,6 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 						roomVsCancellationDAO.update(roomVsCancellationEntity);
 					}
 					
-					//// Room Vs Bed Delete
-					/*RoomVsBedEntity roomVsBedEntity = roomVsBedDAO.find(Long.valueOf(roomModel.getRoomVsBedModel().getRbId()));
-					roomVsBedEntity.setModifiedBy(userId);
-					roomVsBedEntity.setModifiedDate(Util.getCurrentDateTime());
-					roomVsBedEntity.setStatus(Status.DELETE.ordinal());
-					roomVsBedDAO.update(roomVsBedEntity);	*/
 				}
 				
 				
@@ -999,38 +918,6 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 						roomVsImageDAO.save(roomVsImageEntity);
 					}
 					
-					//Room Vs Host Discount
-					/*for(RoomVsHostDiscountModel roomVsHostDiscountModel:roomModel.getRoomVsHostDiscountModels()){
-						roomVsHostDiscountModel.setCreatedBy(userId);
-						RoomVsHostDiscountEntity roomVsHostDiscountEntity = roomVsHostDiscountConverter.modelToEntity(roomVsHostDiscountModel);
-						roomVsHostDiscountEntity.setRoomEntity(roomEntity);
-						roomVsHostDiscountDAO.save(roomVsHostDiscountEntity);
-					}*/
-					
-					//Room Vs Ora Discount
-					/*RoomVsOraDiscountEntity roomVsOraDiscountEntity = new RoomVsOraDiscountEntity();
-					DiscountCategoryOraEntity discountCategoryOraEntity= discountCategoryOraDAO.find(Long.valueOf(1));
-					roomVsOraDiscountEntity.setDiscountCategoryOraEntity(discountCategoryOraEntity);
-					roomVsOraDiscountEntity.setRoomEntity(roomEntity);
-					roomVsOraDiscountEntity.setDiscount(PropertyAddConstant.STR_ZERO);
-					roomVsOraDiscountEntity.setCreatedBy(userId);
-					roomVsOraDiscountDAO.save(roomVsOraDiscountEntity);*/
-					
-					//Room Vs Ora Price Percentage
-					/*RoomVsOraPricePercentageEntity roomVsOraPricePercentageEntity = new RoomVsOraPricePercentageEntity();
-					roomVsOraPricePercentageEntity.setPercentage(PropertyAddConstant.STR_ZERO);
-					roomVsOraPricePercentageEntity.setRoomEntity(roomEntity);
-					roomVsOraPricePercentageEntity.setCreatedBy(userId);
-					roomVsOraPricePercentageDAO.save(roomVsOraPricePercentageEntity);*/
-					
-					// Room Vs Price
-					/*for(RoomVsPriceModel roomVsPriceModel:roomModel.getRoomVsPriceModels()){
-						roomVsPriceModel.setCreatedBy(userId);
-						RoomVsPriceEntity roomVsPriceEntity = roomVsPriceConverter.modelToEntity(roomVsPriceModel);
-						roomVsPriceEntity.setRoomEntity(roomEntity);
-						roomVsPriceDAO.save(roomVsPriceEntity);
-					}*/
-					
 					// Room vs Specilities
 					for(RoomVsSpecialitiesModel roomVsSpecialitiesModel:roomModel.getRoomVsSpecialitiesModels()){
 						roomVsSpecialitiesModel.setCreatedBy(userId);
@@ -1055,12 +942,6 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 						roomVsCancellationDAO.save(roomVsCancellationEntity);
 					}
 					
-					//// Room Vs Bed
-					/*RoomVsBedModel roomVsBedModel = roomModel.getRoomVsBedModel();
-					roomVsBedModel.setCreatedBy(userId);
-					RoomVsBedEntity roomVsBedEntity = roomVsBedConverter.modelToEntity(roomVsBedModel);
-					roomVsBedEntity.setRoomEntity(roomEntity);
-					roomVsBedDAO.save(roomVsBedEntity);	*/
 				}
 				
 				if (logger.isInfoEnabled()) {
