@@ -543,6 +543,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		for(RoomModel roomModel:propertyModel.getRoomModels()){
 			roomModel.setCreatedBy(userId);
 			roomModel.setOraPercentage(PropertyAddConstant.STR_ZERO);
+			roomModel.setOraDiscountPercentage(PropertyAddConstant.STR_ZERO);
 			RoomEntity roomEntity = roomConverter.modelToEntity(roomModel);
 			roomEntity.setPropertyEntity(propertyEntity);
 			roomDAO.save(roomEntity);
@@ -899,6 +900,8 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 				for(RoomModel roomModel:propertyModel.getRoomModels()){
 					roomModel.setCreatedBy(userId);
 					RoomEntity roomEntity = roomConverter.modelToEntity(roomModel);
+					roomEntity.setOraPercentage(PropertyAddConstant.STR_ZERO);
+					roomEntity.setOraDiscountPercentage(PropertyAddConstant.STR_ZERO);
 					roomEntity.setPropertyEntity(propertyEntity2);
 					roomDAO.save(roomEntity);
 					

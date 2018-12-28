@@ -41,6 +41,7 @@ import com.orastays.property.propertyadd.dao.RoomVsSpecialitiesDAO;
 import com.orastays.property.propertyadd.dao.SpaceRuleDAO;
 import com.orastays.property.propertyadd.dao.SpecialExperienceDAO;
 import com.orastays.property.propertyadd.dao.SpecialtiesDAO;
+import com.orastays.property.propertyadd.dao.StayTypeDAO;
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.helper.MessageUtil;
 import com.orastays.property.propertyadd.model.CommonModel;
@@ -134,6 +135,9 @@ public class AuthorizeUserValidation {
 	
 	@Autowired
 	protected MealPlanDAO mealPlanDAO;
+	
+	@Autowired
+	protected StayTypeDAO stayTypeDAO;
 	
 	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {

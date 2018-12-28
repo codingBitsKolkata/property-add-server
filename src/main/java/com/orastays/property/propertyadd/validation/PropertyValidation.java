@@ -34,10 +34,13 @@ import com.orastays.property.propertyadd.entity.RoomVsSpecialitiesEntity;
 import com.orastays.property.propertyadd.entity.SpaceRuleEntity;
 import com.orastays.property.propertyadd.entity.SpecialExperienceEntity;
 import com.orastays.property.propertyadd.entity.SpecialtiesEntity;
+import com.orastays.property.propertyadd.entity.StayTypeEntity;
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
+import com.orastays.property.propertyadd.helper.Accommodation;
 import com.orastays.property.propertyadd.helper.PropertyAddConstant;
 import com.orastays.property.propertyadd.helper.RoomStandard;
 import com.orastays.property.propertyadd.helper.Status;
+import com.orastays.property.propertyadd.helper.StayType;
 import com.orastays.property.propertyadd.helper.UserType;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.CommonModel;
@@ -742,6 +745,25 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							}
 						}
 					}
+					
+					//Validate Stay Type
+					StayTypeEntity stayTypeEntity = null;
+					if (Objects.isNull(propertyModel.getStayTypeModel())) {
+						exceptions.put(messageUtil.getBundle("stay.type.null.code"), new Exception(messageUtil.getBundle("stay.type.null.message")));
+					} else {
+						if (StringUtils.isBlank(propertyModel.getStayTypeModel().getStayTypeId())) {
+							exceptions.put(messageUtil.getBundle("stay.type.id.null.code"), new Exception(messageUtil.getBundle("stay.type.id.null.message")));
+						} else {
+							if (!Util.isNumeric(propertyModel.getStayTypeModel().getStayTypeId())) {
+								exceptions.put(messageUtil.getBundle("stay.type.id.invalid.code"), new Exception(messageUtil.getBundle("stay.type.id.invalid.message")));
+							} else {
+								stayTypeEntity = stayTypeDAO.find(Long.parseLong(propertyModel.getStayTypeModel().getStayTypeId()));
+								if (Objects.isNull(stayTypeEntity) && stayTypeEntity.getStatus() != Status.ACTIVE.ordinal()) {
+									exceptions.put(messageUtil.getBundle("stay.type.id.invalid.code"), new Exception(messageUtil.getBundle("stay.type.id.invalid.message")));
+								}
+							}
+						}
+					}
 		
 					// Validate Property Vs Description
 					if (Objects.isNull(propertyModel.getPropertyVsDescriptionModels())) {
@@ -838,7 +860,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					if (Objects.isNull(propertyModel.getPropertyVsSpecialExperienceModels())) {
 						exceptions.put(messageUtil.getBundle("special.expe.null.code"), new Exception(messageUtil.getBundle("special.expe.null.message")));
 					} else {
-						// Answer Validation
+						// Experience Validation
 						for (PropertyVsSpecialExperienceModel propertyVsExperienceModel : propertyModel.getPropertyVsSpecialExperienceModels()) {
 							if (Objects.isNull(propertyVsExperienceModel.getSpecialExperienceModel())) {
 								exceptions.put(messageUtil.getBundle("special.expe.null.code"), new Exception(messageUtil.getBundle("special.expe.null.message")));
@@ -924,6 +946,18 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 								if (!(roomModel.getSharedSpace().equals(PropertyAddConstant.STR_Y) || roomModel.getSharedSpace().equals(PropertyAddConstant.STR_N))) {
 									exceptions.put(messageUtil.getBundle("room.sharedSpace.invalid.code"), new Exception(messageUtil.getBundle("room.sharedSpace.invalid.message")));
+								} else {
+									
+									if(roomModel.getSharedSpace().equals(PropertyAddConstant.STR_Y)){
+										if(StringUtils.isEmpty(roomModel.getSharedBedPrice())){
+											exceptions.put(messageUtil.getBundle("room.sharedprice.null.code"), new Exception(messageUtil.getBundle("room.sharedprice.null.message")));
+										} else {
+											if(!Util.isNumeric(roomModel.getSharedBedPrice())) {
+												exceptions.put(messageUtil.getBundle("room.sharedprice.numeric.code"), new Exception(messageUtil.getBundle("room.sharedprice.numeric.message")));
+											}
+										}
+										
+									}
 								}
 							}
 		
@@ -931,16 +965,10 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							if (!StringUtils.isBlank(roomModel.getCotAvailable())) {
 								if (!(roomModel.getCotAvailable().equals(PropertyAddConstant.STR_Y) || roomModel.getCotAvailable().equals(PropertyAddConstant.STR_N))) {
 									exceptions.put(messageUtil.getBundle("room.cotavail.invalid.code"), new Exception(messageUtil.getBundle("room.cotavail.invalid.message")));
-								}
+								} 
 							}
 		
-							// No Of Guest
-							if (!StringUtils.isBlank(roomModel.getNoOfGuest())) {
-								if (!Util.isNumeric(roomModel.getNoOfGuest())) {
-									exceptions.put(messageUtil.getBundle("room.noofguest.numeric.code"), new Exception(messageUtil.getBundle("room.noofguest.numeric.message")));
-								}
-							}
-		
+							
 							// No of Child
 							if (!StringUtils.isBlank(roomModel.getNoOfChild())) {
 								if (!Util.isNumeric(roomModel.getNoOfChild())) {
@@ -955,19 +983,40 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								}
 							}
 							
-							//AAA=>Room Current Status
-							// Room Price PerNight
-							//roomPricePerMonth
-							//sharedBedPricePerNight
-							//sharedBedPricePerMonth
-							//cotPrice
-							//sharedBedPrice
-							//commission
-							//oraPercentage
-							//hostDiscountWeekly
-							//hostDiscountMonthly
-							//oraDiscountPercentage
-							//roomStandard
+							
+							// Host Discount Weekly
+							if (!StringUtils.isBlank(roomModel.getHostDiscountWeekly())) {
+								if (!Util.isNumeric(roomModel.getHostDiscountWeekly())) {
+									exceptions.put(messageUtil.getBundle("room.host.discount.numeric.code"), new Exception(messageUtil.getBundle("room.host.discount.numeric.message")));
+								}
+							}
+							
+							// Host Discount Monthly
+							if (!StringUtils.isBlank(roomModel.getHostDiscountMonthly())) {
+								if (!Util.isNumeric(roomModel.getHostDiscountMonthly())) {
+									exceptions.put(messageUtil.getBundle("room.host.dis.monthly.numeric.code"), new Exception(messageUtil.getBundle("room.host.dis.monthly.numeric.message")));
+								}
+							}
+							
+							// Ora Discount Percentage
+							if (!StringUtils.isBlank(roomModel.getOraDiscountPercentage())) {
+								if (!Util.isNumeric(roomModel.getOraDiscountPercentage())) {
+									exceptions.put(messageUtil.getBundle("room.ora.dis.per.numeric.code"), new Exception(messageUtil.getBundle("room.ora.dis.per.numeric.message")));
+								}
+							}
+							
+							// Commission Validate
+							if (StringUtils.isEmpty(roomModel.getCommission())) {
+								exceptions.put(messageUtil.getBundle("room.commission.null.code"), new Exception(messageUtil.getBundle("room.commission.null.message")));
+							} else {
+								if (!Util.isNumeric(roomModel.getCommission())) {
+									exceptions.put(messageUtil.getBundle("room.commission.numeric.code"), new Exception(messageUtil.getBundle("room.commission.numeric.message")));
+								} else {
+									if (Integer.valueOf(roomModel.getCommission()) >= 100) {
+										exceptions.put(messageUtil.getBundle("room.commission.less100.code"), new Exception(messageUtil.getBundle("room.commission.less100.message")));
+									}
+								}
+							}
 							
 							// Accommodation Name Check
 							if (StringUtils.isEmpty(roomModel.getAccomodationName())) {
@@ -977,11 +1026,123 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								if (!Util.accommodationContains(roomModel.getAccomodationName())) {
 									exceptions.put(messageUtil.getBundle("room.accommodation.invalid.code"), new Exception(messageUtil.getBundle("room.accommodation.invalid.message")));
 								} else {
-								// Room Vs Bed
-								if (StringUtils.isEmpty(roomModel.getNumOfBed())) {
-									exceptions.put(messageUtil.getBundle("room.vs.bed.null.code"), new Exception(messageUtil.getBundle("room.vs.bed.null.message")));
-								} else if (!Util.isNumeric(roomModel.getNumOfBed())) {
-										exceptions.put(messageUtil.getBundle("room.no.of.bed.numeric.code"), new Exception(messageUtil.getBundle("room.no.of.bed.numeric.message")));
+									
+									// Price Logic For Shared
+									if(roomModel.getAccomodationName().equals(Accommodation.SHARED.name())){
+										
+										// Check Stay type Long term
+										if(stayTypeEntity.getStayTypeId() == StayType.LONGTERM.ordinal()){
+											
+											// Validate Shared Bed Price Per Month
+											if (StringUtils.isEmpty(roomModel.getSharedBedPricePerMonth())) {
+												exceptions.put(messageUtil.getBundle("shared.bed.price.pm.null.code"), new Exception(messageUtil.getBundle("shared.bed.price.pm.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getSharedBedPricePerMonth())) {
+													exceptions.put(messageUtil.getBundle("shared.bed.price.pm.numeric.code"), new Exception(messageUtil.getBundle("shared.bed.price.pm.numeric.message")));
+												}
+											}
+										}
+										
+										// Check Stay type Short term
+										if(stayTypeEntity.getStayTypeId() == StayType.SHORTTERM.ordinal()){
+											
+											// Validate Shared Bed Price Per Night
+											if (StringUtils.isEmpty(roomModel.getSharedBedPricePerNight())) {
+												exceptions.put(messageUtil.getBundle("shared.bed.price.pn.null.code"), new Exception(messageUtil.getBundle("shared.bed.price.pn.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getSharedBedPricePerNight())) {
+													exceptions.put(messageUtil.getBundle("shared.bed.price.pn.numeric.code"), new Exception(messageUtil.getBundle("shared.bed.price.pn.numeric.message")));
+												}
+											}
+										}
+										
+										// Check Stay type Both term
+										if(stayTypeEntity.getStayTypeId() == StayType.BOTH.ordinal()){
+											
+											// Validate Shared Bed Price Per Month
+											if (StringUtils.isEmpty(roomModel.getSharedBedPricePerMonth())) {
+												exceptions.put(messageUtil.getBundle("shared.bed.price.pm.null.code"), new Exception(messageUtil.getBundle("shared.bed.price.pm.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getSharedBedPricePerMonth())) {
+													exceptions.put(messageUtil.getBundle("shared.bed.price.pm.numeric.code"), new Exception(messageUtil.getBundle("shared.bed.price.pm.numeric.message")));
+												}
+											}
+											
+											// Validate Shared Bed Price Per Night
+											if (StringUtils.isEmpty(roomModel.getSharedBedPricePerNight())) {
+												exceptions.put(messageUtil.getBundle("shared.bed.price.pn.null.code"), new Exception(messageUtil.getBundle("shared.bed.price.pn.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getSharedBedPricePerNight())) {
+													exceptions.put(messageUtil.getBundle("shared.bed.price.pn.numeric.code"), new Exception(messageUtil.getBundle("shared.bed.price.pn.numeric.message")));
+												}
+											}
+											
+										}
+										
+										// Room Vs Bed
+										if (StringUtils.isEmpty(roomModel.getNumOfBed())) {
+											exceptions.put(messageUtil.getBundle("room.vs.bed.null.code"), new Exception(messageUtil.getBundle("room.vs.bed.null.message")));
+										} else if (!Util.isNumeric(roomModel.getNumOfBed())) {
+												exceptions.put(messageUtil.getBundle("room.no.of.bed.numeric.code"), new Exception(messageUtil.getBundle("room.no.of.bed.numeric.message")));
+										}
+										
+									}
+									
+									// Price Logic For Private
+									if(roomModel.getAccomodationName().equals(Accommodation.PRIVATE.name())){
+										
+										// No Of Guest
+										if (StringUtils.isEmpty(roomModel.getNoOfGuest())) {
+											exceptions.put(messageUtil.getBundle("room.noofguest.null.code"), new Exception(messageUtil.getBundle("room.noofguest.null.message")));
+										} else {
+											if (!Util.isNumeric(roomModel.getNoOfGuest())) {
+												exceptions.put(messageUtil.getBundle("room.noofguest.numeric.code"), new Exception(messageUtil.getBundle("room.noofguest.numeric.message")));
+											}
+										}
+										
+										// Validate Cot Price
+										if(roomModel.getCotAvailable().equals(PropertyAddConstant.STR_Y)){
+											if(StringUtils.isEmpty(roomModel.getCotPrice())){
+												exceptions.put(messageUtil.getBundle("cot.price.null.code"), new Exception(messageUtil.getBundle("cot.price.null.message")));
+											} else {
+												if(!Util.isNumeric(roomModel.getCotPrice())) {
+													exceptions.put(messageUtil.getBundle("cot.price.numeric.code"), new Exception(messageUtil.getBundle("cot.price.numeric.message")));
+												}
+											}
+											
+										}
+										
+										// Check Stay type Long term
+										if(stayTypeEntity.getStayTypeId() == StayType.LONGTERM.ordinal()){
+											
+											// Validate Room Price Per Month
+											if (StringUtils.isEmpty(roomModel.getRoomPricePerMonth())) {
+												exceptions.put(messageUtil.getBundle("room.price.pm.null.code"), new Exception(messageUtil.getBundle("room.price.pm.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getRoomPricePerMonth())) {
+													exceptions.put(messageUtil.getBundle("room.price.pm.numeric.code"), new Exception(messageUtil.getBundle("room.price.pm.numeric.message")));
+												}
+											}
+										}
+										
+										// Check Stay type Short term
+										if(stayTypeEntity.getStayTypeId() == StayType.SHORTTERM.ordinal()){
+											
+											// Validate Room Price Per Night
+											if (StringUtils.isEmpty(roomModel.getRoomPricePerNight())) {
+												exceptions.put(messageUtil.getBundle("room.price.pn.null.code"), new Exception(messageUtil.getBundle("room.price.pn.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getRoomPricePerNight())) {
+													exceptions.put(messageUtil.getBundle("room.price.pn.numeric.code"), new Exception(messageUtil.getBundle("room.price.pn.numeric.message")));
+												}
+											}
+										}
+										
+										// Check Stay type Both term
+										if(stayTypeEntity.getStayTypeId() == StayType.BOTH.ordinal()){
+											
+										}
+										
 									}
 								}
 							}
@@ -1535,6 +1696,24 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							}
 						}
 					}
+					StayTypeEntity stayTypeEntity = null;
+					//Validate Stay Type
+					if (Objects.isNull(propertyModel.getStayTypeModel())) {
+						exceptions.put(messageUtil.getBundle("stay.type.null.code"), new Exception(messageUtil.getBundle("stay.type.null.message")));
+					} else {
+						if (StringUtils.isBlank(propertyModel.getStayTypeModel().getStayTypeId())) {
+							exceptions.put(messageUtil.getBundle("stay.type.id.null.code"), new Exception(messageUtil.getBundle("stay.type.id.null.message")));
+						} else {
+							if (!Util.isNumeric(propertyModel.getStayTypeModel().getStayTypeId())) {
+								exceptions.put(messageUtil.getBundle("stay.type.id.invalid.code"), new Exception(messageUtil.getBundle("stay.type.id.invalid.message")));
+							} else {
+								stayTypeEntity = stayTypeDAO.find(Long.parseLong(propertyModel.getStayTypeModel().getStayTypeId()));
+								if (Objects.isNull(stayTypeEntity) && stayTypeEntity.getStatus() != Status.ACTIVE.ordinal()) {
+									exceptions.put(messageUtil.getBundle("stay.type.id.invalid.code"), new Exception(messageUtil.getBundle("stay.type.id.invalid.message")));
+								}
+							}
+						}
+					}
 		
 					// Validate Property Vs Description
 					if (Objects.isNull(propertyModel.getPropertyVsDescriptionModels())) {
@@ -1886,6 +2065,19 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 								if (!(roomModel.getSharedSpace().equals(PropertyAddConstant.STR_Y) || roomModel.getSharedSpace().equals(PropertyAddConstant.STR_N))) {
 									exceptions.put(messageUtil.getBundle("room.sharedSpace.invalid.code"), new Exception(messageUtil.getBundle("room.sharedSpace.invalid.message")));
+								} else {
+									
+									if(roomModel.getSharedSpace().equals(PropertyAddConstant.STR_Y)){
+										if(StringUtils.isEmpty(roomModel.getSharedBedPrice())){
+											exceptions.put(messageUtil.getBundle("room.sharedprice.null.code"), new Exception(messageUtil.getBundle("room.sharedprice.null.message")));
+										} else {
+											if(!Util.isNumeric(roomModel.getSharedBedPrice())) {
+												exceptions.put(messageUtil.getBundle("room.sharedprice.numeric.code"), new Exception(messageUtil.getBundle("room.sharedprice.numeric.message")));
+											}
+										}
+										
+									}
+									
 								}
 							}
 		
@@ -1893,14 +2085,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							if (!StringUtils.isBlank(roomModel.getCotAvailable())) {
 								if (!(roomModel.getCotAvailable().equals(PropertyAddConstant.STR_Y) || roomModel.getCotAvailable().equals(PropertyAddConstant.STR_N))) {
 									exceptions.put(messageUtil.getBundle("room.cotavail.invalid.code"), new Exception(messageUtil.getBundle("room.cotavail.invalid.message")));
-								}
-							}
-		
-							// No Of Guest
-							if (!StringUtils.isBlank(roomModel.getNoOfGuest())) {
-								if (!Util.isNumeric(roomModel.getNoOfGuest())) {
-									exceptions.put(messageUtil.getBundle("room.noofguest.numeric.code"), new Exception(messageUtil.getBundle("room.noofguest.numeric.message")));
-								}
+								} 
 							}
 		
 							// No of Child
@@ -1917,6 +2102,40 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								}
 							}
 		
+							// Host Discount Weekly
+							if (!StringUtils.isBlank(roomModel.getHostDiscountWeekly())) {
+								if (!Util.isNumeric(roomModel.getHostDiscountWeekly())) {
+									exceptions.put(messageUtil.getBundle("room.host.discount.numeric.code"), new Exception(messageUtil.getBundle("room.host.discount.numeric.message")));
+								}
+							}
+							
+							// Host Discount Monthly
+							if (!StringUtils.isBlank(roomModel.getHostDiscountMonthly())) {
+								if (!Util.isNumeric(roomModel.getHostDiscountMonthly())) {
+									exceptions.put(messageUtil.getBundle("room.host.dis.monthly.numeric.code"), new Exception(messageUtil.getBundle("room.host.dis.monthly.numeric.message")));
+								}
+							}
+							
+							// Ora Discount Percentage
+							if (!StringUtils.isBlank(roomModel.getOraDiscountPercentage())) {
+								if (!Util.isNumeric(roomModel.getOraDiscountPercentage())) {
+									exceptions.put(messageUtil.getBundle("room.ora.dis.per.numeric.code"), new Exception(messageUtil.getBundle("room.ora.dis.per.numeric.message")));
+								}
+							}
+							
+							// Commission Validate
+							if (StringUtils.isEmpty(roomModel.getCommission())) {
+								exceptions.put(messageUtil.getBundle("room.commission.null.code"), new Exception(messageUtil.getBundle("room.commission.null.message")));
+							} else {
+								if (!Util.isNumeric(roomModel.getCommission())) {
+									exceptions.put(messageUtil.getBundle("room.commission.numeric.code"), new Exception(messageUtil.getBundle("room.commission.numeric.message")));
+								} else {
+									if (Integer.valueOf(roomModel.getCommission()) >= 100) {
+										exceptions.put(messageUtil.getBundle("room.commission.less100.code"), new Exception(messageUtil.getBundle("room.commission.less100.message")));
+									}
+								}
+							}
+							
 							// Accommodation Check
 							if (StringUtils.isEmpty(roomModel.getAccomodationName())) {
 								exceptions.put(messageUtil.getBundle("room.accommodation.null.code"), new Exception(messageUtil.getBundle("room.accommodation.null.message")));
@@ -1925,12 +2144,132 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								if (!Util.accommodationContains(roomModel.getAccomodationName())) {
 									exceptions.put(messageUtil.getBundle("room.accommodation.invalid.code"), new Exception(messageUtil.getBundle("room.accommodation.invalid.message")));
 								} else {
-								// Room Vs Bed
-								if (StringUtils.isEmpty(roomModel.getNumOfBed())) {
-									exceptions.put(messageUtil.getBundle("room.vs.bed.null.code"), new Exception(messageUtil.getBundle("room.vs.bed.null.message")));
-								} else if (!Util.isNumeric(roomModel.getNumOfBed())) {
-										exceptions.put(messageUtil.getBundle("room.no.of.bed.numeric.code"), new Exception(messageUtil.getBundle("room.no.of.bed.numeric.message")));
+									
+									// Price Logic For Shared
+									if(roomModel.getAccomodationName().equals(Accommodation.SHARED.name())){
+										
+										// Room Vs Bed
+										if (StringUtils.isEmpty(roomModel.getNumOfBed())) {
+											exceptions.put(messageUtil.getBundle("room.vs.bed.null.code"), new Exception(messageUtil.getBundle("room.vs.bed.null.message")));
+										} else if (!Util.isNumeric(roomModel.getNumOfBed())) {
+												exceptions.put(messageUtil.getBundle("room.no.of.bed.numeric.code"), new Exception(messageUtil.getBundle("room.no.of.bed.numeric.message")));
+										}
+										
+										// Check Stay type Long term
+										if(stayTypeEntity.getStayTypeId() == StayType.LONGTERM.ordinal()){
+											
+											// Validate Shared Bed Price Per Month
+											if (StringUtils.isEmpty(roomModel.getSharedBedPricePerMonth())) {
+												exceptions.put(messageUtil.getBundle("shared.bed.price.pm.null.code"), new Exception(messageUtil.getBundle("shared.bed.price.pm.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getSharedBedPricePerMonth())) {
+													exceptions.put(messageUtil.getBundle("shared.bed.price.pm.numeric.code"), new Exception(messageUtil.getBundle("shared.bed.price.pm.numeric.message")));
+												}
+											}
+										}
+										
+										// Check Stay type Short term
+										if(stayTypeEntity.getStayTypeId() == StayType.SHORTTERM.ordinal()){
+											
+											// Validate Shared Bed Price Per Night
+											if (StringUtils.isEmpty(roomModel.getSharedBedPricePerNight())) {
+												exceptions.put(messageUtil.getBundle("shared.bed.price.pn.null.code"), new Exception(messageUtil.getBundle("shared.bed.price.pn.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getSharedBedPricePerNight())) {
+													exceptions.put(messageUtil.getBundle("shared.bed.price.pn.numeric.code"), new Exception(messageUtil.getBundle("shared.bed.price.pn.numeric.message")));
+												}
+											}
+										}
+										
+										// Check Stay type Both term
+										if(stayTypeEntity.getStayTypeId() == StayType.BOTH.ordinal()){
+											
+											// Validate Shared Bed Price Per Month
+											if (StringUtils.isEmpty(roomModel.getSharedBedPricePerMonth())) {
+												exceptions.put(messageUtil.getBundle("shared.bed.price.pm.null.code"), new Exception(messageUtil.getBundle("shared.bed.price.pm.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getSharedBedPricePerMonth())) {
+													exceptions.put(messageUtil.getBundle("shared.bed.price.pm.numeric.code"), new Exception(messageUtil.getBundle("shared.bed.price.pm.numeric.message")));
+												}
+											}
+											
+											// Validate Shared Bed Price Per Night
+											if (StringUtils.isEmpty(roomModel.getSharedBedPricePerNight())) {
+												exceptions.put(messageUtil.getBundle("shared.bed.price.pn.null.code"), new Exception(messageUtil.getBundle("shared.bed.price.pn.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getSharedBedPricePerNight())) {
+													exceptions.put(messageUtil.getBundle("shared.bed.price.pn.numeric.code"), new Exception(messageUtil.getBundle("shared.bed.price.pn.numeric.message")));
+												}
+											}
+											
+										}
+										
+										// Room Vs Bed
+										if (StringUtils.isEmpty(roomModel.getNumOfBed())) {
+											exceptions.put(messageUtil.getBundle("room.vs.bed.null.code"), new Exception(messageUtil.getBundle("room.vs.bed.null.message")));
+										} else if (!Util.isNumeric(roomModel.getNumOfBed())) {
+												exceptions.put(messageUtil.getBundle("room.no.of.bed.numeric.code"), new Exception(messageUtil.getBundle("room.no.of.bed.numeric.message")));
+										}
+										
 									}
+									
+									// Price Logic For Private
+									if(roomModel.getAccomodationName().equals(Accommodation.PRIVATE.name())){
+										
+										// No Of Guest
+										if (StringUtils.isEmpty(roomModel.getNoOfGuest())) {
+											exceptions.put(messageUtil.getBundle("room.noofguest.null.code"), new Exception(messageUtil.getBundle("room.noofguest.null.message")));
+										} else {
+											if (!Util.isNumeric(roomModel.getNoOfGuest())) {
+												exceptions.put(messageUtil.getBundle("room.noofguest.numeric.code"), new Exception(messageUtil.getBundle("room.noofguest.numeric.message")));
+											}
+										}
+										
+										// Validate Cot Price
+										if(roomModel.getCotAvailable().equals(PropertyAddConstant.STR_Y)){
+											if(StringUtils.isEmpty(roomModel.getCotPrice())){
+												exceptions.put(messageUtil.getBundle("cot.price.null.code"), new Exception(messageUtil.getBundle("cot.price.null.message")));
+											} else {
+												if(!Util.isNumeric(roomModel.getCotPrice())) {
+													exceptions.put(messageUtil.getBundle("cot.price.numeric.code"), new Exception(messageUtil.getBundle("cot.price.numeric.message")));
+												}
+											}
+											
+										}
+										
+										// Check Stay type Long term
+										if(stayTypeEntity.getStayTypeId() == StayType.LONGTERM.ordinal()){
+											
+											// Validate Room Price Per Month
+											if (StringUtils.isEmpty(roomModel.getRoomPricePerMonth())) {
+												exceptions.put(messageUtil.getBundle("room.price.pm.null.code"), new Exception(messageUtil.getBundle("room.price.pm.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getRoomPricePerMonth())) {
+													exceptions.put(messageUtil.getBundle("room.price.pm.numeric.code"), new Exception(messageUtil.getBundle("room.price.pm.numeric.message")));
+												}
+											}
+										}
+										
+										// Check Stay type Short term
+										if(stayTypeEntity.getStayTypeId() == StayType.SHORTTERM.ordinal()){
+											
+											// Validate Room Price Per Night
+											if (StringUtils.isEmpty(roomModel.getRoomPricePerNight())) {
+												exceptions.put(messageUtil.getBundle("room.price.pn.null.code"), new Exception(messageUtil.getBundle("room.price.pn.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getRoomPricePerNight())) {
+													exceptions.put(messageUtil.getBundle("room.price.pn.numeric.code"), new Exception(messageUtil.getBundle("room.price.pn.numeric.message")));
+												}
+											}
+										}
+										
+										// Check Stay type Both term
+										if(stayTypeEntity.getStayTypeId() == StayType.BOTH.ordinal()){
+											
+										}
+										
+									}
+								
 								}
 							}
 		
