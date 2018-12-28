@@ -32,9 +32,33 @@ public class RoomVsMealEntity extends CommonEntity {
 	@JsonProperty("roomVsMealId")
 	private Long roomVsMealId;
 
-	@Column(name = "meal_type")
-	@JsonProperty("mealType")
-	private String mealType;
+	@Column(name = "meal_type_sunday")
+	@JsonProperty("mealTypeSunday")
+	private String mealTypeSunday;
+
+	@Column(name = "meal_type_monday")
+	@JsonProperty("mealTypeMonday")
+	private String mealTypeMonday;
+
+	@Column(name = "meal_type_tuesday")
+	@JsonProperty("mealTypeTuesday")
+	private String mealTypeTuesday;
+
+	@Column(name = "meal_type_wednesday")
+	@JsonProperty("mealTypeWednesday")
+	private String mealTypeWednesday;
+
+	@Column(name = "meal_type_thursday")
+	@JsonProperty("mealTypeThursday")
+	private String mealTypeThursday;
+
+	@Column(name = "meal_type_friday")
+	@JsonProperty("mealTypeFriday")
+	private String mealTypeFriday;
+
+	@Column(name = "meal_type_saturday")
+	@JsonProperty("mealTypeSaturday")
+	private String mealTypeSaturday;
 
 	@Column(name = "meal_days_sunday")
 	@JsonProperty("mealDaysSunday")
@@ -64,9 +88,33 @@ public class RoomVsMealEntity extends CommonEntity {
 	@JsonProperty("mealDaysSaturday")
 	private String mealDaysSaturday;
 
-	@Column(name = "meal_price_category")
-	@JsonProperty("mealPriceCategory")
-	private String mealPriceCategory;
+	@Column(name = "meal_price_categorysunday")
+	@JsonProperty("mealPriceCategorySunday")
+	private String mealPriceCategorySunday;
+
+	@Column(name = "meal_price_categorymonday")
+	@JsonProperty("mealPriceCategoryMonday")
+	private String mealPriceCategoryMonday;
+
+	@Column(name = "meal_price_categorytuesday")
+	@JsonProperty("mealPriceCategoryTuesday")
+	private String mealPriceCategoryTuesday;
+
+	@Column(name = "meal_price_categorywednesday")
+	@JsonProperty("mealPriceCategoryWednesday")
+	private String mealPriceCategoryWednesday;
+
+	@Column(name = "meal_price_categorythursday")
+	@JsonProperty("mealPriceCategoryThursday")
+	private String mealPriceCategoryThursday;
+
+	@Column(name = "meal_price_categoryfriday")
+	@JsonProperty("mealPriceCategoryFriday")
+	private String mealPriceCategoryFriday;
+
+	@Column(name = "meal_price_categorysaturday")
+	@JsonProperty("mealPriceCategorySaturday")
+	private String mealPriceCategorySaturday;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_id", nullable = false)
