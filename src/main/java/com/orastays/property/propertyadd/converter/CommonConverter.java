@@ -9,6 +9,7 @@ import com.orastays.property.propertyadd.dao.CancellationSlabDAO;
 import com.orastays.property.propertyadd.dao.DocumentDAO;
 import com.orastays.property.propertyadd.dao.HostVsAccountDAO;
 import com.orastays.property.propertyadd.dao.MealPlanCatVsMealPlanDAO;
+import com.orastays.property.propertyadd.dao.MealPlanDAO;
 import com.orastays.property.propertyadd.dao.PriceDropDAO;
 import com.orastays.property.propertyadd.dao.PropertyTypeDAO;
 import com.orastays.property.propertyadd.dao.RoomCategoryDAO;
@@ -148,5 +149,9 @@ public class CommonConverter {
 
 	@Autowired
 	protected MealPlanConverter mealPlanConverter;
+	
+	@Autowired
+	protected MealPlanDAO mealPlanDAO;
+	
 
 }

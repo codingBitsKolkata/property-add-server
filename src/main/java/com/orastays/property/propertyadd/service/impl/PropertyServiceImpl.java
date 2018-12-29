@@ -1,5 +1,6 @@
 package com.orastays.property.propertyadd.service.impl;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -541,6 +542,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		///////////////// Room Data Insert Code ///////////////////////////
 		//Room 
 		for(RoomModel roomModel:propertyModel.getRoomModels()){
+			roomModel.setOraRoomName("ORA"+new Date().getTime());
 			roomModel.setCreatedBy(userId);
 			roomModel.setOraPercentage(PropertyAddConstant.STR_ZERO);
 			roomModel.setOraDiscountPercentage(PropertyAddConstant.STR_ZERO);

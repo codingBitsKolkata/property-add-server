@@ -940,8 +940,6 @@ public class PropertyValidation extends AuthorizeUserValidation {
 						for (RoomModel roomModel : propertyModel.getRoomModels()) {
 							
 							
-							roomModel.setOraRoomName("ORA"+new Date().getTime());
-		
 							// Shared Space
 							if (StringUtils.isBlank(roomModel.getSharedSpace())) {
 								exceptions.put(messageUtil.getBundle("room.sharedSpace.null.code"),new Exception(messageUtil.getBundle("room.sharedSpace.null.message")));
@@ -2061,7 +2059,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 						for (RoomModel roomModel : propertyModel.getRoomModels()) {
 							
-							roomModel.setOraRoomName("ORA"+new Date().getTime());
+							
 		
 							// Shared Space
 							if (StringUtils.isBlank(roomModel.getSharedSpace())) {
@@ -2270,7 +2268,23 @@ public class PropertyValidation extends AuthorizeUserValidation {
 										
 										// Check Stay type Both term
 										if(stayTypeEntity.getStayTypeId() == StayType.BOTH.ordinal()){
+											// Validate Room Price Per Month
+											if (StringUtils.isEmpty(roomModel.getRoomPricePerMonth())) {
+												exceptions.put(messageUtil.getBundle("room.price.pm.null.code"), new Exception(messageUtil.getBundle("room.price.pm.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getRoomPricePerMonth())) {
+													exceptions.put(messageUtil.getBundle("room.price.pm.numeric.code"), new Exception(messageUtil.getBundle("room.price.pm.numeric.message")));
+												}
+											}
 											
+											// Validate Room Price Per Night
+											if (StringUtils.isEmpty(roomModel.getRoomPricePerNight())) {
+												exceptions.put(messageUtil.getBundle("room.price.pn.null.code"), new Exception(messageUtil.getBundle("room.price.pn.null.message")));
+											} else {
+												if (!Util.isNumeric(roomModel.getRoomPricePerNight())) {
+													exceptions.put(messageUtil.getBundle("room.price.pn.numeric.code"), new Exception(messageUtil.getBundle("room.price.pn.numeric.message")));
+												}
+											}
 										}
 										
 									}
