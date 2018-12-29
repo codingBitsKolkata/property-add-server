@@ -17,6 +17,9 @@ public class RoomModel extends CommonModel {
 
 	@JsonProperty("roomId")
 	private String roomId;
+	
+	@JsonProperty("oraRoomName")
+	private String oraRoomName;
 
 	@JsonProperty("sharedSpace")
 	private String sharedSpace;

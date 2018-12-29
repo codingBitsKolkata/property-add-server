@@ -250,7 +250,7 @@ public class AuthorizeUserValidation {
 				logger.info("bookingModels ==>> "+bookingModels);
 			}
 		} catch (Exception e) {
-			logger.error("Error in getPropertyBookingList ==>> "+bookingModels);
+			exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
 		}
 		
 		if (exceptions.size() > 0)
@@ -285,7 +285,7 @@ public class AuthorizeUserValidation {
 				logger.info("bookingModels ==>> "+bookingModels);
 			}
 		} catch (Exception e) {
-				logger.error("Error in getUserBookingList ==>> "+bookingModels);
+			exceptions.put(messageUtil.getBundle("user.id.invalid.code"), new Exception(messageUtil.getBundle("user.id.invalid.message")));
 		}
 		
 		if (exceptions.size() > 0)
@@ -318,7 +318,7 @@ public class AuthorizeUserValidation {
 				logger.info("cancellationModels ==>> "+cancellationModels);
 			}
 		} catch (Exception e) {
-			logger.error("Error in getPropertyCancellationList ==>> "+cancellationModels);
+			exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
 		}
 		
 		if (exceptions.size() > 0)
@@ -340,7 +340,7 @@ public class AuthorizeUserValidation {
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
 		List<CancellationModel> cancellationModels = null;
 		try {
-			String url = messageUtil.getBundle("booking.server.url") +"get-user-calcellations";
+			String url = messageUtil.getBundle("booking.server.url") +"get-user-cancellations";
 			ResponseModel responseModel = restTemplate.postForObject(url, bookingModel,ResponseModel.class);
 			
 			Gson gson = new Gson();
@@ -351,7 +351,7 @@ public class AuthorizeUserValidation {
 				logger.info("cancellationModels ==>> "+cancellationModels);
 			}
 		} catch (Exception e) {
-				logger.error("Error in getUserBookingList ==>> "+cancellationModels);
+			exceptions.put(messageUtil.getBundle("user.id.invalid.code"), new Exception(messageUtil.getBundle("user.id.invalid.message")));
 		}
 		
 		if (exceptions.size() > 0)

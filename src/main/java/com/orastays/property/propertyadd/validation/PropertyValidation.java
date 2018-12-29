@@ -938,6 +938,9 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					if (Objects.nonNull(propertyModel.getRoomModels())) {
 		
 						for (RoomModel roomModel : propertyModel.getRoomModels()) {
+							
+							
+							roomModel.setOraRoomName("ORA"+new Date().getTime());
 		
 							// Shared Space
 							if (StringUtils.isBlank(roomModel.getSharedSpace())) {
@@ -2057,6 +2060,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					if (Objects.nonNull(propertyModel.getRoomModels())) {
 		
 						for (RoomModel roomModel : propertyModel.getRoomModels()) {
+							
+							roomModel.setOraRoomName("ORA"+new Date().getTime());
 		
 							// Shared Space
 							if (StringUtils.isBlank(roomModel.getSharedSpace())) {
