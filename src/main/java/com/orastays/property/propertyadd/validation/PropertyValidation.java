@@ -1019,16 +1019,16 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							}
 							
 							// Accommodation Name Check
-							if (StringUtils.isEmpty(roomModel.getAccomodationName())) {
+							if (StringUtils.isEmpty(roomModel.getAccommodationName())) {
 								exceptions.put(messageUtil.getBundle("room.accommodation.null.code"), new Exception(messageUtil.getBundle("room.accommodation.null.message")));
 							} else {
 		
-								if (!Util.accommodationContains(roomModel.getAccomodationName())) {
+								if (!Util.accommodationContains(roomModel.getAccommodationName())) {
 									exceptions.put(messageUtil.getBundle("room.accommodation.invalid.code"), new Exception(messageUtil.getBundle("room.accommodation.invalid.message")));
 								} else {
 									
 									// Price Logic For Shared
-									if(roomModel.getAccomodationName().equals(Accommodation.SHARED.name())){
+									if(roomModel.getAccommodationName().equals(Accommodation.SHARED.name())){
 										
 										// Check Stay type Long term
 										if(stayTypeEntity.getStayTypeId() == StayType.LONGTERM.ordinal()){
@@ -1089,7 +1089,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 									}
 									
 									// Price Logic For Private
-									if(roomModel.getAccomodationName().equals(Accommodation.PRIVATE.name())){
+									if(roomModel.getAccommodationName().equals(Accommodation.PRIVATE.name())){
 										
 										// No Of Guest
 										if (StringUtils.isEmpty(roomModel.getNoOfGuest())) {
@@ -2137,16 +2137,16 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							}
 							
 							// Accommodation Check
-							if (StringUtils.isEmpty(roomModel.getAccomodationName())) {
+							if (StringUtils.isEmpty(roomModel.getAccommodationName())) {
 								exceptions.put(messageUtil.getBundle("room.accommodation.null.code"), new Exception(messageUtil.getBundle("room.accommodation.null.message")));
 							} else {
 		
-								if (!Util.accommodationContains(roomModel.getAccomodationName())) {
+								if (!Util.accommodationContains(roomModel.getAccommodationName())) {
 									exceptions.put(messageUtil.getBundle("room.accommodation.invalid.code"), new Exception(messageUtil.getBundle("room.accommodation.invalid.message")));
 								} else {
 									
 									// Price Logic For Shared
-									if(roomModel.getAccomodationName().equals(Accommodation.SHARED.name())){
+									if(roomModel.getAccommodationName().equals(Accommodation.SHARED.name())){
 										
 										// Room Vs Bed
 										if (StringUtils.isEmpty(roomModel.getNumOfBed())) {
@@ -2214,7 +2214,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 									}
 									
 									// Price Logic For Private
-									if(roomModel.getAccomodationName().equals(Accommodation.PRIVATE.name())){
+									if(roomModel.getAccommodationName().equals(Accommodation.PRIVATE.name())){
 										
 										// No Of Guest
 										if (StringUtils.isEmpty(roomModel.getNoOfGuest())) {

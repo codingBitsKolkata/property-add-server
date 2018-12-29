@@ -75,8 +75,8 @@ public class RoomModel extends CommonModel {
 	@JsonProperty("oraDiscountPercentage")
 	private String oraDiscountPercentage;
 	
-	@JsonProperty("accomodationName")
-	private String accomodationName;
+	@JsonProperty("accommodationName")
+	private String accommodationName;
 	
 	@JsonProperty("roomStandard")
 	private String roomStandard;
