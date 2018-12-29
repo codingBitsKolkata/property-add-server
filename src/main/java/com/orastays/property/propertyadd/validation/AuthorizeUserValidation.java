@@ -33,6 +33,7 @@ import com.orastays.property.propertyadd.dao.PropertyVsNearbyDAO;
 import com.orastays.property.propertyadd.dao.PropertyVsSpaceRuleDAO;
 import com.orastays.property.propertyadd.dao.PropertyVsSpecialExperienceDAO;
 import com.orastays.property.propertyadd.dao.RoomCategoryDAO;
+import com.orastays.property.propertyadd.dao.RoomDAO;
 import com.orastays.property.propertyadd.dao.RoomVsAmenitiesDAO;
 import com.orastays.property.propertyadd.dao.RoomVsCancellationDAO;
 import com.orastays.property.propertyadd.dao.RoomVsImageDAO;
@@ -138,6 +139,9 @@ public class AuthorizeUserValidation {
 	
 	@Autowired
 	protected StayTypeDAO stayTypeDAO;
+	
+	@Autowired
+	protected RoomDAO roomDAO;
 	
 	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {

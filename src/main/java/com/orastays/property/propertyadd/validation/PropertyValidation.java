@@ -28,6 +28,7 @@ import com.orastays.property.propertyadd.entity.PropertyVsNearbyEntity;
 import com.orastays.property.propertyadd.entity.PropertyVsSpaceRuleEntity;
 import com.orastays.property.propertyadd.entity.PropertyVsSpecialExperienceEntity;
 import com.orastays.property.propertyadd.entity.RoomCategoryEntity;
+import com.orastays.property.propertyadd.entity.RoomEntity;
 import com.orastays.property.propertyadd.entity.RoomVsCancellationEntity;
 import com.orastays.property.propertyadd.entity.RoomVsImageEntity;
 import com.orastays.property.propertyadd.entity.RoomVsSpecialitiesEntity;
@@ -2059,7 +2060,21 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 						for (RoomModel roomModel : propertyModel.getRoomModels()) {
 							
-							
+							//Room Id Validate
+							if (StringUtils.isBlank(roomModel.getRoomId())) {
+								exceptions.put(messageUtil.getBundle("room.id.null.code"),new Exception(messageUtil.getBundle("room.id.null.message")));
+							} else {
+								if(!Util.isNumeric(roomModel.getRoomId())) {
+									exceptions.put(messageUtil.getBundle("room.id.numeric.code"), new Exception(messageUtil.getBundle("room.id.numeric.message")));
+								} else {
+									
+									
+									RoomEntity roomEntity = roomDAO.find(Long.valueOf(roomModel.getRoomId()));
+									if (Objects.isNull(roomEntity) && roomEntity.getStatus() != Status.ACTIVE.ordinal()) {
+										exceptions.put(messageUtil.getBundle("room.id.invalid.code"),new Exception(messageUtil.getBundle("room.id.invalid.message")));
+									}
+								}
+							}
 		
 							// Shared Space
 							if (StringUtils.isBlank(roomModel.getSharedSpace())) {
