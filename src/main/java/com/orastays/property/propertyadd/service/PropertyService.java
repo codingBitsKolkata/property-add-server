@@ -19,7 +19,7 @@ import com.orastays.property.propertyadd.model.booking.CancellationModel;
 
 public interface PropertyService {
 
-	List<PropertyTypeModel> fetchPropertyTypes(CommonModel commonModel) throws FormExceptions;
+	List<PropertyTypeModel> fetchPropertyTypes() throws FormExceptions;
 	List<StayTypeModel> fetchStayTypeList(CommonModel commonModel) throws FormExceptions;
 	List<String> fetchAccommodationByLanguage(CommonModel commonModel) throws FormExceptions;
 	List<String> fetchPgCategorySexListByLanguage(CommonModel commonModel) throws FormExceptions;
@@ -39,4 +39,5 @@ public interface PropertyService {
 	List<BookingModel> viewUserBookingList(CommonModel commonModel) throws FormExceptions;
 	List<CancellationModel> viewPropertyCancellationList(BookingModel bookingModel) throws FormExceptions;
 	List<CancellationModel> viewUserCancellationList(BookingModel bookingModel) throws FormExceptions;
+	public List<AmenitiesModel> fetchAmenitiesForFilter() throws FormExceptions;
 }

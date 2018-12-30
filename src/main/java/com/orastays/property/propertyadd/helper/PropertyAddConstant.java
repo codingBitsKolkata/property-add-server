@@ -21,5 +21,6 @@ public final class PropertyAddConstant {
 	public static final String ADVPERCENTAGE = "100";
 	public static final String STR_E = "E";
 	public static final String STR_P = "P";
+	public static final String FILTER_FLAG = "filterFlag";
 	
 }

@@ -1,5 +1,6 @@
 package com.orastays.property.propertyadd.service.impl;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -72,19 +73,17 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 	private static final Logger logger = LogManager.getLogger(PropertyServiceImpl.class);
 	
 	@Override
-	public List<PropertyTypeModel> fetchPropertyTypes(CommonModel commonModel) throws FormExceptions {
+	public List<PropertyTypeModel> fetchPropertyTypes() throws FormExceptions {
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchPropertyTypes -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(commonModel);
 		List<PropertyTypeModel> propertyTypeModels = null;
 		
 		try {
 			Map<String, String> innerMap1 = new LinkedHashMap<>();
 			innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
-			innerMap1.put(PropertyAddConstant.LANGUAGEID, commonModel.getLanguageId());
 	
 			Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
 			outerMap1.put("eq", innerMap1);
@@ -229,6 +228,44 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchAmenitiesList -- END");
+		}
+		
+		return amenitiesModels;
+	}
+	
+	@Override
+	public List<AmenitiesModel> fetchAmenitiesForFilter() throws FormExceptions {
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchAmenitiesForFilter -- START");
+		}
+		
+		List<AmenitiesModel> amenitiesModels = null;
+		
+		try {
+			
+			Map<String, String> innerMap1 = new LinkedHashMap<>();
+			innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+			innerMap1.put(PropertyAddConstant.FILTER_FLAG, PropertyAddConstant.STR_Y);
+			 
+			Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+			outerMap1.put("eq", innerMap1);
+			 
+			Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+			alliasMap.put(entitymanagerPackagesToScan+".AmenitiesEntity", outerMap1);
+			
+			amenitiesModels = amenitiesConverter.entityListToModelList(amenitiesDAO.fetchListBySubCiteria(alliasMap));
+			
+			Collections.reverse(amenitiesModels);
+			
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchAmenitiesForFilter -- "+Util.errorToString(e));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchAmenitiesForFilter -- END");
 		}
 		
 		return amenitiesModels;

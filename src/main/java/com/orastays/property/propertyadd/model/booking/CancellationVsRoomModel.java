@@ -23,4 +23,5 @@ public class CancellationVsRoomModel extends CommonModel {
 	@JsonProperty("cancellations")
 	private CancellationModel cancellations;
 	
+	
 }
