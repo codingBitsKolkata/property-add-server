@@ -1,5 +1,6 @@
 package com.orastays.property.propertyadd.validation;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,7 +12,9 @@ import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tika.Tika;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.orastays.property.propertyadd.entity.AmenitiesEntity;
 import com.orastays.property.propertyadd.entity.CancellationSlabEntity;
@@ -70,6 +73,32 @@ public class PropertyValidation extends AuthorizeUserValidation {
 
 	private static final Logger logger = LogManager.getLogger(PropertyValidation.class);
 	
+	private static final Tika TIKA = new Tika();
+	
+	private void imageFormatValidation(MultipartFile inputFile) throws FormExceptions, IOException {
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("imageFormatValidation -- START");
+		}
+		
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		String imageType = TIKA.detect(inputFile.getBytes());
+		if (StringUtils.equals(imageType, "image/jpeg")
+				|| StringUtils.equals(imageType, "image/jpg")
+				|| StringUtils.equals(imageType, "image/jif")
+				|| StringUtils.equals(imageType, "image/png")
+				|| StringUtils.equals(imageType, "image/gif")
+				|| StringUtils.equals(imageType, "image/bmp")) {
+
+		} else {
+			exceptions.put(messageUtil.getBundle("image.format.mismatch.code"), new Exception(messageUtil.getBundle("image.format.mismatch.message")));
+			throw new FormExceptions(exceptions);
+		}
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("imageFormatValidation -- End");
+		}
+	}
 	
 	public List<CancellationModel> validatePropertyCancellationList(BookingModel bookingModel) throws FormExceptions {
 		
@@ -230,6 +259,9 @@ public class PropertyValidation extends AuthorizeUserValidation {
 
 		}
 		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+		
 		if (logger.isDebugEnabled()) {
 			logger.debug("validateUserTokenForCancellationList -- End");
 		}
@@ -281,6 +313,9 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			}
 
 		}
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
 		
 		if (logger.isDebugEnabled()) {
 			logger.debug("validatePropertyUserToken -- End");
@@ -695,11 +730,23 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							exceptions.put(messageUtil.getBundle("checkout.time.invalid.code"), new Exception(messageUtil.getBundle("checkout.time.invalid.message")));
 						}
 					}
-		
+					
 					// Validate Image Url
-					if (StringUtils.isBlank(propertyModel.getCoverImageUrl())) {
+					if (Objects.isNull(propertyModel.getCoverImageFile())) {
 						exceptions.put(messageUtil.getBundle("image.url.null.code"), new Exception(messageUtil.getBundle("image.url.null.message")));
 					}
+					
+					try {
+						
+						imageFormatValidation(propertyModel.getCoverImageFile());
+						String imageUrl  = azureFileUpload.uploadFileByAzure(propertyModel.getCoverImageFile(), request);
+						propertyModel.setCoverImageUrl(imageUrl);
+						
+					} catch (IOException e) {
+						exceptions.put(messageUtil.getBundle("image.format.mismatch.code"), new Exception(messageUtil.getBundle("image.format.mismatch.message")));
+					}
+					
+					
 		
 					// Validate Price Drop
 					if (StringUtils.isBlank(propertyModel.getPriceDrop())) {
