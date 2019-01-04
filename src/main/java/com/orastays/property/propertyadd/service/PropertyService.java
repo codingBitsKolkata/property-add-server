@@ -23,7 +23,7 @@ public interface PropertyService {
 	List<StayTypeModel> fetchStayTypeList(CommonModel commonModel) throws FormExceptions;
 	List<String> fetchAccommodationByLanguage(CommonModel commonModel) throws FormExceptions;
 	List<String> fetchPgCategorySexListByLanguage(CommonModel commonModel) throws FormExceptions;
-	List<String> fetchAmenitiesTypeList() throws FormExceptions;
+	List<String> fetchAmenitiesTypeList(CommonModel commonModel) throws FormExceptions;
 	List<AmenitiesModel> fetchAmenitiesList(CommonModel commonModel) throws FormExceptions;
 	List<SpecialExperienceModel> fetchSpecialExperienceList(CommonModel commonModel) throws FormExceptions;
 	List<SpaceRuleModel> fetchSpaceRuleList(CommonModel commonModel) throws FormExceptions;

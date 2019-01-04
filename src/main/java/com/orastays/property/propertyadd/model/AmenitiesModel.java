@@ -36,6 +36,12 @@ public class AmenitiesModel extends CommonModel implements Comparator<AmenitiesM
 
 	@JsonProperty("premiumFlag")
 	private String premiumFlag;
+	
+	@JsonProperty("imgUrl1")
+	private String imgUrl1;
+	
+	@JsonProperty("imgUrl2")
+	private String imgUrl2;
 
 	@JsonProperty("aminitiesType")
 	private String aminitiesType;

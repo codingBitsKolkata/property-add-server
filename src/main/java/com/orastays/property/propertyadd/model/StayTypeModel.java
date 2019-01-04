@@ -1,5 +1,7 @@
 package com.orastays.property.propertyadd.model;
 
+import javax.persistence.Column;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -18,16 +20,16 @@ public class StayTypeModel extends CommonModel {
 
 	@JsonProperty("stayTypeId")
 	private String stayTypeId;
-	
+
 	@JsonProperty("languageId")
 	private String languageId;
-	
+
 	@JsonProperty("parentId")
 	private String parentId;
-	
+
 	@JsonProperty("stayTypeName")
 	private String stayTypeName;
-	
+
 	@JsonProperty("property")
 	private PropertyModel propertyModel;
 }

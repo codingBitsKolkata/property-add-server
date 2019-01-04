@@ -270,7 +270,7 @@ public class PropertyController extends BaseController{
 		ResponseModel responseModel = new ResponseModel();
 		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Amenities Type Listing", request);
 		try {
-			List<String> amenitiesTypeModels = propertyService.fetchAmenitiesTypeList();
+			List<String> amenitiesTypeModels = propertyService.fetchAmenitiesTypeList(commonModel);
 			responseModel.setResponseBody(amenitiesTypeModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));

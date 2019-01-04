@@ -3,8 +3,8 @@ package com.orastays.property.propertyadd.model;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,6 +29,9 @@ public class PropertyTypeModel extends CommonModel {
 	
 	@JsonProperty("name")
 	private String name;
+	
+	@JsonProperty("imgUrl")
+	private String imgUrl;
 	
 	@JsonProperty("property")
 	private List<PropertyModel> propertyModels;

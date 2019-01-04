@@ -152,6 +152,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		propertyValidation.validateLanguageWithUserToken(commonModel);
 		
 		List<String> accommodations = Stream.of(Accommodation.values()).map(Accommodation::name).collect(Collectors.toList());
+		accommodations.remove(0);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchAccommodationByLanguage -- END");
@@ -170,7 +171,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		propertyValidation.validateLanguageWithUserToken(commonModel);
 		
 		List<String> pgCategorySex =  Stream.of(Sex.values()).map(Sex::name).collect(Collectors.toList());
-		
+		pgCategorySex.remove(0);
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchPgCategorySexListByLanguage -- END");
 		}
@@ -179,16 +180,17 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 	}
 	
 	@Override
-	public List<String> fetchAmenitiesTypeList() throws FormExceptions {
+	public List<String> fetchAmenitiesTypeList(CommonModel commonModel) throws FormExceptions {
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchAmenitiesTypeList -- START");
 		}
 		
-		propertyValidation.validateLanguageWithUserToken(null);
+		propertyValidation.validateLanguageWithUserToken(commonModel);
+		//propertyValidation.validateLanguageWithUserToken(commonModel);
 		
 		List<String> amenitiesTypes =  Stream.of(AmenitiesType.values()).map(AmenitiesType::name).collect(Collectors.toList());
-		
+		amenitiesTypes.remove(0);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchAmenitiesTypeList -- END");
