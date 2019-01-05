@@ -51,7 +51,7 @@ public class PropertyVsPriceDropConverter extends CommonConverter
 		
 		PropertyVsPriceDropModel propertyVsPriceDropModel = null;
 		
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			propertyVsPriceDropModel = new PropertyVsPriceDropModel();
 			propertyVsPriceDropModel = (PropertyVsPriceDropModel) Util.transform(modelMapper, e, propertyVsPriceDropModel);
 			propertyVsPriceDropModel.setPriceDropModel(priceDropConverter.entityToModel(e.getPriceDropEntity()));

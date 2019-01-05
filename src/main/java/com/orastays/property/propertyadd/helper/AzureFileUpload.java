@@ -4,19 +4,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -61,20 +59,9 @@ public class AzureFileUpload {
 			container = blobClient.getContainerReference(messageUtil.getBundle("web.blob.dev.key"));
 			container.createIfNotExists(BlobContainerPublicAccessType.CONTAINER, new BlobRequestOptions(), new OperationContext());		    
 
-			ServletContext context = request.getServletContext();
-			String appPath = context.getRealPath("");
-			
-			String dirStr = appPath + "resources" + File.separator + "banner";
-			File dir = new File(dirStr);
-			if(!dir.exists()){
-				dir.mkdir();
-			}
-
 			// construct the complete absolute path of the file
-			String fileName = new Date().getTime()+"_" + multipartFileInput.getOriginalFilename();
-			String fullPath = dirStr + File.separator + fileName;
 			
-			sourceFile = new File(fullPath);
+			sourceFile = Util.convertMultipartToFile(multipartFileInput);
 			
 			Writer output = new BufferedWriter(new FileWriter(sourceFile));
 			output.close();

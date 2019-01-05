@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.CancellationSlabEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 
@@ -35,7 +36,7 @@ public class CancellationSlabConverter extends CommonConverter
 		
 		CancellationSlabModel cancellationSlabModel = null;
 		
-		if(Objects.nonNull(e)){
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()){
 			cancellationSlabModel = new CancellationSlabModel();
 			cancellationSlabModel = (CancellationSlabModel) Util.transform(modelMapper, e, cancellationSlabModel);
 		}

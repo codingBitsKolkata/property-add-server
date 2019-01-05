@@ -3,6 +3,8 @@ package com.orastays.property.propertyadd.helper;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.ByteBuffer;
@@ -46,6 +48,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,6 +58,15 @@ public class Util {
 
 	private static final Logger logger = LogManager.getLogger(Util.class);
 
+	public static File convertMultipartToFile(MultipartFile file) throws IOException {
+	    File convFile = new File(file.getOriginalFilename());
+	    convFile.createNewFile();
+	    FileOutputStream fos = new FileOutputStream(convFile);
+	    fos.write(file.getBytes());
+	    fos.close();
+	    return convFile;
+	}
+	
 	public static<T> T transform(Object from, Class<T> valueType) throws Exception {
 		
 		ObjectMapper objectMapper = new ObjectMapper();

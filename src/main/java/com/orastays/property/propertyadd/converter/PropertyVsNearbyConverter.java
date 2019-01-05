@@ -49,7 +49,7 @@ public class PropertyVsNearbyConverter extends CommonConverter
 		
 		PropertyVsNearbyModel propertyVsNearbyModel = null;
 		
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			propertyVsNearbyModel = new PropertyVsNearbyModel();
 			propertyVsNearbyModel = (PropertyVsNearbyModel) Util.transform(modelMapper, e, propertyVsNearbyModel);
 		}

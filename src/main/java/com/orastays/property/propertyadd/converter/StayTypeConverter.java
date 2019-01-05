@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.StayTypeEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.StayTypeModel;
 
@@ -34,7 +35,7 @@ public class StayTypeConverter extends CommonConverter implements BaseConverter<
 
 		StayTypeModel stayTypeModel = null;
 		
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			stayTypeModel = new StayTypeModel();
 			stayTypeModel = (StayTypeModel) Util.transform(modelMapper, e, stayTypeModel);
 		}

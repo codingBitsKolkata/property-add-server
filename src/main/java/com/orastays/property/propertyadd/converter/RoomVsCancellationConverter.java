@@ -50,7 +50,7 @@ public class RoomVsCancellationConverter extends CommonConverter
 		
 		RoomVsCancellationModel roomVsCancellationModel = null;
 		
-		if(Objects.nonNull(e)){
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()){
 			roomVsCancellationModel = new RoomVsCancellationModel();
 			roomVsCancellationModel = (RoomVsCancellationModel) Util.transform(modelMapper, e, roomVsCancellationModel);
 			roomVsCancellationModel.setCancellationSlabModel(cancellationSlabConverter.entityToModel(e.getCancellationSlabEntity()));

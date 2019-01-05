@@ -40,7 +40,7 @@ public class PropertyVsDescriptionConverter extends CommonConverter
 		
 		PropertyVsDescriptionModel propertyVsDescriptionModel = null;
 		
-		if(Objects.nonNull(e)){
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()){
 			propertyVsDescriptionModel = new PropertyVsDescriptionModel();
 			propertyVsDescriptionModel = (PropertyVsDescriptionModel) Util.transform(modelMapper, e, propertyVsDescriptionModel);
 		}

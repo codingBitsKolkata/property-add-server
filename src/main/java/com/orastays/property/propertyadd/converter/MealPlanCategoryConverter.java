@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.MealPlanCategoryEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.MealPlanCategoryModel;
 
@@ -35,7 +36,7 @@ public class MealPlanCategoryConverter extends CommonConverter
 		
 		MealPlanCategoryModel mealPlanCategoryModel = null;
 		
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			
 			mealPlanCategoryModel = new MealPlanCategoryModel();
 			mealPlanCategoryModel = (MealPlanCategoryModel) Util.transform(modelMapper, e, mealPlanCategoryModel);

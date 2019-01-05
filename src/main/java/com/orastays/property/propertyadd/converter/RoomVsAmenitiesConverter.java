@@ -52,7 +52,7 @@ public class RoomVsAmenitiesConverter extends CommonConverter
 		
 		RoomVsAmenitiesModel roomVsAmenitiesModel = null;
 		
-		if(Objects.nonNull(e)){
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()){
 			roomVsAmenitiesModel = new RoomVsAmenitiesModel();
 			roomVsAmenitiesModel = (RoomVsAmenitiesModel) Util.transform(modelMapper, e, roomVsAmenitiesModel);
 			roomVsAmenitiesModel.setAmenitiesModel(amenitiesConverter.entityToModel(e.getAmenitiesEntity()));

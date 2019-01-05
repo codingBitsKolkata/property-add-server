@@ -48,7 +48,7 @@ public class RoomVsOfferConverter extends CommonConverter implements BaseConvert
 		
 		RoomVsOfferModel roomVsOfferModel = null;
 		
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			roomVsOfferModel = new RoomVsOfferModel();
 			roomVsOfferModel = (RoomVsOfferModel) Util.transform(modelMapper, e, roomVsOfferModel);
 		}

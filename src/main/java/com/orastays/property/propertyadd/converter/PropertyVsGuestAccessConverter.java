@@ -49,7 +49,7 @@ public class PropertyVsGuestAccessConverter extends CommonConverter
 		
 		PropertyVsGuestAccessModel propertyVsGuestAccessModel = null;
 		
-		if(Objects.nonNull(e)){
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()){
 			propertyVsGuestAccessModel = new PropertyVsGuestAccessModel();
 			propertyVsGuestAccessModel = (PropertyVsGuestAccessModel) Util.transform(modelMapper, e, propertyVsGuestAccessModel);
 		}

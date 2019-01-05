@@ -51,7 +51,7 @@ public class RoomVsMealConverter extends CommonConverter
 		
 		RoomVsMealModel roomVsMealModel = null;
 		
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			roomVsMealModel = new RoomVsMealModel();
 			roomVsMealModel = (RoomVsMealModel) Util.transform(modelMapper, e, roomVsMealModel);
 		}

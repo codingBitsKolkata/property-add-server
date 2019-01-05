@@ -43,7 +43,7 @@ public class PropertyVsSpecialExperienceConverter extends CommonConverter
 		
 		PropertyVsSpecialExperienceModel propertyVsSpecialExperienceModel = null;
 		
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			
 			propertyVsSpecialExperienceModel = new PropertyVsSpecialExperienceModel();
 			propertyVsSpecialExperienceModel = (PropertyVsSpecialExperienceModel) Util.transform(modelMapper, e, propertyVsSpecialExperienceModel);

@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,9 +48,12 @@ public class RoomCategoryConverter extends CommonConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		RoomCategoryModel roomCategoryModel = new RoomCategoryModel();
-		roomCategoryModel = (RoomCategoryModel) Util.transform(modelMapper, e, roomCategoryModel);
+		RoomCategoryModel roomCategoryModel = null;
 		
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
+		 roomCategoryModel = new RoomCategoryModel();
+		 roomCategoryModel = (RoomCategoryModel) Util.transform(modelMapper, e, roomCategoryModel);
+		}
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");
 		}

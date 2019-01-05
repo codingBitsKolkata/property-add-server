@@ -51,7 +51,7 @@ public class HostVsAccountConverter extends CommonConverter
 		}
 
 		HostVsAccountModel userVsAccountModel = null;
-		if (Objects.nonNull(e)) {
+		if (Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			userVsAccountModel = new HostVsAccountModel();
 			userVsAccountModel = (HostVsAccountModel) Util.transform(modelMapper, e, userVsAccountModel);
 		}

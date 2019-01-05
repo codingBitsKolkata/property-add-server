@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.SpaceRuleEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
 
@@ -31,8 +33,12 @@ public class SpaceRuleConverter extends CommonConverter implements BaseConverter
 			logger.info("entityToModel -- START");
 		}
 		
-		SpaceRuleModel spaceRuleModel = new SpaceRuleModel();
-		spaceRuleModel = (SpaceRuleModel) Util.transform(modelMapper, e, spaceRuleModel);
+		SpaceRuleModel spaceRuleModel = null;
+				
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
+			spaceRuleModel = new SpaceRuleModel();
+			spaceRuleModel = (SpaceRuleModel) Util.transform(modelMapper, e, spaceRuleModel);
+		}
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");

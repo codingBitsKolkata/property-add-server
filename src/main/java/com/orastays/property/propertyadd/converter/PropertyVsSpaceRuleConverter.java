@@ -50,7 +50,7 @@ public class PropertyVsSpaceRuleConverter extends CommonConverter
 		}
 		
 		PropertyVsSpaceRuleModel propertyVsSpaceRuleModel = null;
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			propertyVsSpaceRuleModel = new PropertyVsSpaceRuleModel();
 			propertyVsSpaceRuleModel = (PropertyVsSpaceRuleModel) Util.transform(modelMapper, e, propertyVsSpaceRuleModel);
 			propertyVsSpaceRuleModel.setSpaceRuleModel(spaceRuleConverter.entityToModel(e.getSpaceRuleEntity()));

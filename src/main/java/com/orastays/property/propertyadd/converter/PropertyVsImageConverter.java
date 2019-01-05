@@ -49,7 +49,7 @@ public class PropertyVsImageConverter extends CommonConverter
 		
 		PropertyVsImageModel propertyVsImageModel = null;
 		
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			propertyVsImageModel = new PropertyVsImageModel();
 			propertyVsImageModel = (PropertyVsImageModel) Util.transform(modelMapper, e, propertyVsImageModel);
 		}

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.SpecialtiesEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.SpecialtiesModel;
 
@@ -35,7 +36,7 @@ public class SpecialtiesConverter extends CommonConverter
 		
 		SpecialtiesModel specialtiesModel = null;
 		
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			specialtiesModel = new SpecialtiesModel();
 			specialtiesModel = (SpecialtiesModel) Util.transform(modelMapper, e, specialtiesModel);
 		}

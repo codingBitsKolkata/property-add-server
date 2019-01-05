@@ -51,7 +51,7 @@ BaseConverter<PropertyVsDocumentEntity, PropertyVsDocumentModel> {
 		
 		PropertyVsDocumentModel propertyVsDocumentModel = null;
 		
-		if(Objects.nonNull(e)){
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()){
 			propertyVsDocumentModel = new PropertyVsDocumentModel();
 			propertyVsDocumentModel = (PropertyVsDocumentModel) Util.transform(modelMapper, e, propertyVsDocumentModel);
 			propertyVsDocumentModel.setDocumentModel(documentConverter.entityToModel(e.getDocumentEntity()));

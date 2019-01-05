@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.WishlistEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.WishlistModel;
 
@@ -31,9 +33,15 @@ public class WishlistConverter extends CommonConverter implements BaseConverter<
 			logger.info("entityToModel -- START");
 		}
 
-		WishlistModel wishlistModel = new WishlistModel();
-		wishlistModel = (WishlistModel) Util.transform(modelMapper, e, wishlistModel);
+		WishlistModel wishlistModel = null;
+				
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
+			
+			wishlistModel = new WishlistModel();
+			wishlistModel = (WishlistModel) Util.transform(modelMapper, e, wishlistModel);
 
+		}
+		
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");
 		}

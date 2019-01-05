@@ -48,7 +48,7 @@ public class OfferConverter extends CommonConverter implements BaseConverter<Off
 		
 		OfferModel offerModel = null;
 		
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			offerModel = new OfferModel();
 			offerModel = (OfferModel) Util.transform(modelMapper, e, offerModel);
 		}

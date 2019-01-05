@@ -53,7 +53,7 @@ public class RoomConverter extends CommonConverter
 		
 		RoomModel roomModel = null;
 		
-		if(Objects.nonNull(e)){
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()){
 			roomModel = new RoomModel();
 			roomModel = (RoomModel) Util.transform(modelMapper, e, roomModel);
 			

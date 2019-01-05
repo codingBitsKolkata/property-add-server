@@ -51,7 +51,7 @@ public class RoomVsSpecialitiesConverter extends CommonConverter
 		
 		RoomVsSpecialitiesModel roomVsSpecialitiesModel = null;
 		
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			roomVsSpecialitiesModel = new RoomVsSpecialitiesModel();
 			roomVsSpecialitiesModel = (RoomVsSpecialitiesModel) Util.transform(modelMapper, e, roomVsSpecialitiesModel);
 			roomVsSpecialitiesModel.setSpecialtiesModel(specialtiesConverter.entityToModel(e.getSpecialtiesEntity()));

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.orastays.property.propertyadd.entity.MealPlanCatVsMealPlanEntity;
+import com.orastays.property.propertyadd.helper.Status;
 import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.MealPlanCatVsMealPlanModel;
 
@@ -34,7 +35,7 @@ public class MealPlanCatVsMealPlanConverter extends CommonConverter
 		
 		MealPlanCatVsMealPlanModel mealPlanCategoryVsMealPlanModel = null;
 		
-		if(Objects.nonNull(e)) {
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
 			
 			mealPlanCategoryVsMealPlanModel = new MealPlanCatVsMealPlanModel();
 			mealPlanCategoryVsMealPlanModel = (MealPlanCatVsMealPlanModel) Util.transform(modelMapper, e, mealPlanCategoryVsMealPlanModel);

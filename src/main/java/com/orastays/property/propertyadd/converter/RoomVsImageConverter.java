@@ -48,7 +48,7 @@ public class RoomVsImageConverter extends CommonConverter
 		}
 		
 		RoomVsImageModel roomVsImageModel = null;
-		if(Objects.nonNull(e)){
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()){
 			roomVsImageModel = new RoomVsImageModel();
 			roomVsImageModel = (RoomVsImageModel) Util.transform(modelMapper, e, roomVsImageModel);
 		}

@@ -2,6 +2,7 @@ package com.orastays.property.propertyadd.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,9 +48,11 @@ public class DocumentConverter extends CommonConverter implements
 			logger.info("entityToModel -- START");
 		}
 		
-		DocumentModel documentModel = new DocumentModel();
-		documentModel = (DocumentModel) Util.transform(modelMapper, e, documentModel);
-		
+		DocumentModel documentModel = null;
+		if(Objects.nonNull(e) && e.getStatus() == Status.ACTIVE.ordinal()) {
+			documentModel = new DocumentModel();
+			documentModel = (DocumentModel) Util.transform(modelMapper, e, documentModel);
+		}
 		if (logger.isInfoEnabled()) {
 			logger.info("entityToModel -- END");
 		}
