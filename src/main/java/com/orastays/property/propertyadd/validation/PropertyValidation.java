@@ -739,7 +739,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					try {
 						
 						imageFormatValidation(propertyModel.getCoverImageFile());
-						String imageUrl  = azureFileUpload.uploadFileByAzure(propertyModel.getCoverImageFile(), request);
+						String imageUrl  = azureFileUpload.uploadFileByAzure(propertyModel.getCoverImageFile());
 						propertyModel.setCoverImageUrl(imageUrl);
 						
 					} catch (IOException e) {

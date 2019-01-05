@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
+import com.orastays.property.propertyadd.model.ImageUpload;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
 import com.orastays.property.propertyadd.model.ResponseModel;
@@ -1084,6 +1086,46 @@ public class PropertyController extends BaseController{
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("viewUserCancellationList -- END");
+		}
+		
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
+			return new ResponseEntity<>(responseModel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@PostMapping(value = "/upload-image", produces = "application/json")
+	@ApiOperation(value = "Image Upload By Azure", response = ResponseModel.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 201, message = "Please Try after Sometime!!!") })
+	public ResponseEntity<ResponseModel> uploadImage(@ModelAttribute ImageUpload imageUpload) {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("uploadImage -- START");
+		}
+
+		ResponseModel responseModel = new ResponseModel();
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Upload Image", request);
+		try {
+		
+			propertyService.uploadImageByAzure(imageUpload);
+			responseModel.setResponseBody("");
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+			
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Upload Image -- "+Util.errorToString(e));
+			}
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
+		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Upload Image", request);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("uploadImage -- END");
 		}
 		
 		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {

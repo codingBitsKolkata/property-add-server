@@ -39,6 +39,7 @@ import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
+import com.orastays.property.propertyadd.model.ImageUpload;
 import com.orastays.property.propertyadd.model.PriceDropModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
@@ -1053,6 +1054,19 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			logger.info("viewUserCancellationList -- END");
 		}
 		return propertyValidation.validateUserTokenForCancellationList(bookingModel);
+	}
+
+	@Override
+	public void uploadImageByAzure(ImageUpload imageUpload) {
+
+		try {
+			String imageUrl  = azureFileUpload.uploadFileByAzure(imageUpload.getCoverImage());
+			imageUpload.setCoverImageUrl(imageUrl);
+			System.out.println("imageUpload==>"+imageUpload);
+			
+		} catch (FormExceptions e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -53,6 +53,7 @@ import com.orastays.property.propertyadd.dao.SpaceRuleDAO;
 import com.orastays.property.propertyadd.dao.SpecialExperienceDAO;
 import com.orastays.property.propertyadd.dao.SpecialtiesDAO;
 import com.orastays.property.propertyadd.dao.StayTypeDAO;
+import com.orastays.property.propertyadd.helper.AzureFileUpload;
 import com.orastays.property.propertyadd.validation.PropertyValidation;
 
 public abstract class BaseServiceImpl {
@@ -212,5 +213,8 @@ public abstract class BaseServiceImpl {
 
 	@Autowired
 	protected RoomVsCancellationDAO roomVsCancellationDAO;
+
+	@Autowired
+	protected AzureFileUpload azureFileUpload;
 
 }

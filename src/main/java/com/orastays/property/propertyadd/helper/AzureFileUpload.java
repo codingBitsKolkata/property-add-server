@@ -8,8 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,7 +35,7 @@ public class AzureFileUpload {
 	@Autowired
 	protected MessageUtil messageUtil;
 	
-	public String uploadFileByAzure(MultipartFile multipartFileInput,HttpServletRequest request) throws FormExceptions {
+	public String uploadFileByAzure(MultipartFile multipartFileInput) throws FormExceptions {
 		
 		if (logger.isDebugEnabled()) {
 			logger.debug("uploadFileByAzure -- START");
@@ -62,7 +60,7 @@ public class AzureFileUpload {
 			// construct the complete absolute path of the file
 			
 			sourceFile = Util.convertMultipartToFile(multipartFileInput);
-			
+			//sourceFile.renameTo(dest);
 			Writer output = new BufferedWriter(new FileWriter(sourceFile));
 			output.close();
 			CloudBlockBlob blob = container.getBlockBlobReference(sourceFile.getName());

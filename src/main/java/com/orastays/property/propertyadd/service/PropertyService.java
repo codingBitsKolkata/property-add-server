@@ -6,6 +6,7 @@ import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
+import com.orastays.property.propertyadd.model.ImageUpload;
 import com.orastays.property.propertyadd.model.PriceDropModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
@@ -39,5 +40,6 @@ public interface PropertyService {
 	List<BookingModel> viewUserBookingList(CommonModel commonModel) throws FormExceptions;
 	List<CancellationModel> viewPropertyCancellationList(BookingModel bookingModel) throws FormExceptions;
 	List<CancellationModel> viewUserCancellationList(BookingModel bookingModel) throws FormExceptions;
-	public List<AmenitiesModel> fetchAmenitiesForFilter() throws FormExceptions;
+	List<AmenitiesModel> fetchAmenitiesForFilter() throws FormExceptions;
+	void uploadImageByAzure(ImageUpload imageUpload); 
 }
