@@ -1,7 +1,5 @@
 package com.orastays.property.propertyadd.model;
 
-import java.util.List;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +8,8 @@ import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Getter
 @Setter
@@ -27,7 +25,7 @@ public class PropertyVsImageModel extends CommonModel {
 	private String imageURL;
 	
 	@JsonProperty("images")
-	private List<MultipartFile> multipartFiles;
+	private MultipartFile multipartFile;
 	
 	@JsonProperty("property")
 	private PropertyModel propertyModel;

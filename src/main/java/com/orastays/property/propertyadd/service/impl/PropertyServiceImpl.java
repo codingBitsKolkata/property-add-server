@@ -8,10 +8,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.orastays.property.propertyadd.entity.HostVsAccountEntity;
 import com.orastays.property.propertyadd.entity.PropertyEntity;
@@ -39,7 +42,6 @@ import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
-import com.orastays.property.propertyadd.model.ImageUpload;
 import com.orastays.property.propertyadd.model.PriceDropModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
@@ -541,12 +543,14 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			propertyVsGuestAccessDAO.save(propertyVsGuestAccessEntity);
 		}
 		
-		//Property Vs Image 
-		for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
-			propertyVsImageModel.setCreatedBy(userId);
-			PropertyVsImageEntity propertyVsImageEntity = propertyVsImageConverter.modelToEntity(propertyVsImageModel);
-			propertyVsImageEntity.setPropertyEntity(propertyEntity);
-			propertyVsImageDAO.save(propertyVsImageEntity);
+		//Property Vs Image
+		if(!CollectionUtils.isEmpty(propertyModel.getPropertyVsImageModels())) {
+			for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
+				propertyVsImageModel.setCreatedBy(userId);
+				PropertyVsImageEntity propertyVsImageEntity = propertyVsImageConverter.modelToEntity(propertyVsImageModel);
+				propertyVsImageEntity.setPropertyEntity(propertyEntity);
+				propertyVsImageDAO.save(propertyVsImageEntity);
+			}
 		}
 		
 		//Property Vs NearBy
@@ -599,14 +603,14 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			}
 			
 			//Room Vs Image
-			for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
-				roomVsImageModel.setCreatedBy(userId);
-				RoomVsImageEntity roomVsImageEntity = roomVsImageConverter.modelToEntity(roomVsImageModel);
-				roomVsImageEntity.setRoomEntity(roomEntity);
-				roomVsImageDAO.save(roomVsImageEntity);
+			if(!CollectionUtils.isEmpty(roomModel.getRoomVsImageModels())) {
+				for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
+					roomVsImageModel.setCreatedBy(userId);
+					RoomVsImageEntity roomVsImageEntity = roomVsImageConverter.modelToEntity(roomVsImageModel);
+					roomVsImageEntity.setRoomEntity(roomEntity);
+					roomVsImageDAO.save(roomVsImageEntity);
+				}
 			}
-			
-		
 			// Room vs Specilities
 			for(RoomVsSpecialitiesModel roomVsSpecialitiesModel:roomModel.getRoomVsSpecialitiesModels()){
 				roomVsSpecialitiesModel.setCreatedBy(userId);
@@ -751,12 +755,16 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 				}
 				
 				//Property Vs Image  Delete
-				for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
-					PropertyVsImageEntity propertyVsImageEntity = propertyVsImageDAO.find(Long.valueOf(propertyVsImageModel.getPropertyImageId()));
-					propertyVsImageEntity.setModifiedBy(userId);
-					propertyVsImageEntity.setModifiedDate(Util.getCurrentDateTime());
-					propertyVsImageEntity.setStatus(Status.DELETE.ordinal());
-					propertyVsImageDAO.save(propertyVsImageEntity);
+				if(!CollectionUtils.isEmpty(propertyModel.getPropertyVsImageModels())) {
+					for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
+						if(StringUtils.isNotEmpty(propertyVsImageModel.getPropertyImageId())){
+							PropertyVsImageEntity propertyVsImageEntity = propertyVsImageDAO.find(Long.valueOf(propertyVsImageModel.getPropertyImageId()));
+							propertyVsImageEntity.setModifiedBy(userId);
+							propertyVsImageEntity.setModifiedDate(Util.getCurrentDateTime());
+							propertyVsImageEntity.setStatus(Status.DELETE.ordinal());
+							propertyVsImageDAO.save(propertyVsImageEntity);
+						}
+					}
 				}
 				
 				//Property Vs NearBy Delete
@@ -811,12 +819,16 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 					}
 					
 					//Room Vs Image Delete
-					for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
-						RoomVsImageEntity roomVsImageEntity = roomVsImageDAO.find(Long.valueOf(roomVsImageModel.getRoomVsImageId()));
-						roomVsImageEntity.setModifiedBy(userId);
-						roomVsImageEntity.setModifiedDate(Util.getCurrentDateTime());
-						roomVsImageEntity.setStatus(Status.DELETE.ordinal());
-						roomVsImageDAO.update(roomVsImageEntity);
+					if(!CollectionUtils.isEmpty(roomModel.getRoomVsImageModels())) {
+						for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
+							if(StringUtils.isNotEmpty(roomVsImageModel.getRoomVsImageId())){
+								RoomVsImageEntity roomVsImageEntity = roomVsImageDAO.find(Long.valueOf(roomVsImageModel.getRoomVsImageId()));
+								roomVsImageEntity.setModifiedBy(userId);
+								roomVsImageEntity.setModifiedDate(Util.getCurrentDateTime());
+								roomVsImageEntity.setStatus(Status.DELETE.ordinal());
+								roomVsImageDAO.update(roomVsImageEntity);
+							}
+						}
 					}
 					
 					
@@ -900,11 +912,13 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 				}
 				
 				//Property Vs Image 
-				for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
-					propertyVsImageModel.setCreatedBy(userId);
-					PropertyVsImageEntity propertyVsImageEntity = propertyVsImageConverter.modelToEntity(propertyVsImageModel);
-					propertyVsImageEntity.setPropertyEntity(propertyEntity2);
-					propertyVsImageDAO.save(propertyVsImageEntity);
+				if(!CollectionUtils.isEmpty(propertyModel.getPropertyVsImageModels())){
+					for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
+						propertyVsImageModel.setCreatedBy(userId);
+						PropertyVsImageEntity propertyVsImageEntity = propertyVsImageConverter.modelToEntity(propertyVsImageModel);
+						propertyVsImageEntity.setPropertyEntity(propertyEntity2);
+						propertyVsImageDAO.save(propertyVsImageEntity);
+					}
 				}
 				
 				//Property Vs NearBy
@@ -956,11 +970,13 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 					}
 					
 					//Room Vs Image
-					for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
-						roomVsImageModel.setCreatedBy(userId);
-						RoomVsImageEntity roomVsImageEntity = roomVsImageConverter.modelToEntity(roomVsImageModel);
-						roomVsImageEntity.setRoomEntity(roomEntity);
-						roomVsImageDAO.save(roomVsImageEntity);
+					if(!CollectionUtils.isEmpty(roomModel.getRoomVsImageModels())) {
+						for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
+							roomVsImageModel.setCreatedBy(userId);
+							RoomVsImageEntity roomVsImageEntity = roomVsImageConverter.modelToEntity(roomVsImageModel);
+							roomVsImageEntity.setRoomEntity(roomEntity);
+							roomVsImageDAO.save(roomVsImageEntity);
+						}
 					}
 					
 					// Room vs Specilities
@@ -1057,12 +1073,11 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 	}
 
 	@Override
-	public void uploadImageByAzure(ImageUpload imageUpload) {
+	public void uploadImageByAzure(MultipartFile file) {
 
 		try {
-			String imageUrl  = azureFileUpload.uploadFileByAzure(imageUpload.getCoverImage());
-			imageUpload.setCoverImageUrl(imageUrl);
-			System.out.println("imageUpload==>"+imageUpload);
+			String imageUrl  = azureFileUpload.uploadFileByAzure(file);
+			System.out.println("imageUrl==>"+imageUrl);
 			
 		} catch (FormExceptions e) {
 			e.printStackTrace();

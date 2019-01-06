@@ -1,6 +1,7 @@
 package com.orastays.property.propertyadd.validation;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.orastays.property.propertyadd.entity.AmenitiesEntity;
@@ -619,7 +621,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					
 					// Validate Host Login Details
 					if(Objects.nonNull(userModel)){
-						if(Objects.nonNull(userModel.getUserVsTypes())){
+						if(!CollectionUtils.isEmpty(userModel.getUserVsTypes())){
 							boolean flag = false;
 							for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypes()){
 								if(Objects.nonNull(userVsTypeModel.getUserType())) {
@@ -734,19 +736,19 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					// Validate Image Url
 					if (Objects.isNull(propertyModel.getCoverImageFile())) {
 						exceptions.put(messageUtil.getBundle("image.url.null.code"), new Exception(messageUtil.getBundle("image.url.null.message")));
+					} else {
+					
+						try {
+							
+							imageFormatValidation(propertyModel.getCoverImageFile());
+							String imageUrl  = azureFileUpload.uploadFileByAzure(propertyModel.getCoverImageFile());
+							propertyModel.setCoverImageUrl(imageUrl);
+							
+						} catch (IOException e) {
+							exceptions.put(messageUtil.getBundle("image.format.mismatch.code"), new Exception(messageUtil.getBundle("image.format.mismatch.message")));
+						}
+					
 					}
-					
-					try {
-						
-						imageFormatValidation(propertyModel.getCoverImageFile());
-						String imageUrl  = azureFileUpload.uploadFileByAzure(propertyModel.getCoverImageFile());
-						propertyModel.setCoverImageUrl(imageUrl);
-						
-					} catch (IOException e) {
-						exceptions.put(messageUtil.getBundle("image.format.mismatch.code"), new Exception(messageUtil.getBundle("image.format.mismatch.message")));
-					}
-					
-					
 		
 					// Validate Price Drop
 					if (StringUtils.isBlank(propertyModel.getPriceDrop())) {
@@ -851,6 +853,27 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 		
 					// Property Vs Image **Optional
+					if(!CollectionUtils.isEmpty(propertyModel.getPropertyVsImageModels())) {
+						List<PropertyVsImageModel> propertyVsImageModels = new ArrayList<>();
+						for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
+							if(Objects.nonNull(propertyVsImageModel)){
+								if(Objects.nonNull(propertyVsImageModel.getMultipartFile())){
+									try {
+										imageFormatValidation(propertyVsImageModel.getMultipartFile());
+										String imageUrl  = azureFileUpload.uploadFileByAzure(propertyVsImageModel.getMultipartFile());
+										PropertyVsImageModel propertyVsImageModel2 = new PropertyVsImageModel();
+										propertyVsImageModel2.setImageURL(imageUrl);
+										propertyVsImageModels.add(propertyVsImageModel2);
+									} catch (IOException e) {
+										exceptions.put(messageUtil.getBundle("image.format.mismatch.code"), new Exception(messageUtil.getBundle("image.format.mismatch.message")));
+									}
+								}
+							}
+						}
+						
+						propertyModel.setPropertyVsImageModels(propertyVsImageModels);
+					}
+					
 		
 					// Property Vs NearBy
 					if (Objects.isNull(propertyModel.getPropertyVsNearbyModels())) {
@@ -983,7 +1006,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 ////////////////////////////////////////////////////////////////// Room Data Validation /////////// /////////////////////////////////////////////////////////////////////
 		
-					if (Objects.nonNull(propertyModel.getRoomModels())) {
+					if (!CollectionUtils.isEmpty(propertyModel.getRoomModels())) {
 		
 						for (RoomModel roomModel : propertyModel.getRoomModels()) {
 							
@@ -1313,7 +1336,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							}
 		
 							// Room Vs Specialities
-							if (Objects.nonNull(roomModel.getRoomVsSpecialitiesModels())) {
+							if (!CollectionUtils.isEmpty(roomModel.getRoomVsSpecialitiesModels())) {
 								for (RoomVsSpecialitiesModel roomVsSpecialitiesModel : roomModel.getRoomVsSpecialitiesModels()) {
 		
 									// Specialities
@@ -1340,7 +1363,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							}
 							
 							// Room Vs Meal
-							if(Objects.nonNull(roomModel.getRoomVsMealModels())){
+							if(!CollectionUtils.isEmpty(roomModel.getRoomVsMealModels())){
 								for(RoomVsMealModel roomVsMealModel : roomModel.getRoomVsMealModels()){
 									
 									//Validate Meal Plan
@@ -1568,6 +1591,33 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								
 							} else {
 								exceptions.put(messageUtil.getBundle("meal.plan.null.code"), new Exception(messageUtil.getBundle("meal.category.null.message")));
+							}
+							
+							
+							
+							// Room Vs Image **Optional 
+							
+							if(!CollectionUtils.isEmpty(roomModel.getRoomVsImageModels())) {
+								List<RoomVsImageModel> roomVsImageModels = new ArrayList<>();
+								for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
+									if(Objects.nonNull(roomVsImageModel)){
+										if(Objects.nonNull(roomVsImageModel.getImage())){
+											
+											try {
+												
+												imageFormatValidation(roomVsImageModel.getImage());
+												String imageUrl  = azureFileUpload.uploadFileByAzure(roomVsImageModel.getImage());
+												RoomVsImageModel roomVsImageModel2 = new RoomVsImageModel();
+												roomVsImageModel2.setImageUrl(imageUrl);
+												roomVsImageModels.add(roomVsImageModel2);
+											} catch (IOException e) {
+												exceptions.put(messageUtil.getBundle("image.format.mismatch.code"), new Exception(messageUtil.getBundle("image.format.mismatch.message")));
+											}
+										}
+									}
+								}
+								
+								roomModel.setRoomVsImageModels(roomVsImageModels);
 							}
 		
 						}
@@ -1852,26 +1902,47 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					}
 		
 					// Property Vs Image **Optional
-					if(Objects.nonNull(propertyModel.getPropertyVsImageModels())){
+					if(!CollectionUtils.isEmpty(propertyModel.getPropertyVsImageModels())){
+						List<PropertyVsImageModel> propertyVsImageModels = new ArrayList<>();
+						
 						for(PropertyVsImageModel propertyVsImageModel : propertyModel.getPropertyVsImageModels()){
 							
-							//Validate Property Vs Image Id
-							if(StringUtils.isBlank(propertyVsImageModel.getPropertyImageId())){
-								exceptions.put(messageUtil.getBundle("property.image.id.null.code"), new Exception(messageUtil.getBundle("property.image.id.null.message")));
-							} else {
-								if(Util.isNumeric(propertyVsImageModel.getPropertyImageId())){
+							if(Objects.nonNull(propertyVsImageModel)){
+								//Validate Property Vs Image Id
+								if(StringUtils.isBlank(propertyVsImageModel.getPropertyImageId())){
+									if(Objects.nonNull(propertyVsImageModel.getMultipartFile())){
+										try {
+											
+											imageFormatValidation(propertyVsImageModel.getMultipartFile());
+											String imageUrl  = azureFileUpload.uploadFileByAzure(propertyVsImageModel.getMultipartFile());
+											PropertyVsImageModel propertyVsImageModel2 = new PropertyVsImageModel();
+											propertyVsImageModel2.setImageURL(imageUrl);
+											propertyVsImageModels.add(propertyVsImageModel2);
+										} catch (IOException e) {
+											exceptions.put(messageUtil.getBundle("image.format.mismatch.code"), new Exception(messageUtil.getBundle("image.format.mismatch.message")));
+										}
+										
+									} else {
+										exceptions.put(messageUtil.getBundle("property.image.id.null.code"), new Exception(messageUtil.getBundle("property.image.id.null.message")));
+									}								
 									
-									PropertyVsImageEntity propertyVsImageEntity = propertyVsImageDAO.find(Long.valueOf(propertyVsImageModel.getPropertyImageId()));
-									
-									if(Objects.isNull(propertyVsImageEntity)){
-										exceptions.put(messageUtil.getBundle("property.image.id.invalid.code"), new Exception(messageUtil.getBundle("property.image.id.invalid.message")));
-									}
 								} else {
-									exceptions.put(messageUtil.getBundle("property.image.id.numeric.code"), new Exception(messageUtil.getBundle("property.image.id.numeric.message")));
+									if(Util.isNumeric(propertyVsImageModel.getPropertyImageId())){
+										
+										PropertyVsImageEntity propertyVsImageEntity = propertyVsImageDAO.find(Long.valueOf(propertyVsImageModel.getPropertyImageId()));
+										
+										if(Objects.isNull(propertyVsImageEntity)){
+											exceptions.put(messageUtil.getBundle("property.image.id.invalid.code"), new Exception(messageUtil.getBundle("property.image.id.invalid.message")));
+										} else {
+											propertyVsImageModels.add(propertyVsImageModel);
+										}
+									} else {
+										exceptions.put(messageUtil.getBundle("property.image.id.numeric.code"), new Exception(messageUtil.getBundle("property.image.id.numeric.message")));
+									}
 								}
-							}
+						   }
 							
-							
+							propertyModel.setPropertyVsImageModels(propertyVsImageModels);
 						}
 						
 					}
@@ -2103,7 +2174,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 ////////////////////////////////////////////////////////////////// Room Data Validation /////////// /////////////////////////////////////////////////////////////////////
 		
-					if (Objects.nonNull(propertyModel.getRoomModels())) {
+					if (!CollectionUtils.isEmpty(propertyModel.getRoomModels())) {
 		
 						for (RoomModel roomModel : propertyModel.getRoomModels()) {
 							
@@ -2486,30 +2557,47 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							}
 		
 							// Room Vs Image
-							if(Objects.nonNull(roomModel.getRoomVsImageModels())){
+							if(!CollectionUtils.isEmpty(roomModel.getRoomVsImageModels())){
+								List<RoomVsImageModel> roomVsImageModels = new ArrayList<>();
 								for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
-									
-									//Validate Room Vs Price Id
-									if(StringUtils.isBlank(String.valueOf(roomVsImageModel.getRoomVsImageId()))){
-										exceptions.put(messageUtil.getBundle("room.image.id.null.code"), new Exception(messageUtil.getBundle("room.image.id.null.message")));
-									} else {
-										if(Util.isNumeric(String.valueOf(roomVsImageModel.getRoomVsImageId()))){
-											
-											RoomVsImageEntity roomVsImageEntity = roomVsImageDAO.find(Long.valueOf(roomVsImageModel.getRoomVsImageId()));
-											
-											if(Objects.isNull(roomVsImageEntity)){
-												exceptions.put(messageUtil.getBundle("room.image.id.invalid.code"), new Exception(messageUtil.getBundle("room.image.id.invalid.message")));
+									if(Objects.nonNull(roomVsImageModel)){
+										//Validate Room Vs Price Id
+										if(StringUtils.isBlank(String.valueOf(roomVsImageModel.getRoomVsImageId()))){
+											if(Objects.nonNull(roomVsImageModel.getImage())){
+												try {
+													imageFormatValidation(roomVsImageModel.getImage());
+													String imageUrl  = azureFileUpload.uploadFileByAzure(roomVsImageModel.getImage());
+													RoomVsImageModel roomVsImageModel2 = new RoomVsImageModel();
+													roomVsImageModel2.setImageUrl(imageUrl);
+													roomVsImageModels.add(roomVsImageModel2);
+												} catch (IOException e) {
+													exceptions.put(messageUtil.getBundle("image.format.mismatch.code"), new Exception(messageUtil.getBundle("image.format.mismatch.message")));
+												}
+											} else {
+												exceptions.put(messageUtil.getBundle("room.image.id.null.code"), new Exception(messageUtil.getBundle("room.image.id.null.message")));
 											}
+											
 										} else {
-											exceptions.put(messageUtil.getBundle("room.image.id.numeric.code"), new Exception(messageUtil.getBundle("room.image.id.numeric.message")));
+											if(Util.isNumeric(String.valueOf(roomVsImageModel.getRoomVsImageId()))){
+												
+												RoomVsImageEntity roomVsImageEntity = roomVsImageDAO.find(Long.valueOf(roomVsImageModel.getRoomVsImageId()));
+												
+												if(Objects.isNull(roomVsImageEntity)){
+													exceptions.put(messageUtil.getBundle("room.image.id.invalid.code"), new Exception(messageUtil.getBundle("room.image.id.invalid.message")));
+												}
+											} else {
+												exceptions.put(messageUtil.getBundle("room.image.id.numeric.code"), new Exception(messageUtil.getBundle("room.image.id.numeric.message")));
+											}
 										}
 									}
+									
+									roomModel.setRoomVsImageModels(roomVsImageModels);
 								}
 							}
 		
 		
 							// Room Vs Specialities
-							if (Objects.nonNull(roomModel.getRoomVsSpecialitiesModels())) {
+							if (!CollectionUtils.isEmpty(roomModel.getRoomVsSpecialitiesModels())) {
 								for (RoomVsSpecialitiesModel roomVsSpecialitiesModel : roomModel.getRoomVsSpecialitiesModels()) {
 									
 									//Validate Room Vs Specilities Id
@@ -2553,7 +2641,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		
 							// Room Vs Meal
 							// Room Vs Meal
-							if(Objects.nonNull(roomModel.getRoomVsMealModels())){
+							if(!CollectionUtils.isEmpty(roomModel.getRoomVsMealModels())){
 								for(RoomVsMealModel roomVsMealModel : roomModel.getRoomVsMealModels()){
 									
 									//Validate Meal Plan

@@ -28,8 +28,6 @@ import com.orastays.property.propertyadd.exceptions.FormExceptions;
 public class AzureFileUpload {
 
 	private static final String FILE_UPLOAD_FAILED_MESSAGE = "file.upload.failed.message";
-
-
 	public static final String FILE_UPLOAD_FAILED_CODE = "file.upload.failed.code";
 
 

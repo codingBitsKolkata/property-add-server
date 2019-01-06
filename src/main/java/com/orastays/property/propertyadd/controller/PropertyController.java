@@ -11,13 +11,16 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.helper.PropertyAddConstant;
@@ -25,7 +28,6 @@ import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
-import com.orastays.property.propertyadd.model.ImageUpload;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
 import com.orastays.property.propertyadd.model.ResponseModel;
@@ -678,7 +680,7 @@ public class PropertyController extends BaseController{
 	}
 	
 	
-	@PostMapping(value = "/add-property", produces = "application/json")
+	@PostMapping(value = "/add-property", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ApiOperation(value = "Add Property", response = ResponseModel.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
@@ -686,7 +688,7 @@ public class PropertyController extends BaseController{
 			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue..."),
 			@ApiResponse(code = 204, message = "Language Id Required"),
 			@ApiResponse(code = 205, message = "Invalid Language ID") })
-	public ResponseEntity<ResponseModel> addProperty(@RequestBody PropertyModel propertyModel) {
+	public ResponseEntity<ResponseModel> addProperty(@ModelAttribute PropertyModel propertyModel) {
 
 		if (logger.isInfoEnabled()) {
 			logger.info("addProperty -- START");
@@ -834,7 +836,7 @@ public class PropertyController extends BaseController{
 		}
 	}
 	
-	@PostMapping(value = "/update-property", produces = "application/json")
+	@PostMapping(value = "/update-property", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ApiOperation(value = "Update Property", response = ResponseModel.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
@@ -842,7 +844,7 @@ public class PropertyController extends BaseController{
 			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue..."),
 			@ApiResponse(code = 204, message = "Language Id Required"),
 			@ApiResponse(code = 205, message = "Invalid Language ID") })
-	public ResponseEntity<ResponseModel> updateProperty(@RequestBody PropertyModel propertyModel) {
+	public ResponseEntity<ResponseModel> updateProperty(@ModelAttribute PropertyModel propertyModel) {
 
 		if (logger.isInfoEnabled()) {
 			logger.info("updateProperty -- START");
@@ -1099,7 +1101,7 @@ public class PropertyController extends BaseController{
 	@ApiOperation(value = "Image Upload By Azure", response = ResponseModel.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 201, message = "Please Try after Sometime!!!") })
-	public ResponseEntity<ResponseModel> uploadImage(@ModelAttribute ImageUpload imageUpload) {
+	public ResponseEntity<ResponseModel> uploadImage(@RequestParam("file") MultipartFile file) {
 
 		if (logger.isInfoEnabled()) {
 			logger.info("uploadImage -- START");
@@ -1109,7 +1111,7 @@ public class PropertyController extends BaseController{
 		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Upload Image", request);
 		try {
 		
-			propertyService.uploadImageByAzure(imageUpload);
+			propertyService.uploadImageByAzure(file);
 			responseModel.setResponseBody("");
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));

@@ -48,10 +48,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.orastays.property.propertyadd.model.PropertyVsImageModel;
 
 @Component
 public class Util {
@@ -154,7 +156,11 @@ public class Util {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("checkDate=>" + checkDate("2018-12-24 00:00:00","2018-12-20 23:59:59"));
+		
+		List<PropertyVsImageModel> imageModels = new ArrayList<>();
+		PropertyVsImageModel imageModel = new PropertyVsImageModel();
+		imageModels.add(imageModel);
+		System.out.println(CollectionUtils.isEmpty(imageModels));
 	}
 
 	public static boolean checkNullOrSpaceValue(String value) {
@@ -1319,6 +1325,5 @@ public class Util {
 
 	    return false;
 	}
-
-
+	
 }

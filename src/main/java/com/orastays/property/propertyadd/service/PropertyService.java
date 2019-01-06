@@ -2,11 +2,12 @@ package com.orastays.property.propertyadd.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
-import com.orastays.property.propertyadd.model.ImageUpload;
 import com.orastays.property.propertyadd.model.PriceDropModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
@@ -41,5 +42,5 @@ public interface PropertyService {
 	List<CancellationModel> viewPropertyCancellationList(BookingModel bookingModel) throws FormExceptions;
 	List<CancellationModel> viewUserCancellationList(BookingModel bookingModel) throws FormExceptions;
 	List<AmenitiesModel> fetchAmenitiesForFilter() throws FormExceptions;
-	void uploadImageByAzure(ImageUpload imageUpload); 
+	void uploadImageByAzure(MultipartFile file); 
 }
