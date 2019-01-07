@@ -44,7 +44,7 @@ import com.orastays.property.propertyadd.dao.SpecialExperienceDAO;
 import com.orastays.property.propertyadd.dao.SpecialtiesDAO;
 import com.orastays.property.propertyadd.dao.StayTypeDAO;
 import com.orastays.property.propertyadd.exceptions.FormExceptions;
-import com.orastays.property.propertyadd.helper.AzureFileUpload;
+import com.orastays.property.propertyadd.helper.AzureApp;
 import com.orastays.property.propertyadd.helper.MessageUtil;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.ResponseModel;
@@ -145,7 +145,7 @@ public class AuthorizeUserValidation {
 	protected RoomDAO roomDAO;
 	
 	@Autowired
-	protected AzureFileUpload azureFileUpload;
+	protected AzureApp azureApp;
 	
 	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {
