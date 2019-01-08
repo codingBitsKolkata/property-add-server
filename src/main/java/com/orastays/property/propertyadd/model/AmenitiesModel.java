@@ -3,6 +3,8 @@ package com.orastays.property.propertyadd.model;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -45,6 +47,9 @@ public class AmenitiesModel extends CommonModel implements Comparator<AmenitiesM
 
 	@JsonProperty("aminitiesType")
 	private String aminitiesType;
+	
+	@JsonProperty("smImgUrl")
+	private String smImgUrl;
 
 	@JsonProperty("languageId")
 	private String languageId;
