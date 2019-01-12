@@ -1073,18 +1073,6 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 	}
 
 	@Override
-	public void uploadImageByAzure(MultipartFile file) {
-
-		try {
-			String imageUrl  = azureFileUpload.uploadFileByAzure(file);
-			System.out.println("imageUrl==>"+imageUrl);
-			
-		} catch (FormExceptions e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
 	public List<String> uploadFiles(MultipartFile[] files) throws FormExceptions {
 		
 		if (logger.isInfoEnabled()) {

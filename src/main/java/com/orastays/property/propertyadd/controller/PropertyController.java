@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -836,7 +835,7 @@ public class PropertyController extends BaseController{
 		}
 	}
 	
-	@PostMapping(value = "/update-property", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/update-property", produces = "application/json")
 	@ApiOperation(value = "Update Property", response = ResponseModel.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
@@ -844,7 +843,7 @@ public class PropertyController extends BaseController{
 			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue..."),
 			@ApiResponse(code = 204, message = "Language Id Required"),
 			@ApiResponse(code = 205, message = "Invalid Language ID") })
-	public ResponseEntity<ResponseModel> updateProperty(@ModelAttribute PropertyModel propertyModel) {
+	public ResponseEntity<ResponseModel> updateProperty(@RequestBody PropertyModel propertyModel) {
 
 		if (logger.isInfoEnabled()) {
 			logger.info("updateProperty -- START");
@@ -1097,48 +1096,9 @@ public class PropertyController extends BaseController{
 		}
 	}
 	
-	@PostMapping(value = "/upload-image", produces = "application/json")
-	@ApiOperation(value = "Image Upload By Azure", response = ResponseModel.class)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 201, message = "Please Try after Sometime!!!") })
-	public ResponseEntity<ResponseModel> uploadImage(@RequestParam("file") MultipartFile file) {
-
-		if (logger.isInfoEnabled()) {
-			logger.info("uploadImage -- START");
-		}
-
-		ResponseModel responseModel = new ResponseModel();
-		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Upload Image", request);
-		try {
-		
-			propertyService.uploadImageByAzure(file);
-			responseModel.setResponseBody("");
-			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
-			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
-			
-		} catch (Exception e) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Exception in Upload Image -- "+Util.errorToString(e));
-			}
-			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
-			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
-		}
-		
-		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Upload Image", request);
-		
-		if (logger.isInfoEnabled()) {
-			logger.info("uploadImage -- END");
-		}
-		
-		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
-			return new ResponseEntity<>(responseModel, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
-		}
-	}
 	
 	@PostMapping(value = "/upload-multipart-files", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	@ApiOperation(value = "Test Add Property", response = ResponseModel.class)
+	@ApiOperation(value = "Upload Files", response = ResponseModel.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 201, message = "Please Try after Sometime!!!") })
 	public ResponseEntity<ResponseModel> uploadFiles(@RequestParam("files") MultipartFile[] files) {
@@ -1161,7 +1121,7 @@ public class PropertyController extends BaseController{
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
 				if (logger.isInfoEnabled()) {
-					logger.info("FormExceptions in Test Add Property -- "+Util.errorToString(fe));
+					logger.info("FormExceptions in Upload Files -- "+Util.errorToString(fe));
 				}
 				break;
 			}
