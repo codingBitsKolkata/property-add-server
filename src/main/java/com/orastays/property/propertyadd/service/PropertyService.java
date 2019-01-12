@@ -43,4 +43,5 @@ public interface PropertyService {
 	List<CancellationModel> viewUserCancellationList(BookingModel bookingModel) throws FormExceptions;
 	List<AmenitiesModel> fetchAmenitiesForFilter() throws FormExceptions;
 	void uploadImageByAzure(MultipartFile file); 
+	List<String> uploadFiles(MultipartFile[] file) throws FormExceptions;
 }

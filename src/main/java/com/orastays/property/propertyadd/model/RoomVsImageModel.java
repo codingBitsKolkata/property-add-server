@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,9 +21,6 @@ public class RoomVsImageModel extends CommonModel {
 	
 	@JsonProperty("imageUrl")
 	private String imageUrl;
-	
-	@JsonProperty("image")
-	private MultipartFile image;
 	
 	@JsonProperty("room")
 	private RoomModel roomModel;

@@ -1084,4 +1084,17 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		}
 	}
 
+	@Override
+	public List<String> uploadFiles(MultipartFile[] files) throws FormExceptions {
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("uploadFiles -- START");
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("uploadFiles -- END");
+		}
+		return propertyValidation.uploadFilesToLocalDrive(files);
+	}
+
 }

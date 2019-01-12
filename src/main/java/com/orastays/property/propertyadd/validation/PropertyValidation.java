@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -110,7 +112,107 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		}
 	}
 	
-	private String uploadImageByAzure(MultipartFile inputFile) throws FormExceptions {
+	
+	public List<String> uploadFilesToLocalDrive(MultipartFile[] files) throws FormExceptions {
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("uploadFilesToLocalDrive -- START");
+		}
+		
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		List<String> fileNames = new  ArrayList<>();
+		String imageExtension = StringUtils.EMPTY;
+		try {
+			if(files != null && files.length > 0){
+				for(int i = 0;i<files.length ;i++){
+					
+					imageFormatValidation(files[i]);
+					String imageName = Util.renameFileName(files[i].getOriginalFilename());
+					if(StringUtils.isNotEmpty(imageName) && imageName.contains(".")) {
+						imageExtension = imageName.split("\\.")[1];
+					}
+					String rootPath = System.getProperty("user.dir") + File.separator;
+					String dirStr = rootPath + messageUtil.getBundle("images.upload.foldername");
+					File dir = new File(dirStr);
+					if(!dir.exists()){
+						dir.mkdir();
+					}
+					String fullPath = dirStr + File.separator + imageName;
+					
+					File file = new File(fullPath);
+					
+					InputStream in = new ByteArrayInputStream(files[i].getBytes());
+					BufferedImage bImageFromConvert = ImageIO.read(in);
+					int type = bImageFromConvert.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
+					BufferedImage resizeImageJpg = Util.resizeImage(bImageFromConvert, type, bImageFromConvert.getWidth(), bImageFromConvert.getHeight());
+					ImageIO.write(resizeImageJpg, imageExtension, file);
+					
+					FileInputStream input = new FileInputStream(file);
+					
+					MultipartFile multipartFile = new MockMultipartFile(imageName, IOUtils.toByteArray(input));
+					
+					File a = new File(fullPath);
+					
+					multipartFile.transferTo(a);
+					fileNames.add(fullPath);
+					
+				}
+			}
+		} catch (Exception e) {
+			exceptions.put(messageUtil.getBundle("image.upload.error.code"), new Exception(messageUtil.getBundle("image.upload.error.message")));
+			throw new FormExceptions(exceptions);
+		}
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("uploadFilesToLocalDrive -- END");
+		}
+		
+		return fileNames;
+		
+	}
+	
+	private String uploadImageByAzureFromLocal(String imageLocalUrl) throws FormExceptions {
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("uploadImageByAzureFromLocal -- START");
+		}
+		
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		String finalImageUrl = StringUtils.EMPTY;
+		FileInputStream input = null;
+		try {
+				if(imageLocalUrl.contains(messageUtil.getBundle("images.upload.foldername"))){
+					File file = new File(imageLocalUrl);
+					input = new FileInputStream(file);
+					MultipartFile multipartFile = new MockMultipartFile(file.getName(), IOUtils.toByteArray(input));
+					finalImageUrl = azureApp.uploadFile(multipartFile, multipartFile.getName());
+				} else {
+					finalImageUrl = imageLocalUrl;
+				}
+				
+		} catch(Exception e){
+			exceptions.put(messageUtil.getBundle("image.upload.error.code"), new Exception(messageUtil.getBundle("image.upload.error.message")));
+		} finally{
+			 if (input!=null) {
+					 try {
+						input.close();
+						Files.deleteIfExists(Paths.get(imageLocalUrl));
+					} catch (IOException e) {
+						exceptions.put(messageUtil.getBundle("image.upload.error.code"), new Exception(messageUtil.getBundle("image.upload.error.message")));
+					}
+			    }
+		}
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("uploadImageByAzureFromLocal -- START");
+		}
+		return finalImageUrl;
+	}
+	
+/*	private String uploadImageByAzure1(MultipartFile inputFile) throws FormExceptions {
 		
 		if (logger.isDebugEnabled()) {
 			logger.debug("uploadImage -- START");
@@ -128,6 +230,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					if(!dir.exists()){
 						dir.mkdir();
 					}
+					
 					
 					// construct the complete absolute path of the file
 					String fileName = new Date().getTime() +"_"+ multipartFile.getOriginalFilename();
@@ -157,7 +260,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			}
 			
 			return finalImageUrl;
-	}
+	}*/
 	
 	public List<CancellationModel> validatePropertyCancellationList(BookingModel bookingModel) throws FormExceptions {
 		
@@ -791,11 +894,11 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					}
 					
 					// Validate Image Url
-					if (Objects.isNull(propertyModel.getCoverImageFile())) {
+					if (Objects.isNull(propertyModel.getCoverImageUrl())) {
 						exceptions.put(messageUtil.getBundle("image.url.null.code"), new Exception(messageUtil.getBundle("image.url.null.message")));
 					} else {
 					
-						try {
+						/*try {
 							
 							imageFormatValidation(propertyModel.getCoverImageFile());
 							String imageUrl  = uploadImageByAzure(propertyModel.getCoverImageFile());
@@ -803,7 +906,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							
 						} catch (IOException e) {
 							exceptions.put(messageUtil.getBundle("image.format.mismatch.code"), new Exception(messageUtil.getBundle("image.format.mismatch.message")));
-						}
+						}*/
+						propertyModel.setCoverImageUrl(uploadImageByAzureFromLocal(propertyModel.getCoverImageUrl()));
 					
 					}
 		
@@ -914,7 +1018,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 						List<PropertyVsImageModel> propertyVsImageModels = new ArrayList<>();
 						for(PropertyVsImageModel propertyVsImageModel:propertyModel.getPropertyVsImageModels()){
 							if(Objects.nonNull(propertyVsImageModel)){
-								if(Objects.nonNull(propertyVsImageModel.getMultipartFile())){
+								/*if(Objects.nonNull(propertyVsImageModel.getMultipartFile())){
 									try {
 										imageFormatValidation(propertyVsImageModel.getMultipartFile());
 										String imageUrl  = uploadImageByAzure(propertyVsImageModel.getMultipartFile());
@@ -924,6 +1028,12 @@ public class PropertyValidation extends AuthorizeUserValidation {
 									} catch (IOException e) {
 										exceptions.put(messageUtil.getBundle("image.format.mismatch.code"), new Exception(messageUtil.getBundle("image.format.mismatch.message")));
 									}
+								}*/
+								if(StringUtils.isNotEmpty(propertyVsImageModel.getImageURL())){
+									String imageUrl  = uploadImageByAzureFromLocal(propertyVsImageModel.getImageURL());
+									PropertyVsImageModel propertyVsImageModel2 = new PropertyVsImageModel();
+									propertyVsImageModel2.setImageURL(imageUrl);
+									propertyVsImageModels.add(propertyVsImageModel2);
 								}
 							}
 						}
@@ -1658,7 +1768,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								List<RoomVsImageModel> roomVsImageModels = new ArrayList<>();
 								for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
 									if(Objects.nonNull(roomVsImageModel)){
-										if(Objects.nonNull(roomVsImageModel.getImage())){
+										/*if(Objects.nonNull(roomVsImageModel.getImage())){
 											
 											try {
 												
@@ -1670,6 +1780,13 @@ public class PropertyValidation extends AuthorizeUserValidation {
 											} catch (IOException e) {
 												exceptions.put(messageUtil.getBundle("image.format.mismatch.code"), new Exception(messageUtil.getBundle("image.format.mismatch.message")));
 											}
+										}*/
+										
+										if(StringUtils.isNotEmpty(roomVsImageModel.getImageUrl())){
+											String imageUrl  = uploadImageByAzureFromLocal(roomVsImageModel.getImageUrl());
+											RoomVsImageModel roomVsImageModel2 = new RoomVsImageModel();
+											roomVsImageModel2.setImageUrl(imageUrl);
+											roomVsImageModels.add(roomVsImageModel2);
 										}
 									}
 								}
@@ -1822,11 +1939,11 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					}
 		
 					// Validate Image Url
-					if (Objects.isNull(propertyModel.getCoverImageFile())) {
+					if (Objects.isNull(propertyModel.getCoverImageUrl())) {
 						exceptions.put(messageUtil.getBundle("image.url.null.code"), new Exception(messageUtil.getBundle("image.url.null.message")));
 					} else {
 					
-						try {
+						/*try {
 							
 							imageFormatValidation(propertyModel.getCoverImageFile());
 							String imageUrl  = uploadImageByAzure(propertyModel.getCoverImageFile());
@@ -1834,7 +1951,9 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							
 						} catch (IOException e) {
 							exceptions.put(messageUtil.getBundle("image.format.mismatch.code"), new Exception(messageUtil.getBundle("image.format.mismatch.message")));
-						}
+						}*/
+						String imageUrl  = uploadImageByAzureFromLocal(propertyModel.getCoverImageUrl());
+						propertyModel.setCoverImageUrl(imageUrl);
 					
 					}
 		
@@ -1978,8 +2097,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							
 							if(Objects.nonNull(propertyVsImageModel)){
 								//Validate Property Vs Image Id
-								if(StringUtils.isBlank(propertyVsImageModel.getPropertyImageId())){
-									if(Objects.nonNull(propertyVsImageModel.getMultipartFile())){
+								if(StringUtils.isBlank(propertyVsImageModel.getPropertyImageId())){ // For New Image Upload
+								/*	if(Objects.nonNull(propertyVsImageModel.getMultipartFile())){
 										try {
 											
 											imageFormatValidation(propertyVsImageModel.getMultipartFile());
@@ -1993,10 +2112,16 @@ public class PropertyValidation extends AuthorizeUserValidation {
 										
 									} else {
 										exceptions.put(messageUtil.getBundle("property.image.id.null.code"), new Exception(messageUtil.getBundle("property.image.id.null.message")));
-									}								
+									}*/
+									if(StringUtils.isNotEmpty(propertyVsImageModel.getImageURL())){
+										String imageUrl  = uploadImageByAzureFromLocal(propertyVsImageModel.getImageURL());
+										PropertyVsImageModel propertyVsImageModel2 = new PropertyVsImageModel();
+										propertyVsImageModel2.setImageURL(imageUrl);
+										propertyVsImageModels.add(propertyVsImageModel2);
+									}
 									
 								} else {
-									if(Util.isNumeric(propertyVsImageModel.getPropertyImageId())){
+									if(Util.isNumeric(propertyVsImageModel.getPropertyImageId())){ // Old Images
 										
 										PropertyVsImageEntity propertyVsImageEntity = propertyVsImageDAO.find(Long.valueOf(propertyVsImageModel.getPropertyImageId()));
 										
@@ -2631,8 +2756,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								for(RoomVsImageModel roomVsImageModel:roomModel.getRoomVsImageModels()){
 									if(Objects.nonNull(roomVsImageModel)){
 										//Validate Room Vs Price Id
-										if(StringUtils.isBlank(String.valueOf(roomVsImageModel.getRoomVsImageId()))){
-											if(Objects.nonNull(roomVsImageModel.getImage())){
+										if(StringUtils.isBlank(roomVsImageModel.getRoomVsImageId())){
+											/*if(Objects.nonNull(roomVsImageModel.getImage())){
 												try {
 													imageFormatValidation(roomVsImageModel.getImage());
 													String imageUrl  = uploadImageByAzure(roomVsImageModel.getImage());
@@ -2644,6 +2769,12 @@ public class PropertyValidation extends AuthorizeUserValidation {
 												}
 											} else {
 												exceptions.put(messageUtil.getBundle("room.image.id.null.code"), new Exception(messageUtil.getBundle("room.image.id.null.message")));
+											}*/
+											if(StringUtils.isNotEmpty(roomVsImageModel.getImageUrl())){
+												String imageUrl  = uploadImageByAzureFromLocal(roomVsImageModel.getImageUrl());
+												RoomVsImageModel roomVsImageModel2 = new RoomVsImageModel();
+												roomVsImageModel2.setImageUrl(imageUrl);
+												roomVsImageModels.add(roomVsImageModel2);
 											}
 											
 										} else {

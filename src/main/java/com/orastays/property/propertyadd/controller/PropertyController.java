@@ -1136,4 +1136,53 @@ public class PropertyController extends BaseController{
 			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@PostMapping(value = "/upload-multipart-files", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@ApiOperation(value = "Test Add Property", response = ResponseModel.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 201, message = "Please Try after Sometime!!!") })
+	public ResponseEntity<ResponseModel> uploadFiles(@RequestParam("files") MultipartFile[] files) {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("uploadFiles -- START");
+		}
+
+		ResponseModel responseModel = new ResponseModel();
+		Util.printLog(files, PropertyAddConstant.INCOMING, "Upload Files", request);
+		try {
+			List<String> uploadedFiles = propertyService.uploadFiles(files);
+			responseModel.setResponseBody(uploadedFiles);
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+			
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Test Add Property -- "+Util.errorToString(fe));
+				}
+				break;
+			}
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Upload Files -- "+Util.errorToString(e));
+			}
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
+		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Upload Files", request);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("uploadFiles -- END");
+		}
+		
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
+			return new ResponseEntity<>(responseModel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+		}
+	}
 }
