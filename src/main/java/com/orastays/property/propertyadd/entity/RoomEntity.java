@@ -118,8 +118,8 @@ public class RoomEntity extends CommonEntity {
 	private String oraDiscountPercentage;
 	
 	@Column(name = "accomodation_name")
-	@JsonProperty("accomodationName")
-	private String accomodationName;
+	@JsonProperty("accommodationName")
+	private String accommodationName;
 	
 	@Column(name = "room_standard")
 	@JsonProperty("roomStandard")

@@ -680,7 +680,7 @@ public class PropertyController extends BaseController{
 	}
 	
 	
-	@PostMapping(value = "/add-property", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/add-property", produces = "application/json")
 	@ApiOperation(value = "Add Property", response = ResponseModel.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
@@ -688,7 +688,7 @@ public class PropertyController extends BaseController{
 			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue..."),
 			@ApiResponse(code = 204, message = "Language Id Required"),
 			@ApiResponse(code = 205, message = "Invalid Language ID") })
-	public ResponseEntity<ResponseModel> addProperty(@ModelAttribute PropertyModel propertyModel) {
+	public ResponseEntity<ResponseModel> addProperty(@RequestBody PropertyModel propertyModel) {
 
 		if (logger.isInfoEnabled()) {
 			logger.info("addProperty -- START");

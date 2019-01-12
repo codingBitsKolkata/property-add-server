@@ -6,13 +6,13 @@
   "entireApartment": "Y",
   "apartmentName": "",
   "apartmentNumber": "",
-  "startDate": "2019-01-01",
+  "startDate": "2019-02-01",
   "endDate": "2019-12-31",
   "checkinTime": "11:00:00",
   "checkoutTime": "10:00:00",
   "userToken": "ab7c713e-41af-4f94-a652-104c9a6efa82",
   "strictCheckin": "N",
-  "coverImageUrl": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg",
+  "coverImageUrl": "F:\\eclipse-workspace\\property-add-server\\propertyImages\\earnextra_1547322794025.png",
   "priceDrop": "Y",
   "immediateBooking": "Y",
   "languageId": "1",
@@ -111,13 +111,13 @@
   ],
   "propertyVsImages": [
     {
-      "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+      "imageURL": "F:\\eclipse-workspace\\property-add-server\\propertyImages\\lastminutedeal_1547322794163.png"
     },
     {
-      "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+      "imageURL": "F:\\eclipse-workspace\\property-add-server\\propertyImages\\about_1547322794210.png"
     },
     {
-      "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+      "imageURL": "F:\\eclipse-workspace\\property-add-server\\propertyImages\\banner1_1547322794319.jpg"
     }
   ],
   "propertyVsNearbys": [
@@ -222,13 +222,10 @@
       ],
       "roomVsImages": [
         {
-          "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+          "imageUrl" : "F:\\eclipse-workspace\\property-add-server\\propertyImages\\propertylist_1547322794670.png"
         },
         {
-          "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
-        },
-        {
-          "imageURL": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg"
+          "imageUrl": "F:\\eclipse-workspace\\property-add-server\\propertyImages\\couplefriendly_1547322794889.png"
         }
       ],
       "roomVsMeals": [
@@ -289,5 +286,5 @@
     "branchName": "Sector V",
     "ifscCode": "IND0015478"
   },
-"userToken":"89ef239b-973f-4655-b691-4064e61910f9"
+"userToken":"141cb095-da8f-43e4-995c-868e4b9cce05"
 }
