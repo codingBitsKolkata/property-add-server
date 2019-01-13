@@ -42,5 +42,5 @@ public interface PropertyService {
 	List<CancellationModel> viewPropertyCancellationList(BookingModel bookingModel) throws FormExceptions;
 	List<CancellationModel> viewUserCancellationList(BookingModel bookingModel) throws FormExceptions;
 	List<AmenitiesModel> fetchAmenitiesForFilter() throws FormExceptions;
-	List<String> uploadFiles(MultipartFile[] file) throws FormExceptions;
+	List<String> uploadFiles(MultipartFile[] file,String userToken) throws FormExceptions;
 }

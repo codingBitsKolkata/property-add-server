@@ -1100,8 +1100,10 @@ public class PropertyController extends BaseController{
 	@PostMapping(value = "/upload-multipart-files", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ApiOperation(value = "Upload Files", response = ResponseModel.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 201, message = "Please Try after Sometime!!!") })
-	public ResponseEntity<ResponseModel> uploadFiles(@RequestParam("files") MultipartFile[] files) {
+			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
+			@ApiResponse(code = 202, message = "Token Required"),
+			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue...") })
+	public ResponseEntity<ResponseModel> uploadFiles(@RequestParam("files") MultipartFile[] files,@RequestParam("userToken") String userToken) {
 
 		if (logger.isInfoEnabled()) {
 			logger.info("uploadFiles -- START");
@@ -1110,7 +1112,7 @@ public class PropertyController extends BaseController{
 		ResponseModel responseModel = new ResponseModel();
 		Util.printLog(files, PropertyAddConstant.INCOMING, "Upload Files", request);
 		try {
-			List<String> uploadedFiles = propertyService.uploadFiles(files);
+			List<String> uploadedFiles = propertyService.uploadFiles(files,userToken);
 			responseModel.setResponseBody(uploadedFiles);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));

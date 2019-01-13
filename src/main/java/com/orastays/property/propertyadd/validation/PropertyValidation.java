@@ -112,13 +112,61 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		}
 	}
 	
+	private void validateUserTokenForHost(String userToken) throws FormExceptions {
+		if (logger.isDebugEnabled()) {
+			logger.debug("validateUserTokenForHost -- Start");
+		}
+
+		Map<String, Exception> exceptions = new LinkedHashMap<>();
+		UserModel userModel = null;
+			
+		// Validate User Token
+			if (StringUtils.isBlank(userToken)) {
+				exceptions.put(messageUtil.getBundle("token.null.code"), new Exception(messageUtil.getBundle("token.null.message")));
+			} else {
+				userModel = getUserDetails(userToken);
+			}
+			
+			// Validate Host Login Details
+			if(Objects.nonNull(userModel)){
+				if(Objects.nonNull(userModel.getUserVsTypes())){
+					boolean flag = false;
+					for(UserVsTypeModel userVsTypeModel : userModel.getUserVsTypes()){
+						if(Objects.nonNull(userVsTypeModel.getUserType())) {
+							if(userVsTypeModel.getUserType().getUserTypeId().equals(String.valueOf(UserType.HOST.ordinal()))){
+								flag = true;
+							}
+						} else {
+							exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+						}
+					}
+					
+					if(!flag){
+						exceptions.put(messageUtil.getBundle("user.type.invalid.code"), new Exception(messageUtil.getBundle("user.type.invalid.message")));
+					}
+				} else {
+					exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
+				}
+			} else {
+				exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
+			}
+			
+			
+		
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("validateUserTokenForHost -- End");
+		}
+	}
 	
-	public List<String> uploadFilesToLocalDrive(MultipartFile[] files) throws FormExceptions {
+	public List<String> uploadFilesToLocalDrive(MultipartFile[] files,String userToken) throws FormExceptions {
 		
 		if (logger.isDebugEnabled()) {
 			logger.debug("uploadFilesToLocalDrive -- START");
 		}
-		
+		validateUserTokenForHost(userToken);
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
 		List<String> fileNames = new  ArrayList<>();
 		String imageExtension = StringUtils.EMPTY;
