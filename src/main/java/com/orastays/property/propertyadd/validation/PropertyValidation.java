@@ -191,7 +191,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 				}
 				
 		} catch(Exception e){
-			exceptions.put(messageUtil.getBundle("image.upload.error.code"), new Exception(messageUtil.getBundle("image.upload.error.message")));
+			e.printStackTrace();
+			//exceptions.put(messageUtil.getBundle("image.upload.error.code"), new Exception(messageUtil.getBundle("image.upload.error.message")));
 		} finally{
 			 if (input!=null) {
 					 try {
@@ -199,7 +200,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 						Files.deleteIfExists(Paths.get(imageLocalUrl));
 					} catch (IOException e) {
 						e.printStackTrace();
-						exceptions.put(messageUtil.getBundle("image.upload.error.code"), new Exception(messageUtil.getBundle("image.upload.error.message")));
+						//exceptions.put(messageUtil.getBundle("image.upload.error.code"), new Exception(messageUtil.getBundle("image.upload.error.message")));
 					}
 			    }
 		}
