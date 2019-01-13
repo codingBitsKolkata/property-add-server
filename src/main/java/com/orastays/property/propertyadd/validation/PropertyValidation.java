@@ -809,11 +809,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					// Validate Property Name
 					if (StringUtils.isBlank(propertyModel.getName())) {
 						exceptions.put(messageUtil.getBundle("property.name.null.code"), new Exception(messageUtil.getBundle("property.name.null.message")));
-					} else {
-						if (!Util.checkAlphabet(propertyModel.getName())) {
-							exceptions.put(messageUtil.getBundle("property.name.invalid.code"), new Exception(messageUtil.getBundle("property.name.invalid.message")));
-						}
-					}
+					} 
 		
 					propertyModel.setOraname("ORA"+new Date().getTime());
 		
@@ -1848,11 +1844,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					// Validate Property Name
 					if (StringUtils.isBlank(propertyModel.getName())) {
 						exceptions.put(messageUtil.getBundle("property.name.null.code"), new Exception(messageUtil.getBundle("property.name.null.message")));
-					} else {
-						if (!Util.checkAlphabet(propertyModel.getName())) {
-							exceptions.put(messageUtil.getBundle("property.name.invalid.code"), new Exception(messageUtil.getBundle("property.name.invalid.message")));
-						}
-					}
+					} 
 		
 					if (StringUtils.isBlank(propertyModel.getOraname())) {
 						exceptions.put(messageUtil.getBundle("ora.name.null.code"), new Exception(messageUtil.getBundle("ora.name.null.message")));
