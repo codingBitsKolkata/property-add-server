@@ -12,7 +12,7 @@
   "checkoutTime": "10:00:00",
   "userToken": "ab7c713e-41af-4f94-a652-104c9a6efa82",
   "strictCheckin": "N",
-  "coverImageUrl": "F:\\eclipse-workspace\\property-add-server\\propertyImages\\earnextra_1547322794025.png",
+  "coverImageUrl": "F:\\ServerJars\\propertyImages\\Desert_1547362524704.jpg",
   "priceDrop": "Y",
   "immediateBooking": "Y",
   "languageId": "1",
@@ -84,7 +84,7 @@
   "propertyVsDocuments": [
     {
       "documentNumber": "AKBHP6784S",
-      "fileUrl": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg",
+      "fileUrl": "F:\\ServerJars\\propertyImages\\Hydrangeas_1547362525045.jpg",
       "document": {
         "documentId": "1",
         "documentName": "PAN CARD"
@@ -92,7 +92,7 @@
     },
     {
       "documentNumber": "",
-      "fileUrl": "https://s-ec.bstatic.com/images/hotel/max1024x768/141/141830278.jpg",
+      "fileUrl": "F:\\ServerJars\\propertyImages\\Jellyfish_1547362525124.jpg",
       "document": {
         "documentId": "2",
         "documentName": "CANCELLED CHEQUE"
@@ -111,13 +111,13 @@
   ],
   "propertyVsImages": [
     {
-      "imageURL": "F:\\eclipse-workspace\\property-add-server\\propertyImages\\lastminutedeal_1547322794163.png"
+      "imageURL": "F:\\ServerJars\\propertyImages\\Koala_1547362525186.jpg"
     },
     {
-      "imageURL": "F:\\eclipse-workspace\\property-add-server\\propertyImages\\about_1547322794210.png"
+      "imageURL": "F:\\ServerJars\\propertyImages\\Lighthouse_1547362525260.jpg"
     },
     {
-      "imageURL": "F:\\eclipse-workspace\\property-add-server\\propertyImages\\banner1_1547322794319.jpg"
+      "imageURL": "F:\\ServerJars\\propertyImages\\Penguins_1547362525327.jpg"
     }
   ],
   "propertyVsNearbys": [
@@ -222,10 +222,10 @@
       ],
       "roomVsImages": [
         {
-          "imageUrl" : "F:\\eclipse-workspace\\property-add-server\\propertyImages\\propertylist_1547322794670.png"
+          "imageUrl" : "F:\\ServerJars\\propertyImages\\Tulips_1547362525400.jpg"
         },
         {
-          "imageUrl": "F:\\eclipse-workspace\\property-add-server\\propertyImages\\couplefriendly_1547322794889.png"
+          "imageUrl": "F:\\ServerJars\\propertyImages\\Chrysanthemum_1547362525463.jpg"
         }
       ],
       "roomVsMeals": [
