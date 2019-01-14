@@ -1,5 +1,7 @@
 package com.orastays.property.propertyadd.model.booking;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.EqualsAndHashCode;
@@ -11,18 +13,16 @@ import lombok.ToString;
 @Setter
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class CancellationVsRoomModel extends CommonModel {
+@JsonInclude(Include.NON_NULL)
+public class BookingPriceModel extends CommonModel {
 
-	@JsonProperty("cancellationVsRoomId")
-	private Long cancellationVsRoomId;
-	
-	@JsonProperty("cancellationSlabId")
-	private String cancellationSlabId;
-	
-	@JsonProperty("cancellations")
-	private CancellationModel cancellationModel;
-	
+	@JsonProperty("bookingPriceId")
+	private String bookingPriceId;
+
+	@JsonProperty("roomVsPriceId")
+	private String roomVsPriceId;
+
 	@JsonProperty("bookingVsRooms")
 	private BookingVsRoomModel bookingVsRoomModel;
-	
+
 }

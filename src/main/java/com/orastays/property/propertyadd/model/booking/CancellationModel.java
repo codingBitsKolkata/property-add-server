@@ -2,15 +2,14 @@ package com.orastays.property.propertyadd.model.booking;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.orastays.property.propertyadd.model.CommonModel;
 
 @Getter
 @Setter
@@ -38,10 +37,10 @@ public class CancellationModel extends CommonModel {
 	private String totalAmountRefunded;
 
 	@JsonProperty("bookings")
-	private BookingModel bookings;
+	private BookingModel bookingModel;
 	
 	@JsonProperty("cancellationVsRooms")
-	private List<CancellationVsRoomModel> cancellationVsRooms;
+	private List<CancellationVsRoomModel> cancellationVsRoomsModels;
 
 }
 

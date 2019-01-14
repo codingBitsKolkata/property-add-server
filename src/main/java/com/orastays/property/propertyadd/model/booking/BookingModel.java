@@ -1,14 +1,15 @@
 package com.orastays.property.propertyadd.model.booking;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.orastays.property.propertyadd.model.CommonModel;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -50,17 +51,64 @@ public class BookingModel extends CommonModel {
 	@JsonProperty("grandTotal")
 	private String grandTotal;
 
+	@JsonProperty("conveniences")
+	private ConvenienceModel convenienceModel;
+
+	@JsonProperty("bookingInfos")
+	private BookingInfoModel bookingInfoModel;
 
 	@JsonProperty("bookingApproval")
 	private String bookingApproval;
-	
+
 	@JsonProperty("convenienceAmtWgst")
 	private String convenienceAmtWgst;
-	
-	
+
+	@JsonProperty("bookingVsRooms")
+	private List<BookingVsRoomModel> bookingVsRoomModels;
+
+	@JsonProperty("bookingVsPayments")
+	private List<BookingVsPaymentModel> bookingVsPaymentModels;
+
+	@JsonProperty("formOfPayment")
+	private FormOfPayment formOfPayment;
+
+	@JsonProperty("userInfo")
+	private UserInfo userInfo;
+
 	@JsonProperty("cancellations")
-	private CancellationModel cancellations;
+	private CancellationModel cancellationModel;
+
+	@JsonProperty("oraAmount")
+	private String oraAmount;
+
+	@JsonProperty("oraDiscount")
+	private String oraDiscount;
+
+	@JsonProperty("hostDiscount")
+	private String hostDiscount;
+
+	@JsonProperty("offerAmount")
+	private String offerAmount;
+
+	@JsonProperty("gstPercentage")
+	private String gstPercentage;
+
+	@JsonProperty("gstAmount")
+	private String gstAmount;
+
+	@JsonProperty("priceDropAmount")
+	private String priceDropAmount;
+
+	@JsonProperty("priceDropPercentage")
+	private String priceDropPercentage;
+
+	@JsonProperty("totalAmount")
+	private String totalAmount;
+	
+	@JsonProperty("propertyName")
+	private String propertyName;
+	
+	@JsonProperty("propertyAddress")
+	private String propertyAddress;
+
 }
-
-
-

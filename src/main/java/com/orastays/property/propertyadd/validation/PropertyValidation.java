@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -271,6 +269,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
 		List<CancellationModel> cancellationModels = null;
+		List<CancellationModel> finalCancellationModels = new ArrayList<>();
 		UserModel userModel = null;
 		if(Objects.nonNull(bookingModel)){
 			
@@ -341,6 +340,20 @@ public class PropertyValidation extends AuthorizeUserValidation {
 								
 							} else {
 									cancellationModels = getPropertyCancellationList(bookingModel);
+									
+									if(!CollectionUtils.isEmpty(cancellationModels)){
+										for(CancellationModel model:cancellationModels){
+											
+											CancellationModel cancellationModel = new CancellationModel();
+											cancellationModel = model;
+											if(Objects.nonNull(propertyEntity)){
+												cancellationModel.getBookingModel().setPropertyName(propertyEntity.getName());
+												cancellationModel.getBookingModel().setPropertyAddress(propertyEntity.getAddress());
+											}
+											finalCancellationModels.add(cancellationModel);
+											
+										}
+									}
 							}
 						}
 
@@ -362,7 +375,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			logger.debug("validatePropertyCancellationList -- End");
 		}
 		
-		return cancellationModels;
+		return finalCancellationModels;
 		
 	}
 
@@ -375,6 +388,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
 		List<CancellationModel> cancellationModels = null;
+		List<CancellationModel> finalCancellationModels = new ArrayList<>();
 		UserModel userModel = null;
 		if(Objects.nonNull(bookingModel)){
 			// Validate User Token
@@ -411,6 +425,29 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							
 						} else {
 							cancellationModels = getUserCancellationList(bookingModel);
+							if(!CollectionUtils.isEmpty(cancellationModels)){
+								for(CancellationModel model : cancellationModels){
+									
+									if (Objects.nonNull(model.getBookingModel())) {
+										exceptions.put(messageUtil.getBundle("property.id.null.code"), new Exception(messageUtil.getBundle("property.id.null.message")));
+									} else {
+											if (!Util.isNumeric(String.valueOf(model.getBookingModel().getPropertyId()))) {
+												exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
+											} else {
+													PropertyEntity propertyEntity = propertyDAO.find(Long.valueOf(model.getBookingModel().getPropertyId()));
+													CancellationModel cancellationModel = new CancellationModel();
+													cancellationModel = model;
+													if(Objects.nonNull(propertyEntity)){
+														cancellationModel.getBookingModel().setPropertyName(propertyEntity.getName());
+														cancellationModel.getBookingModel().setPropertyAddress(propertyEntity.getAddress());
+													}
+													
+													finalCancellationModels.add(cancellationModel);
+											}
+									}
+								}
+							}
+							
 						}
 					}
 				} else {
@@ -429,7 +466,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			logger.debug("validateUserTokenForCancellationList -- End");
 		}
 		
-		return cancellationModels;
+		return finalCancellationModels;
 	}
 	
 	public List<BookingModel> validateUserTokenForBookingList(CommonModel commonModel) throws FormExceptions {
@@ -440,6 +477,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
 		List<BookingModel> bookingModels = null;
+		List<BookingModel> finalBookingModels = new ArrayList<>();
 		UserModel userModel = null;
 		if(Objects.nonNull(commonModel)){
 			// Validate User Token
@@ -467,7 +505,28 @@ public class PropertyValidation extends AuthorizeUserValidation {
 						exceptions.put(messageUtil.getBundle("user.type.invalid.code"), new Exception(messageUtil.getBundle("user.type.invalid.message")));
 					} else {
 						bookingModels = getUserBookingList(userModel.getUserId());
-					}
+						if(!CollectionUtils.isEmpty(bookingModels)){
+							for(BookingModel bookingModel:bookingModels){
+								if (StringUtils.isBlank(String.valueOf(bookingModel.getPropertyId()))) {
+									exceptions.put(messageUtil.getBundle("property.id.null.code"), new Exception(messageUtil.getBundle("property.id.null.message")));
+								} else {
+										if (!Util.isNumeric(String.valueOf(bookingModel.getPropertyId()))) {
+											exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
+										} else {
+											PropertyEntity propertyEntity = propertyDAO.find(Long.valueOf(bookingModel.getPropertyId()));
+											
+											BookingModel bModel  = new BookingModel();
+											bModel = bookingModel;
+											if(Objects.nonNull(propertyEntity)){
+												bModel.setPropertyName(propertyEntity.getName());
+												bModel.setPropertyAddress(propertyEntity.getAddress());
+											}
+											finalBookingModels.add(bModel);
+										}
+									}
+								}
+							}	
+						}
 				} else {
 					exceptions.put(messageUtil.getBundle("user.type.null.code"), new Exception(messageUtil.getBundle("user.type.null.message")));
 				}
@@ -485,9 +544,8 @@ public class PropertyValidation extends AuthorizeUserValidation {
 		}
 
 		
-		return bookingModels;
+		return finalBookingModels;
 	}
-	
 	
 	public List<BookingModel> validatePropertyUserToken(PropertyModel propertyModel) throws FormExceptions {
 		
@@ -497,6 +555,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
 		List<BookingModel> bookingModels = null;
+		List<BookingModel> finalBookingModels = new ArrayList<>();
 		UserModel userModel = null;
 		if(Objects.nonNull(propertyModel)){
 			
@@ -540,7 +599,6 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
 				} else {
 					PropertyEntity propertyEntity = null;
-					
 					try {
 						Map<String, String> innerMap1 = new LinkedHashMap<>();
 						innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
@@ -558,6 +616,17 @@ public class PropertyValidation extends AuthorizeUserValidation {
 							exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
 						} else {
 							bookingModels = getPropertyBookingList(String.valueOf(propertyModel.getPropertyId()));
+							if(!CollectionUtils.isEmpty(bookingModels)){
+								for(BookingModel bookingModel:bookingModels){
+									
+									BookingModel bModel  = new BookingModel();
+									bModel = bookingModel;
+									bModel.setPropertyName(propertyEntity.getName());
+									bModel.setPropertyAddress(propertyEntity.getAddress());
+									
+									finalBookingModels.add(bModel);
+								}
+							}
 						}
 
 					} catch (Exception e) {
@@ -578,7 +647,7 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			logger.debug("validatePropertyUserToken -- End");
 		}
 		
-		return bookingModels;
+		return finalBookingModels;
 		
 	}
 

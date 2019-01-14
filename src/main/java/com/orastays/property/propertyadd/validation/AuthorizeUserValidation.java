@@ -162,7 +162,7 @@ public class AuthorizeUserValidation {
 			if(StringUtils.isBlank(userToken)) {
 				exceptions.put(messageUtil.getBundle("user.token.null.code"), new Exception(messageUtil.getBundle("user.token.null.message")));
 			} else {
-				try{
+				try {
 					ResponseModel responseModel = restTemplate.getForObject(messageUtil.getBundle("auth.server.url") +"check-token?userToken="+userToken, ResponseModel.class);
 					Gson gson = new Gson();
 					String jsonString = gson.toJson(responseModel.getResponseBody());
@@ -180,7 +180,6 @@ public class AuthorizeUserValidation {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			// Disabled the below line to pass the Token Validation
 			exceptions.put(messageUtil.getBundle("session.expires.code"), new Exception(messageUtil.getBundle("session.expires.message")));
 		}
@@ -208,11 +207,17 @@ public class AuthorizeUserValidation {
 			if(StringUtils.isBlank(languageId)) {
 				exceptions.put(messageUtil.getBundle("language.id.null.code"), new Exception(messageUtil.getBundle("language.id.null.message")));
 			} else {
-				ResponseModel responseModel = restTemplate.getForObject(messageUtil.getBundle("auth.server.url") +"check-language?languageId="+languageId, ResponseModel.class);
-				Gson gson = new Gson();
-				String jsonString = gson.toJson(responseModel.getResponseBody());
-				commonModel = gson.fromJson(jsonString, CommonModel.class);
-				if(Objects.isNull(commonModel)) {
+			
+				try {	
+						ResponseModel responseModel = restTemplate.getForObject(messageUtil.getBundle("auth.server.url") +"check-language?languageId="+languageId, ResponseModel.class);
+						Gson gson = new Gson();
+						String jsonString = gson.toJson(responseModel.getResponseBody());
+						commonModel = gson.fromJson(jsonString, CommonModel.class);
+						if(Objects.isNull(commonModel)) {
+							exceptions.put(messageUtil.getBundle("language.id.invalid.code"), new Exception(messageUtil.getBundle("language.id.invalid.message")));
+						}
+					
+				} catch(HttpClientErrorException e) {
 					exceptions.put(messageUtil.getBundle("language.id.invalid.code"), new Exception(messageUtil.getBundle("language.id.invalid.message")));
 				}
 				
@@ -247,6 +252,7 @@ public class AuthorizeUserValidation {
 		BookingModel bookingModel = new BookingModel();
 		bookingModel.setPropertyId(propertyId);
 		try {
+			
 			String url = messageUtil.getBundle("booking.server.url") +"get-property-bookings";
 			ResponseModel responseModel = restTemplate.postForObject(url, bookingModel,ResponseModel.class);
 			
@@ -257,7 +263,8 @@ public class AuthorizeUserValidation {
 			if (logger.isInfoEnabled()) {
 				logger.info("bookingModels ==>> "+bookingModels);
 			}
-		} catch (Exception e) {
+			
+		} catch (Exception e ) {
 			exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
 		}
 		
