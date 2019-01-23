@@ -839,21 +839,22 @@ public class PropertyController extends BaseController{
 		}
 	}
 	
-	/*@PostMapping(value = "/list-toiletry", produces = "application/json")
-	@ApiOperation(value = "List Toiletry", response = ResponseModel.class)
+	
+	@PostMapping(value = "/fetch-toiletry", produces = "application/json")
+	@ApiOperation(value = "Fetch Toiletry", response = ResponseModel.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
 			@ApiResponse(code = 202, message = "Token Required"),
 			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue...")
 			})
-	public ResponseEntity<ResponseModel> listToiletry(@RequestBody CommonModel commonModel) {
+	public ResponseEntity<ResponseModel> fetchToiletry(@RequestBody CommonModel commonModel) {
 
 		if (logger.isInfoEnabled()) {
-			logger.info("listToiletry -- START");
+			logger.info("fetchToiletry -- START");
 		}
 
 		ResponseModel responseModel = new ResponseModel();
-		Util.printLog(commonModel, PropertyAddConstant.INCOMING, "List Toiletry", request);
+		Util.printLog(commonModel, PropertyAddConstant.INCOMING, "Fetch Toiletry", request);
 		try {
 			List<PropertyVsToiletryModel> propertyVsToiletryModels = propertyService.fetchToiletry(commonModel);
 			responseModel.setResponseBody(propertyVsToiletryModels);
@@ -866,13 +867,69 @@ public class PropertyController extends BaseController{
 				responseModel.setResponseCode(entry.getKey());
 				responseModel.setResponseMessage(entry.getValue().getMessage());
 				if (logger.isInfoEnabled()) {
-					logger.info("FormExceptions in List Toiletry -- "+Util.errorToString(fe));
+					logger.info("FormExceptions in Fetch Toiletry -- "+Util.errorToString(fe));
 				}
 				break;
 			}
 		} catch (Exception e) {
 			if (logger.isInfoEnabled()) {
-				logger.info("Exception in List Toiletry -- "+Util.errorToString(e));
+				logger.info("Exception in Fetch Toiletry -- "+Util.errorToString(e));
+			}
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
+		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Fetch Toiletry", request);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchToiletry -- END");
+		}
+		
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
+			return new ResponseEntity<>(responseModel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+	
+	
+	/*
+	@PostMapping(value = "/fetch-toiletry", produces = "application/json")
+	@ApiOperation(value = "Fetch Toiletry", response = ResponseModel.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
+			@ApiResponse(code = 202, message = "Token Required"),
+			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue...")
+			})
+	public ResponseEntity<ResponseModel> fetchToiletry(@RequestBody CommonModel commonModel) {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("listToiletry -- START");
+		}
+
+		ResponseModel responseModel = new ResponseModel();
+		Util.printLog(commonModel, PropertyAddConstant.INCOMING, "Fetch Toiletry", request);
+		try {
+			List<PropertyVsToiletryModel> propertyVsToiletryModels = propertyService.fetchToiletry(commonModel);
+			responseModel.setResponseBody(propertyVsToiletryModels);
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+			
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Fetch Toiletry -- "+Util.errorToString(fe));
+				}
+				break;
+			}
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Fetch Toiletry -- "+Util.errorToString(e));
 			}
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));

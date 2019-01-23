@@ -727,7 +727,7 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			try {
 				Map<String, String> innerMap1 = new LinkedHashMap<>();
 				innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
-				innerMap1.put(PropertyAddConstant.CREATEDBY, String.valueOf(userModel.getUserId()));
+				//innerMap1.put(PropertyAddConstant.CREATEDBY, String.valueOf(userModel.getUserId()));
 		
 				Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
 				outerMap1.put("eq", innerMap1);

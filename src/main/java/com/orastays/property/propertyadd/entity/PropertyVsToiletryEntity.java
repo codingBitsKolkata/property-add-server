@@ -24,7 +24,7 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = false)
 public class PropertyVsToiletryEntity extends CommonEntity  {
 	
-	private static final long serialVersionUID = 5918550220182004434L;
+	private static final long serialVersionUID = 136704694247669382L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

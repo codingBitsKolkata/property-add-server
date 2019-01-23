@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.orastays.property.propertyadd.entity.PropertyVsToiletryEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Getter
@@ -119,6 +120,9 @@ public class PropertyModel extends CommonModel {
 
 	@JsonProperty("propertyVsSpecialExperiences")
 	private List<PropertyVsSpecialExperienceModel> propertyVsSpecialExperienceModels;
+	
+	@JsonProperty("propertyVsToiletrys")
+	private PropertyVsToiletryEntity propertyVsToiletryEntity;
 
 	@JsonProperty("rooms")
 	private List<RoomModel> roomModels;
