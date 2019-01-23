@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.orastays.property.propertyadd.converter.AmenitiesConverter;
 import com.orastays.property.propertyadd.converter.CancellationSlabConverter;
+import com.orastays.property.propertyadd.converter.ContactPurposeConverter;
 import com.orastays.property.propertyadd.converter.HostVsAccountConverter;
 import com.orastays.property.propertyadd.converter.PriceDropConverter;
 import com.orastays.property.propertyadd.converter.PropertyConverter;
@@ -17,6 +18,7 @@ import com.orastays.property.propertyadd.converter.PropertyVsNearbyConverter;
 import com.orastays.property.propertyadd.converter.PropertyVsPriceDropConverter;
 import com.orastays.property.propertyadd.converter.PropertyVsSpaceRuleConverter;
 import com.orastays.property.propertyadd.converter.PropertyVsSpecialExperienceConverter;
+import com.orastays.property.propertyadd.converter.PropertyVsToiletryConverter;
 import com.orastays.property.propertyadd.converter.RoomCategoryConverter;
 import com.orastays.property.propertyadd.converter.RoomConverter;
 import com.orastays.property.propertyadd.converter.RoomVsAmenitiesConverter;
@@ -30,6 +32,7 @@ import com.orastays.property.propertyadd.converter.SpecialtiesConverter;
 import com.orastays.property.propertyadd.converter.StayTypeConverter;
 import com.orastays.property.propertyadd.dao.AmenitiesDAO;
 import com.orastays.property.propertyadd.dao.CancellationSlabDAO;
+import com.orastays.property.propertyadd.dao.ContactPurposeDAO;
 import com.orastays.property.propertyadd.dao.HostVsAccountDAO;
 import com.orastays.property.propertyadd.dao.PriceDropDAO;
 import com.orastays.property.propertyadd.dao.PropertyDAO;
@@ -42,6 +45,7 @@ import com.orastays.property.propertyadd.dao.PropertyVsNearbyDAO;
 import com.orastays.property.propertyadd.dao.PropertyVsPriceDropDAO;
 import com.orastays.property.propertyadd.dao.PropertyVsSpaceRuleDAO;
 import com.orastays.property.propertyadd.dao.PropertyVsSpecialExperienceDAO;
+import com.orastays.property.propertyadd.dao.PropertyVsToiletryDAO;
 import com.orastays.property.propertyadd.dao.RoomCategoryDAO;
 import com.orastays.property.propertyadd.dao.RoomDAO;
 import com.orastays.property.propertyadd.dao.RoomVsAmenitiesDAO;
@@ -195,12 +199,24 @@ public abstract class BaseServiceImpl {
 
 	@Autowired
 	protected RoomVsImageConverter roomVsImageConverter;
+	
+	@Autowired
+	protected PropertyVsToiletryDAO propertyVsToiletryDAO;
+
+	@Autowired
+	protected PropertyVsToiletryConverter propertyVsToiletryConverter;
 
 	@Autowired
 	protected RoomVsSpecialitiesConverter roomVsSpecialitiesConverter;
 
 	@Autowired
 	protected RoomVsSpecialitiesDAO roomVsSpecialitiesDAO;
+	
+	@Autowired
+	protected ContactPurposeConverter contactPurposeConverter;
+
+	@Autowired
+	protected ContactPurposeDAO contactPurposeDAO;
 
 	@Autowired
 	protected RoomVsMealConverter roomVsMealConverter;

@@ -1,10 +1,5 @@
 package com.orastays.property.propertyadd.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -14,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +23,10 @@ import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
+import com.orastays.property.propertyadd.model.ContactPurposeModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
+import com.orastays.property.propertyadd.model.PropertyVsToiletryModel;
 import com.orastays.property.propertyadd.model.ResponseModel;
 import com.orastays.property.propertyadd.model.RoomCategoryModel;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
@@ -36,6 +34,11 @@ import com.orastays.property.propertyadd.model.SpecialExperienceModel;
 import com.orastays.property.propertyadd.model.SpecialtiesModel;
 import com.orastays.property.propertyadd.model.StayTypeModel;
 import com.orastays.property.propertyadd.model.booking.BookingModel;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -98,6 +101,58 @@ public class PropertyController extends BaseController{
 			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	
+	@GetMapping(value = "/fetch-contact-purpose", produces = "application/json")
+	@ApiOperation(value = "Contact Purpose", response = ResponseModel.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 201, message = "Please Try after Sometime!!!") })
+	public ResponseEntity<ResponseModel> fetchContactPurposeList() {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchContactPurpose -- START");
+		}
+
+		ResponseModel responseModel = new ResponseModel();
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Fetch Contact Purpose", request);
+		try {
+		
+			List<ContactPurposeModel> contactPurposeModels = propertyService.fetchContactPurpose();
+			responseModel.setResponseBody(contactPurposeModels);
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+			
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Fetch Contact Purpose -- "+Util.errorToString(fe));
+				}
+				break;
+			}
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Fetch Contact Purpose  -- "+Util.errorToString(e));
+			}
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
+		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Fetch Contact Purpose", request);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchContactPurpose -- END");
+		}
+		
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
+			return new ResponseEntity<>(responseModel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	
 	@PostMapping(value = "/fetch-stay-types", produces = "application/json")
 	@ApiOperation(value = "Stay Type Listing", response = ResponseModel.class)
@@ -783,6 +838,58 @@ public class PropertyController extends BaseController{
 			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	/*@PostMapping(value = "/list-toiletry", produces = "application/json")
+	@ApiOperation(value = "List Toiletry", response = ResponseModel.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
+			@ApiResponse(code = 202, message = "Token Required"),
+			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue...")
+			})
+	public ResponseEntity<ResponseModel> listToiletry(@RequestBody CommonModel commonModel) {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("listToiletry -- START");
+		}
+
+		ResponseModel responseModel = new ResponseModel();
+		Util.printLog(commonModel, PropertyAddConstant.INCOMING, "List Toiletry", request);
+		try {
+			List<PropertyVsToiletryModel> propertyVsToiletryModels = propertyService.fetchToiletry(commonModel);
+			responseModel.setResponseBody(propertyVsToiletryModels);
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+			
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in List Toiletry -- "+Util.errorToString(fe));
+				}
+				break;
+			}
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in List Toiletry -- "+Util.errorToString(e));
+			}
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
+		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "List Toiletry", request);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("listToiletry -- END");
+		}
+		
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
+			return new ResponseEntity<>(responseModel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+		}
+	}*/
 	
 	@PostMapping(value = "/fetch-property-by-id", produces = "application/json")
 	@ApiOperation(value = "Fetch Property By Id", response = ResponseModel.class)

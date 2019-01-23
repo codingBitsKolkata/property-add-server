@@ -8,9 +8,11 @@ import com.orastays.property.propertyadd.exceptions.FormExceptions;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
+import com.orastays.property.propertyadd.model.ContactPurposeModel;
 import com.orastays.property.propertyadd.model.PriceDropModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
+import com.orastays.property.propertyadd.model.PropertyVsToiletryModel;
 import com.orastays.property.propertyadd.model.RoomCategoryModel;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
 import com.orastays.property.propertyadd.model.SpecialExperienceModel;
@@ -22,6 +24,7 @@ import com.orastays.property.propertyadd.model.booking.CancellationModel;
 public interface PropertyService {
 
 	List<PropertyTypeModel> fetchPropertyTypes() throws FormExceptions;
+	List<ContactPurposeModel> fetchContactPurpose() throws FormExceptions;
 	List<StayTypeModel> fetchStayTypeList(CommonModel commonModel) throws FormExceptions;
 	List<String> fetchAccommodationByLanguage(CommonModel commonModel) throws FormExceptions;
 	List<String> fetchPgCategorySexListByLanguage(CommonModel commonModel) throws FormExceptions;
@@ -35,6 +38,7 @@ public interface PropertyService {
 	List<PriceDropModel> fetchPriceDropList() throws FormExceptions;
 	void saveProperty(PropertyModel propertyModel) throws FormExceptions;
 	List<PropertyModel> fetchActivePropertyList(CommonModel commonModel) throws FormExceptions;
+	List<PropertyVsToiletryModel> fetchToiletry(CommonModel commonModel) throws FormExceptions;
 	PropertyModel fetchPropertyById(PropertyModel propertyModel) throws FormExceptions;
 	void updateProperty(PropertyModel propertyModel) throws FormExceptions;
 	List<BookingModel> viewPropertyBookingList(PropertyModel propertyModel) throws FormExceptions;

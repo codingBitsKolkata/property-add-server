@@ -42,6 +42,7 @@ import com.orastays.property.propertyadd.helper.Util;
 import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
+import com.orastays.property.propertyadd.model.ContactPurposeModel;
 import com.orastays.property.propertyadd.model.PriceDropModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
@@ -53,6 +54,7 @@ import com.orastays.property.propertyadd.model.PropertyVsNearbyModel;
 import com.orastays.property.propertyadd.model.PropertyVsPriceDropModel;
 import com.orastays.property.propertyadd.model.PropertyVsSpaceRuleModel;
 import com.orastays.property.propertyadd.model.PropertyVsSpecialExperienceModel;
+import com.orastays.property.propertyadd.model.PropertyVsToiletryModel;
 import com.orastays.property.propertyadd.model.RoomCategoryModel;
 import com.orastays.property.propertyadd.model.RoomModel;
 import com.orastays.property.propertyadd.model.RoomVsAmenitiesModel;
@@ -107,6 +109,40 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		}
 		
 		return propertyTypeModels;
+	}
+	
+	@Override
+	public List<ContactPurposeModel> fetchContactPurpose() throws FormExceptions {
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchContactPurpose -- START");
+		}
+		
+		List<ContactPurposeModel> contactPurposeModels = null;
+		
+		try {
+			Map<String, String> innerMap1 = new LinkedHashMap<>();
+			innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+	
+			Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+			outerMap1.put("eq", innerMap1);
+	
+			Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+			alliasMap.put(entitymanagerPackagesToScan+".ContactPurposeEntity", outerMap1);
+			
+			contactPurposeModels = contactPurposeConverter.entityListToModelList(contactPurposeDAO.fetchListBySubCiteria(alliasMap));
+
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchContactPurpose -- "+Util.errorToString(e));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchContactPurpose -- END");
+		}
+		
+		return contactPurposeModels;
 	}
 	
 	@Override
@@ -676,6 +712,42 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			}
 			
 		return propertyModels;
+	}
+	
+	@Override
+	public List<PropertyVsToiletryModel> fetchToiletry(CommonModel commonModel) throws FormExceptions {
+			
+			if (logger.isInfoEnabled()) {
+				logger.info("fetchPropertyVsToiletryList -- START");
+			}
+			
+			UserModel userModel = propertyValidation.validateUserToken(commonModel);
+			List<PropertyVsToiletryModel> propertyVsToiletryModels = null;
+			
+			try {
+				Map<String, String> innerMap1 = new LinkedHashMap<>();
+				innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+				innerMap1.put(PropertyAddConstant.CREATEDBY, String.valueOf(userModel.getUserId()));
+		
+				Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+				outerMap1.put("eq", innerMap1);
+		
+				Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+				alliasMap.put(entitymanagerPackagesToScan+".PropertyVsToiletryEntity", outerMap1);
+				
+				propertyVsToiletryModels = propertyVsToiletryConverter.entityListToModelList(propertyVsToiletryDAO.fetchListBySubCiteria(alliasMap));
+
+			} catch (Exception e) {
+				if (logger.isInfoEnabled()) {
+					logger.info("Exception in fetchPropertyVsToiletryList -- "+Util.errorToString(e));
+				}
+			}
+			
+			if (logger.isInfoEnabled()) {
+				logger.info("fetchPropertyVsToiletryList -- END");
+			}
+			
+		return propertyVsToiletryModels;
 	}
 
 	@Override
