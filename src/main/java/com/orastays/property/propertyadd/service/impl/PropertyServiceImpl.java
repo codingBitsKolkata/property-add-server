@@ -43,6 +43,9 @@ import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.ContactPurposeModel;
+import com.orastays.property.propertyadd.model.CountryModel;
+import com.orastays.property.propertyadd.model.CountryVsStateModel;
+import com.orastays.property.propertyadd.model.DocumentModel;
 import com.orastays.property.propertyadd.model.PriceDropModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
@@ -65,6 +68,7 @@ import com.orastays.property.propertyadd.model.RoomVsSpecialitiesModel;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
 import com.orastays.property.propertyadd.model.SpecialExperienceModel;
 import com.orastays.property.propertyadd.model.SpecialtiesModel;
+import com.orastays.property.propertyadd.model.StateVsCityModel;
 import com.orastays.property.propertyadd.model.StayTypeModel;
 import com.orastays.property.propertyadd.model.auth.UserModel;
 import com.orastays.property.propertyadd.model.booking.BookingModel;
@@ -144,6 +148,101 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		
 		return contactPurposeModels;
 	}
+	
+	
+	@Override
+	public List<CountryModel> fetchCountryList() throws FormExceptions {
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchCountryList -- START");
+		}
+		
+		List<CountryModel> countryModels = null;
+		
+		try {
+			Map<String, String> innerMap1 = new LinkedHashMap<>();
+			innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+	
+			Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+			outerMap1.put("eq", innerMap1);
+	
+			Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+			alliasMap.put(entitymanagerPackagesToScan+".CountryEntity", outerMap1);
+			
+			countryModels = countryConverter.entityListToModelList(countryDAO.fetchListBySubCiteria(alliasMap));
+
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchCountryList -- "+Util.errorToString(e));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchCountryList -- END");
+		}
+		
+		return countryModels;
+	}
+	
+	
+	@Override
+	public List<CountryVsStateModel> fetchStateByCountry(CountryModel countryModel) {
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchBannersByPage -- START");
+		}
+		
+		List<CountryVsStateModel> countryVsStateModels=null;
+		try {
+		Map<String,String> innerMap1=new LinkedHashMap<>();
+		innerMap1.put("status", String.valueOf(Status.ACTIVE.ordinal()));
+		innerMap1.put("countryId", countryModel.getCountryId());
+		
+		Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+		outerMap1.put("eq", innerMap1);
+		
+		Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+		alliasMap.put(entitymanagerPackagesToScan+".CountryVsStateEntity", outerMap1);
+
+		countryVsStateModels = countryVsStateConverter.entityListToModelList(countryVsStateDAO.fetchListBySubCiteria(alliasMap));
+		} catch (Exception e) {
+		}
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchBannersByPage -- END");
+		}
+		return countryVsStateModels;
+		
+	}
+	
+	@Override
+	public List<StateVsCityModel> fetchCityByState(String state) {
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchBannersByPage -- START");
+		}
+		
+		List<StateVsCityModel> stateVsCityModels=null;
+		try {
+		Map<String,String> innerMap1=new LinkedHashMap<>();
+		innerMap1.put("status", String.valueOf(Status.ACTIVE.ordinal()));
+		innerMap1.put("cvsId", state);
+		
+		Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+		outerMap1.put("eq", innerMap1);
+		
+		Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+		alliasMap.put(entitymanagerPackagesToScan+".StateVsCityEntity", outerMap1);
+
+		stateVsCityModels = stateVsCityConverter.entityListToModelList(stateVsCityDAO.fetchListBySubCiteria(alliasMap));
+		} catch (Exception e) {
+		}
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchBannersByPage -- END");
+		}
+		return stateVsCityModels;
+		
+	}
+	
 	
 	@Override
 	public List<StayTypeModel> fetchStayTypeList(CommonModel commonModel) throws FormExceptions {
@@ -346,6 +445,43 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 		}
 		
 		return specialExperienceModels;
+	}
+	
+	
+	@Override
+	public List<DocumentModel> fetchDocumentList(CommonModel commonModel) throws FormExceptions {
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchDocumentList -- START");
+		}
+		
+		propertyValidation.validateLanguageWithUserToken(commonModel);
+		List<DocumentModel> documentModels = null;
+		
+		try {
+			Map<String, String> innerMap1 = new LinkedHashMap<>();
+			innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
+			innerMap1.put(PropertyAddConstant.LANGUAGEID, commonModel.getLanguageId());
+	
+			Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
+			outerMap1.put("eq", innerMap1);
+	
+			Map<String, Map<String, Map<String, String>>> alliasMap = new LinkedHashMap<>();
+			alliasMap.put(entitymanagerPackagesToScan+".DocumentEntity", outerMap1);
+	
+			documentModels = documentConverter.entityListToModelList(documentDAO.fetchListBySubCiteria(alliasMap));
+
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in fetchSpecialExperienceList -- "+Util.errorToString(e));
+			}
+		}
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchSpecialExperienceList -- END");
+		}
+		
+		return documentModels;
 	}
 	
 	@Override

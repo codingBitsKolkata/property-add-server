@@ -33,5 +33,5 @@ public class PropertyVsToiletryModel extends CommonModel {
 	private String userId;
 	
 	@JsonProperty("property")
-	private PropertyEntity propertyEntity;
+	private PropertyModel propertyModel;
 }

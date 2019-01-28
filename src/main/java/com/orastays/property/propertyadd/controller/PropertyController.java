@@ -24,6 +24,9 @@ import com.orastays.property.propertyadd.model.AmenitiesModel;
 import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.ContactPurposeModel;
+import com.orastays.property.propertyadd.model.CountryModel;
+import com.orastays.property.propertyadd.model.CountryVsStateModel;
+import com.orastays.property.propertyadd.model.DocumentModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
 import com.orastays.property.propertyadd.model.PropertyVsToiletryModel;
@@ -32,6 +35,7 @@ import com.orastays.property.propertyadd.model.RoomCategoryModel;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
 import com.orastays.property.propertyadd.model.SpecialExperienceModel;
 import com.orastays.property.propertyadd.model.SpecialtiesModel;
+import com.orastays.property.propertyadd.model.StateVsCityModel;
 import com.orastays.property.propertyadd.model.StayTypeModel;
 import com.orastays.property.propertyadd.model.booking.BookingModel;
 
@@ -152,6 +156,140 @@ public class PropertyController extends BaseController{
 			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping(value = "/fetch-country", produces = "application/json")
+	@ApiOperation(value = "Fetch Country", response = ResponseModel.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 201, message = "Please Try after Sometime!!!") })
+	public ResponseEntity<ResponseModel> fetchCountryList() {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchCountryList -- START");
+		}
+
+		ResponseModel responseModel = new ResponseModel();
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Fetch Country List", request);
+		try {
+		
+			List<CountryModel> countryModels = propertyService.fetchCountryList();
+			responseModel.setResponseBody(countryModels);
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+			
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Fetch Country List -- "+Util.errorToString(fe));
+				}
+				break;
+			}
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Fetch Country List  -- "+Util.errorToString(e));
+			}
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
+		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Fetch Country List", request);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchCountryList -- END");
+		}
+		
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
+			return new ResponseEntity<>(responseModel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@PostMapping(value = "/fetch-state-by-country", produces = "application/json")
+	@ApiOperation(value = "Fetch State By Country", response = ResponseModel.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+	@ApiResponse(code = 201, message = "Please Try after Sometime!!!") })
+	public ResponseEntity<ResponseModel> fetchStateByCountry(@RequestBody CountryModel countryModel) {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchStateByCountry -- START");
+		}
+
+		ResponseModel responseModel = new ResponseModel();
+		Util.printLog(countryModel, PropertyAddConstant.INCOMING, "Fetch State By Country", request);
+		try {
+		
+			List<CountryVsStateModel> countryVsStateModels = propertyService.fetchStateByCountry(countryModel);
+			responseModel.setResponseBody(countryVsStateModels);
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+			
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Fetch State By Country -- "+Util.errorToString(e));
+			}
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
+		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Fetch State By Country", request);
+
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchStateByCountry -- END");
+		}
+		
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
+			return new ResponseEntity<>(responseModel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+		}
+		
+ 	}
+	
+	@GetMapping(value = "/fetch-city-by-state", produces = "application/json")
+	@ApiOperation(value = "Fetch City By State", response = ResponseModel.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+	@ApiResponse(code = 201, message = "Please Try after Sometime!!!") })
+	public ResponseEntity<ResponseModel> fetchCityByState(@RequestParam(value = "cvsId", required = true) String cvsId) {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchCityByState -- START");
+		}
+
+		ResponseModel responseModel = new ResponseModel();
+		Util.printLog(cvsId, PropertyAddConstant.INCOMING, "Fetch City By State", request);
+		try {
+		
+			List<StateVsCityModel> StateVsCityModels = propertyService.fetchCityByState(cvsId);
+			responseModel.setResponseBody(StateVsCityModels);
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+			
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Fetch City By State -- "+Util.errorToString(e));
+			}
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
+		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Fetch City By State", request);
+
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchCityByState -- END");
+		}
+		
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
+			return new ResponseEntity<>(responseModel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+		}
+		
+ 	}
+	
+	
 	
 	
 	@PostMapping(value = "/fetch-stay-types", produces = "application/json")
@@ -521,6 +659,60 @@ public class PropertyController extends BaseController{
 			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@PostMapping(value = "/fetch-document", produces = "application/json")
+	@ApiOperation(value = "Document Listing", response = ResponseModel.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
+			@ApiResponse(code = 202, message = "Token Required"),
+			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue..."),
+			@ApiResponse(code = 204, message = "Language Id Required"),
+			@ApiResponse(code = 205, message = "Invalid Language ID") })
+	public ResponseEntity<ResponseModel> fetchDocumentList(@RequestBody CommonModel commonModel) {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchDocumentList -- START");
+		}
+		
+		ResponseModel responseModel = new ResponseModel();
+		Util.printLog(responseModel, PropertyAddConstant.INCOMING, "Document Listing", request);
+		try {
+			List<DocumentModel> documentModels = propertyService.fetchDocumentList(commonModel);
+			responseModel.setResponseBody(documentModels);
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Document Listing -- "+Util.errorToString(fe));
+				}
+				break;
+			}
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Document Listing -- "+Util.errorToString(e));
+			}
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
+		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Document Listing", request);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchDocumentList -- END");
+		}
+		
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
+			return new ResponseEntity<>(responseModel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	
 	@PostMapping(value = "/fetch-space-rule", produces = "application/json")
 	@ApiOperation(value = "Space Rule Listing", response = ResponseModel.class)

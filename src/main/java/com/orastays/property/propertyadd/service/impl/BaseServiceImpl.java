@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import com.orastays.property.propertyadd.converter.AmenitiesConverter;
 import com.orastays.property.propertyadd.converter.CancellationSlabConverter;
 import com.orastays.property.propertyadd.converter.ContactPurposeConverter;
+import com.orastays.property.propertyadd.converter.CountryConverter;
+import com.orastays.property.propertyadd.converter.CountryVsStateConverter;
+import com.orastays.property.propertyadd.converter.DocumentConverter;
 import com.orastays.property.propertyadd.converter.HostVsAccountConverter;
 import com.orastays.property.propertyadd.converter.PriceDropConverter;
 import com.orastays.property.propertyadd.converter.PropertyConverter;
@@ -29,10 +32,14 @@ import com.orastays.property.propertyadd.converter.RoomVsSpecialitiesConverter;
 import com.orastays.property.propertyadd.converter.SpaceRuleConverter;
 import com.orastays.property.propertyadd.converter.SpecialExperienceConverter;
 import com.orastays.property.propertyadd.converter.SpecialtiesConverter;
+import com.orastays.property.propertyadd.converter.StateVsCityConverter;
 import com.orastays.property.propertyadd.converter.StayTypeConverter;
 import com.orastays.property.propertyadd.dao.AmenitiesDAO;
 import com.orastays.property.propertyadd.dao.CancellationSlabDAO;
 import com.orastays.property.propertyadd.dao.ContactPurposeDAO;
+import com.orastays.property.propertyadd.dao.CountryDAO;
+import com.orastays.property.propertyadd.dao.CountryVsStateDAO;
+import com.orastays.property.propertyadd.dao.DocumentDAO;
 import com.orastays.property.propertyadd.dao.HostVsAccountDAO;
 import com.orastays.property.propertyadd.dao.PriceDropDAO;
 import com.orastays.property.propertyadd.dao.PropertyDAO;
@@ -56,6 +63,7 @@ import com.orastays.property.propertyadd.dao.RoomVsSpecialitiesDAO;
 import com.orastays.property.propertyadd.dao.SpaceRuleDAO;
 import com.orastays.property.propertyadd.dao.SpecialExperienceDAO;
 import com.orastays.property.propertyadd.dao.SpecialtiesDAO;
+import com.orastays.property.propertyadd.dao.StateVsCityDAO;
 import com.orastays.property.propertyadd.dao.StayTypeDAO;
 import com.orastays.property.propertyadd.helper.AzureFileUpload;
 import com.orastays.property.propertyadd.validation.PropertyValidation;
@@ -79,6 +87,12 @@ public abstract class BaseServiceImpl {
 
 	@Autowired
 	protected StayTypeDAO stayTypeDAO;
+	
+	@Autowired
+	protected CountryConverter countryConverter;
+
+	@Autowired
+	protected CountryDAO countryDAO;
 
 	@Autowired
 	protected AmenitiesConverter amenitiesConverter;
@@ -103,6 +117,18 @@ public abstract class BaseServiceImpl {
 
 	@Autowired
 	protected SpecialtiesDAO specialtiesDAO;
+	
+	@Autowired
+	protected CountryVsStateConverter countryVsStateConverter;
+
+	@Autowired
+	protected CountryVsStateDAO countryVsStateDAO;
+	
+	@Autowired
+	protected StateVsCityConverter stateVsCityConverter;
+
+	@Autowired
+	protected StateVsCityDAO stateVsCityDAO;
 
 	@Autowired
 	protected RoomCategoryConverter roomCategoryConverter;
@@ -115,6 +141,12 @@ public abstract class BaseServiceImpl {
 
 	@Autowired
 	protected CancellationSlabDAO cancellationSlabDAO;
+	
+	@Autowired
+	protected DocumentConverter documentConverter;
+
+	@Autowired
+	protected DocumentDAO documentDAO;
 
 	@Autowired
 	protected PriceDropDAO priceDropDAO;

@@ -122,7 +122,7 @@ public class PropertyModel extends CommonModel {
 	private List<PropertyVsSpecialExperienceModel> propertyVsSpecialExperienceModels;
 	
 	@JsonProperty("propertyVsToiletrys")
-	private PropertyVsToiletryEntity propertyVsToiletryEntity;
+	private PropertyVsToiletryModel propertyVsToiletryModel;
 
 	@JsonProperty("rooms")
 	private List<RoomModel> roomModels;
