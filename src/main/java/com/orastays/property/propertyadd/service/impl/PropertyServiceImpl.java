@@ -630,8 +630,8 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 	@Override
 	public List<PriceDropModel> fetchPriceDropList() throws FormExceptions{
 		
-		if (logger.isDebugEnabled()) {
-			logger.debug("fetchPriceDropList -- Start");
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchPriceDropList -- Start");
 		}
 		
 		List<PriceDropModel> priceDropModels = null;
@@ -654,8 +654,8 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			}
 		}
 		
-		if (logger.isDebugEnabled()) {
-			logger.debug("fetchPriceDropList -- End");
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchPriceDropList -- End");
 		}
 		
 		return priceDropModels;
@@ -664,8 +664,8 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 	@Override
 	public void saveProperty(PropertyModel propertyModel) throws FormExceptions {
 		
-		if (logger.isDebugEnabled()) {
-			logger.debug("saveProperty -- Start");
+		if (logger.isInfoEnabled()) {
+			logger.info("saveProperty -- Start");
 		}
 		
 		UserModel userModel = propertyValidation.validatePropertyAdd(propertyModel);
@@ -809,8 +809,8 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 			
 		}
 		
-		if (logger.isDebugEnabled()) {
-			logger.debug("saveProperty -- End");
+		if (logger.isInfoEnabled()) {
+			logger.info("saveProperty -- End");
 		}
 	}
 

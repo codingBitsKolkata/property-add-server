@@ -39,8 +39,8 @@ public class AzureFileUpload {
 	
 	public String uploadFileByAzure(MultipartFile multipartFileInput) throws FormExceptions {
 		
-		if (logger.isDebugEnabled()) {
-			logger.debug("uploadFileByAzure -- START");
+		if (logger.isInfoEnabled()) {
+			logger.info("uploadFileByAzure -- START");
 		}
 		
 		
@@ -64,8 +64,8 @@ public class AzureFileUpload {
 		    }
 		 
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("uploadFileByAzure -- END");
+		if (logger.isInfoEnabled()) {
+			logger.info("uploadFileByAzure -- END");
 		}
 		
 		return finalImageURL;
@@ -73,8 +73,8 @@ public class AzureFileUpload {
 	
 	public String uploadToAzureStorage(CloudStorageAccount cloudStorageAccount, MultipartFile file, String fileName) throws FormExceptions{
 	   
-		if (logger.isDebugEnabled()) {
-			logger.debug("uploadToAzureStorage -- START");
+		if (logger.isInfoEnabled()) {
+			logger.info("uploadToAzureStorage -- START");
 		}
 		
 		
@@ -99,8 +99,8 @@ public class AzureFileUpload {
 			throw new FormExceptions(exceptions);
 	    }
 	    
-	    if (logger.isDebugEnabled()) {
-			logger.debug("uploadToAzureStorage -- END");
+	    if (logger.isInfoEnabled()) {
+			logger.info("uploadToAzureStorage -- END");
 		}
 
 	    return uri;
