@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.orastays.property.propertyadd.dao.AmenitiesDAO;
 import com.orastays.property.propertyadd.dao.CancellationSlabDAO;
+import com.orastays.property.propertyadd.dao.CityDAO;
 import com.orastays.property.propertyadd.dao.DocumentDAO;
 import com.orastays.property.propertyadd.dao.HostVsAccountDAO;
 import com.orastays.property.propertyadd.dao.MealPlanDAO;
@@ -147,6 +148,8 @@ public class AuthorizeUserValidation {
 	@Autowired
 	protected AzureApp azureApp;
 	
+	@Autowired
+	protected CityDAO cityDAO;
 	
 	public UserModel getUserDetails(String userToken) throws FormExceptions {
 

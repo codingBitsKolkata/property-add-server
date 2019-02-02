@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.orastays.property.propertyadd.entity.AmenitiesEntity;
 import com.orastays.property.propertyadd.entity.CancellationSlabEntity;
+import com.orastays.property.propertyadd.entity.CityEntity;
 import com.orastays.property.propertyadd.entity.DocumentEntity;
 import com.orastays.property.propertyadd.entity.HostVsAccountEntity;
 import com.orastays.property.propertyadd.entity.MealPlanEntity;
@@ -882,6 +883,30 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					if (StringUtils.isBlank(propertyModel.getName())) {
 						exceptions.put(messageUtil.getBundle("property.name.null.code"), new Exception(messageUtil.getBundle("property.name.null.message")));
 					} 
+					
+					// Validate Property Location
+					if (StringUtils.isBlank(propertyModel.getLocation())) {
+						exceptions.put(messageUtil.getBundle("location.null.code"), new Exception(messageUtil.getBundle("location.null.message")));
+					}
+					
+					// Validate Property City
+					if(Objects.nonNull(propertyModel.getCityModel())) {
+						if (StringUtils.isBlank(propertyModel.getCityModel().getCityId())) {
+							exceptions.put(messageUtil.getBundle("city.id.null.code"), new Exception(messageUtil.getBundle("city.id.null.message")));
+						} else {
+							CityEntity cityEntity = cityDAO.find(Long.parseLong(propertyModel.getCityModel().getCityId()));
+							if(Objects.isNull(cityEntity)) {
+								exceptions.put(messageUtil.getBundle("city.id.invalid.code"), new Exception(messageUtil.getBundle("city.id.invalid.message")));
+							} else {
+								if(cityEntity.getStatus() == Status.ACTIVE.ordinal()) {
+									exceptions.put(messageUtil.getBundle("city.id.invalid.code"), new Exception(messageUtil.getBundle("city.id.invalid.message")));
+								}
+							}
+						}
+					} else {
+						exceptions.put(messageUtil.getBundle("city.id.null.code"), new Exception(messageUtil.getBundle("city.id.null.message")));
+					}
+					
 		
 					propertyModel.setOraname("ORA"+new Date().getTime());
 		
