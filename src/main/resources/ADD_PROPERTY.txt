@@ -21,6 +21,7 @@
   "landline": "033-25478451",
   "altEmail": "sudeep@orastays.com",
   "advancePercentage": "100",
+  "location": "sector v",
   "sexCategory": "BOTH",
   "propertyType": {
     "name": "Hotel",
@@ -321,8 +322,12 @@
   "altEmail": "sudeep@orastays.com",
   "advancePercentage": "100",
   "sexCategory": "BOTH",
+  "location": "sector v",
   "propertyType": {
     "propertyTypeId": "1"
+  },
+  "City": {
+    "cityId": "1"
   },
   "propertyVsDescriptions": [
     {
