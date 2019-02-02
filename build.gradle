@@ -36,7 +36,7 @@ task fatJar(type: Jar) {
 	manifest {
         attributes 'Implementation-Title': 'PropertyAdd',  
         	//'Implementation-Version': version,
-        	'Main-Class': 'com.orastays.property.propertyadd.PropertyAddApplication'
+        	'Main-Class': 'com.orastays.propertyadd.PropertyAddApplication'
     }
     baseName = project.name
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
