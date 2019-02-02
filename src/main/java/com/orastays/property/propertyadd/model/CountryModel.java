@@ -27,7 +27,7 @@ public class CountryModel extends CommonModel {
 	@JsonProperty("countryName")
 	private String countryName;
 	
-	@JsonProperty("countryVsStates")
-	private List<CountryVsStateModel> countryVsStateModels;
+	@JsonProperty("states")
+	private List<StateModel> stateModels;
 	
 }

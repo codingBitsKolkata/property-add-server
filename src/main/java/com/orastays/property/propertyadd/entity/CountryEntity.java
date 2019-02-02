@@ -42,8 +42,8 @@ public class CountryEntity extends CommonEntity {
 	private String countryName;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "countryEntity", cascade = { CascadeType.ALL })
-	@JsonProperty("countryVsStates")
-	private List<CountryVsStateEntity> countryVsStateEntities;
+	@JsonProperty("states")
+	private List<StateEntity> stateEntities;
 	
 	@Override
 	public String toString() {

@@ -124,10 +124,19 @@ public class PropertyEntity extends CommonEntity {
 	@JsonProperty("advancePercentage")
 	private String advancePercentage;
 
+	@Column(name = "location")
+	@JsonProperty("location")
+	private String location;
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "property_type_id", nullable = false)
 	@JsonProperty("propertyType")
 	private PropertyTypeEntity propertyTypeEntity;
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "city_id", nullable = false)
+	@JsonProperty("city")
+	private CityEntity cityEntity;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "stay_type_id", nullable = false)

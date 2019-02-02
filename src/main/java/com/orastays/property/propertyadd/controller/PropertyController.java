@@ -25,7 +25,7 @@ import com.orastays.property.propertyadd.model.CancellationSlabModel;
 import com.orastays.property.propertyadd.model.CommonModel;
 import com.orastays.property.propertyadd.model.ContactPurposeModel;
 import com.orastays.property.propertyadd.model.CountryModel;
-import com.orastays.property.propertyadd.model.CountryVsStateModel;
+import com.orastays.property.propertyadd.model.StateModel;
 import com.orastays.property.propertyadd.model.DocumentModel;
 import com.orastays.property.propertyadd.model.PropertyModel;
 import com.orastays.property.propertyadd.model.PropertyTypeModel;
@@ -35,7 +35,7 @@ import com.orastays.property.propertyadd.model.RoomCategoryModel;
 import com.orastays.property.propertyadd.model.SpaceRuleModel;
 import com.orastays.property.propertyadd.model.SpecialExperienceModel;
 import com.orastays.property.propertyadd.model.SpecialtiesModel;
-import com.orastays.property.propertyadd.model.StateVsCityModel;
+import com.orastays.property.propertyadd.model.CityModel;
 import com.orastays.property.propertyadd.model.StayTypeModel;
 import com.orastays.property.propertyadd.model.booking.BookingModel;
 
@@ -221,7 +221,7 @@ public class PropertyController extends BaseController{
 		Util.printLog(countryModel, PropertyAddConstant.INCOMING, "Fetch State By Country", request);
 		try {
 		
-			List<CountryVsStateModel> countryVsStateModels = propertyService.fetchStateByCountry(countryModel);
+			List<StateModel> countryVsStateModels = propertyService.fetchStateByCountry(countryModel);
 			responseModel.setResponseBody(countryVsStateModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
@@ -248,21 +248,21 @@ public class PropertyController extends BaseController{
 		
  	}
 	
-	@GetMapping(value = "/fetch-city-by-state", produces = "application/json")
+	@PostMapping(value = "/fetch-city-by-state", produces = "application/json")
 	@ApiOperation(value = "Fetch City By State", response = ResponseModel.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
 	@ApiResponse(code = 201, message = "Please Try after Sometime!!!") })
-	public ResponseEntity<ResponseModel> fetchCityByState(@RequestParam(value = "cvsId", required = true) String cvsId) {
+	public ResponseEntity<ResponseModel> fetchCityByState(@RequestBody StateModel stateModel) {
 
 		if (logger.isInfoEnabled()) {
 			logger.info("fetchCityByState -- START");
 		}
 
 		ResponseModel responseModel = new ResponseModel();
-		Util.printLog(cvsId, PropertyAddConstant.INCOMING, "Fetch City By State", request);
+		Util.printLog(stateModel, PropertyAddConstant.INCOMING, "Fetch City By State", request);
 		try {
 		
-			List<StateVsCityModel> StateVsCityModels = propertyService.fetchCityByState(cvsId);
+			List<CityModel> StateVsCityModels = propertyService.fetchCityByState(stateModel);
 			responseModel.setResponseBody(StateVsCityModels);
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
@@ -288,9 +288,6 @@ public class PropertyController extends BaseController{
 		}
 		
  	}
-	
-	
-	
 	
 	@PostMapping(value = "/fetch-stay-types", produces = "application/json")
 	@ApiOperation(value = "Stay Type Listing", response = ResponseModel.class)

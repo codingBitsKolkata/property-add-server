@@ -873,6 +873,9 @@ public class PropertyValidation extends AuthorizeUserValidation {
 					} else {
 						exceptions.put(messageUtil.getBundle("token.invalid.code"), new Exception(messageUtil.getBundle("token.invalid.message")));
 					}
+					
+					if (exceptions.size() > 0)
+						throw new FormExceptions(exceptions);
 				
 				
 					// Validate Property Name
@@ -1858,17 +1861,17 @@ public class PropertyValidation extends AuthorizeUserValidation {
 			
 		} else { 
 				 exceptions.put(messageUtil.getBundle("property.null.code"), new Exception(messageUtil.getBundle("property.null.message"))); 
-		 }
+		}
 			
 	
-			if (exceptions.size() > 0)
-				throw new FormExceptions(exceptions);
-	
-			if (logger.isInfoEnabled()) {
-				logger.info("validatePropertyAdd -- End");
-			}
-			
-			return userModel;
+		if (exceptions.size() > 0)
+			throw new FormExceptions(exceptions);
+
+		if (logger.isInfoEnabled()) {
+			logger.info("validatePropertyAdd -- End");
+		}
+		
+		return userModel;
 		
 	}
 	

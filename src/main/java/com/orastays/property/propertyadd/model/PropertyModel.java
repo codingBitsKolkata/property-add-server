@@ -2,15 +2,14 @@ package com.orastays.property.propertyadd.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.orastays.property.propertyadd.entity.PropertyVsToiletryEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Getter
 @Setter
@@ -63,7 +62,7 @@ public class PropertyModel extends CommonModel {
 
 	@JsonProperty("coverImageUrl")
 	private String coverImageUrl;
-	
+
 	@JsonProperty("priceDrop")
 	private String priceDrop;
 
@@ -87,6 +86,12 @@ public class PropertyModel extends CommonModel {
 
 	@JsonProperty("advancePercentage")
 	private String advancePercentage;
+
+	@JsonProperty("location")
+	private String location;
+
+	@JsonProperty("cityType")
+	private CityModel cityModel;
 
 	@JsonProperty("propertyType")
 	private PropertyTypeModel propertyTypeModel;
@@ -120,7 +125,7 @@ public class PropertyModel extends CommonModel {
 
 	@JsonProperty("propertyVsSpecialExperiences")
 	private List<PropertyVsSpecialExperienceModel> propertyVsSpecialExperienceModels;
-	
+
 	@JsonProperty("propertyVsToiletrys")
 	private PropertyVsToiletryModel propertyVsToiletryModel;
 
