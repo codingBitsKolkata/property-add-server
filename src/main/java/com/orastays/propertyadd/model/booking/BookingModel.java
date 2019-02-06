@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.orastays.propertyadd.model.CommonModel;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -41,74 +42,71 @@ public class BookingModel extends CommonModel {
 
 	@JsonProperty("numOfDays")
 	private String numOfDays;
+	
+	@JsonProperty("userFinalPrice")
+	private String userFinalPrice;
 
-	@JsonProperty("totalPaybleWithoutGST")
-	private String totalPaybleWithoutGST;
+	@JsonProperty("oraSpecialOfferPerc")
+	private String oraSpecialOfferPerc;
+	
+	@JsonProperty("oraSpecialOfferAmt")
+	private String oraSpecialOfferAmt;
 
-	@JsonProperty("totalPaybleWithGST")
-	private String totalPaybleWithGST;
+	@JsonProperty("convenienceFeePerc")
+	private String convenienceFeePerc;
 
-	@JsonProperty("grandTotal")
-	private String grandTotal;
+	@JsonProperty("convenienceFeeAmt")
+	private String convenienceFeeAmt;
+	
+	@JsonProperty("convenienceGstAmt")
+	private String convenienceGstAmt;
 
-	@JsonProperty("conveniences")
-	private ConvenienceModel convenienceModel;
+	@JsonProperty("totalPrice")
+	private String totalPrice;
 
 	@JsonProperty("bookingInfos")
 	private BookingInfoModel bookingInfoModel;
 
 	@JsonProperty("bookingApproval")
 	private String bookingApproval;
-
+	
 	@JsonProperty("convenienceAmtWgst")
 	private String convenienceAmtWgst;
-
+	
 	@JsonProperty("bookingVsRooms")
-	private List<BookingVsRoomModel> bookingVsRoomModels;
-
+	private List<BookingVsRoomModel> bookingVsRooms;
+	
 	@JsonProperty("bookingVsPayments")
 	private List<BookingVsPaymentModel> bookingVsPaymentModels;
-
+	
 	@JsonProperty("formOfPayment")
 	private FormOfPayment formOfPayment;
-
-	@JsonProperty("userInfo")
-	private UserInfo userInfo;
-
+	
 	@JsonProperty("cancellations")
 	private CancellationModel cancellationModel;
-
-	@JsonProperty("oraAmount")
-	private String oraAmount;
-
-	@JsonProperty("oraDiscount")
-	private String oraDiscount;
-
-	@JsonProperty("hostDiscount")
-	private String hostDiscount;
-
-	@JsonProperty("offerAmount")
-	private String offerAmount;
-
-	@JsonProperty("gstPercentage")
-	private String gstPercentage;
-
-	@JsonProperty("gstAmount")
-	private String gstAmount;
-
-	@JsonProperty("priceDropAmount")
-	private String priceDropAmount;
-
-	@JsonProperty("priceDropPercentage")
-	private String priceDropPercentage;
-
-	@JsonProperty("totalAmount")
-	private String totalAmount;
+	
+	// Use to Call Booking Server Internally
+	@JsonProperty("accomodationType")
+	private String accomodationType;
+	
+	@JsonProperty("failureURL")
+	private String failureURL;
+	
+	@JsonProperty("successURL")
+	private String successURL;
 	
 	@JsonProperty("propertyName")
 	private String propertyName;
 	
+	@JsonProperty("oraname")
+	private String oraname;
+
 	@JsonProperty("propertyAddress")
 	private String propertyAddress;
-
+	
+	@JsonProperty("hostPrice")
+	private String hostPrice;
 }
+
+
+

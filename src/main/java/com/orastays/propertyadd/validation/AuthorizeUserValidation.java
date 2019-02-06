@@ -244,7 +244,7 @@ public class AuthorizeUserValidation {
 		return commonModel;
 	}
 	
-	public List<BookingModel> getPropertyBookingList(String propertyId) throws FormExceptions {
+	public List<BookingModel> getPropertyBookingList(BookingModel bookingModel) throws FormExceptions {
 
 		if (logger.isInfoEnabled()) {
 			logger.info("getPropertyBookingList -- START");
@@ -252,8 +252,6 @@ public class AuthorizeUserValidation {
 		
 		Map<String, Exception> exceptions = new LinkedHashMap<>();
 		List<BookingModel> bookingModels = null;
-		BookingModel bookingModel = new BookingModel();
-		bookingModel.setPropertyId(propertyId);
 		try {
 			
 			String url = messageUtil.getBundle("booking.server.url") +"get-property-bookings";

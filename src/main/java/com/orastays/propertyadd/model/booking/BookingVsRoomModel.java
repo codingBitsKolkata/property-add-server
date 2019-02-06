@@ -3,6 +3,7 @@ package com.orastays.propertyadd.model.booking;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.orastays.propertyadd.model.CommonModel;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,16 +25,28 @@ public class BookingVsRoomModel extends CommonModel {
 	
 	@JsonProperty("roomId")
 	private String roomId;
-
-	@JsonProperty("numOfAdult")
-	private String numOfAdult;
-
-	@JsonProperty("numOfCot")
-	private String numOfCot;
 	
-	@JsonProperty("roomGSTSlabPrice")
-	private String roomGSTSlabPrice;
+	@JsonProperty("hostBasePrice")
+	private String hostBasePrice;
 
+	@JsonProperty("hostDiscount")
+	private String hostDiscount;
+
+	@JsonProperty("hostPrice")
+	private String hostPrice;
+	
+	@JsonProperty("oraMarkUp")
+	private String oraMarkUp;
+
+	@JsonProperty("oraPrice")
+	private String oraPrice;
+
+	@JsonProperty("oraDiscount")
+	private String oraDiscount;
+	
+	@JsonProperty("oraFinalPrice")
+	private String oraFinalPrice;
+	
 	@JsonProperty("sgst")
 	private String sgst;
 
@@ -42,9 +55,21 @@ public class BookingVsRoomModel extends CommonModel {
 
 	@JsonProperty("igst")
 	private String igst;
+	
+	@JsonProperty("gstAmt")
+	private String gstAmt;
+	
+	@JsonProperty("totalAmt")
+	private String totalAmt;
 
-	@JsonProperty("roomActualPrice")
-	private String roomActualPrice;
+	@JsonProperty("numOfAdult")
+	private String numOfAdult;
+	
+	@JsonProperty("numOfChild")
+	private String numOfChild;
+
+	@JsonProperty("numOfCot")
+	private String numOfCot;
 	
 	@JsonProperty("bookings")
 	private BookingModel bookingModel;
@@ -52,9 +77,6 @@ public class BookingVsRoomModel extends CommonModel {
 	@JsonProperty("sacCodes")
 	private SacCodeModel sacCodeModel;
 
-	@JsonProperty("gstSlabs")
-	private GstSlabModel gstSlabModel;
-	
 	@JsonProperty("accommodation")
 	private AccommodationModel accommodationModel;
 	
@@ -72,9 +94,5 @@ public class BookingVsRoomModel extends CommonModel {
 	
 	@JsonProperty("cancellationVsRooms")
 	private CancellationVsRoomModel cancellationVsRoomModel;
-	
-	@JsonProperty("roomVsOfferId")
-	private String roomVsOfferId;
-	
 	
 }

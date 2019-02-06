@@ -66,6 +66,7 @@ import com.orastays.propertyadd.dao.SpecialtiesDAO;
 import com.orastays.propertyadd.dao.StateDAO;
 import com.orastays.propertyadd.dao.StayTypeDAO;
 import com.orastays.propertyadd.helper.AzureFileUpload;
+import com.orastays.propertyadd.helper.DateCalculation;
 import com.orastays.propertyadd.helper.MailHelper;
 import com.orastays.propertyadd.helper.MessageUtil;
 import com.orastays.propertyadd.validation.PropertyValidation;
@@ -78,6 +79,9 @@ public abstract class BaseServiceImpl {
 	
 	@Autowired
 	protected MessageUtil messageUtil;
+	
+	@Autowired
+	protected DateCalculation dateCalculation;
 
 	@Autowired
 	protected PropertyValidation propertyValidation;

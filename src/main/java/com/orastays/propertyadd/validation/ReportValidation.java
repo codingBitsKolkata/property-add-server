@@ -20,11 +20,11 @@ import com.orastays.propertyadd.helper.PropertyAddConstant;
 import com.orastays.propertyadd.helper.Status;
 import com.orastays.propertyadd.helper.UserType;
 import com.orastays.propertyadd.helper.Util;
-import com.orastays.propertyadd.model.CommonModel;
 import com.orastays.propertyadd.model.PropertyModel;
 import com.orastays.propertyadd.model.auth.UserModel;
 import com.orastays.propertyadd.model.auth.UserVsTypeModel;
 import com.orastays.propertyadd.model.booking.BookingModel;
+import com.orastays.propertyadd.model.booking.BookingVsRoomModel;
 import com.orastays.propertyadd.model.booking.CancellationModel;
 
 @Component
@@ -121,6 +121,7 @@ public class ReportValidation extends AuthorizeUserValidation {
 											if(Objects.nonNull(propertyEntity)){
 												cancellationModel.getBookingModel().setPropertyName(propertyEntity.getName());
 												cancellationModel.getBookingModel().setPropertyAddress(propertyEntity.getAddress());
+												cancellationModel.getBookingModel().setOraname(propertyEntity.getOraname());
 											}
 											finalCancellationModels.add(cancellationModel);
 											
@@ -212,6 +213,7 @@ public class ReportValidation extends AuthorizeUserValidation {
 												if(Objects.nonNull(propertyEntity)){
 													cancellationModel.getBookingModel().setPropertyName(propertyEntity.getName());
 													cancellationModel.getBookingModel().setPropertyAddress(propertyEntity.getAddress());
+													cancellationModel.getBookingModel().setOraname(propertyEntity.getOraname());
 												}
 												
 												finalCancellationModels.add(cancellationModel);
@@ -240,7 +242,7 @@ public class ReportValidation extends AuthorizeUserValidation {
 		return finalCancellationModels;
 	}
 	
-	public List<BookingModel> validateUserBookingList(CommonModel commonModel) throws FormExceptions {
+	public List<BookingModel> validateUserBookingList(BookingModel bookingModel) throws FormExceptions {
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("validateUserBookingList -- START");
@@ -250,12 +252,12 @@ public class ReportValidation extends AuthorizeUserValidation {
 		List<BookingModel> bookingModels = null;
 		List<BookingModel> finalBookingModels = new ArrayList<>();
 		UserModel userModel = null;
-		if(Objects.nonNull(commonModel)){
+		if(Objects.nonNull(bookingModel)){
 			// Validate User Token
-			if (StringUtils.isBlank(commonModel.getUserToken())) {
+			if (StringUtils.isBlank(bookingModel.getUserToken())) {
 				exceptions.put(messageUtil.getBundle("token.null.code"), new Exception(messageUtil.getBundle("token.null.message")));
 			} else {
-				userModel = getUserDetails(commonModel.getUserToken());
+				userModel = getUserDetails(bookingModel.getUserToken());
 			}
 			
 			// Validate User Login Details
@@ -277,20 +279,21 @@ public class ReportValidation extends AuthorizeUserValidation {
 					} else {
 						bookingModels = getUserBookingList(userModel.getUserId());
 						if(!CollectionUtils.isEmpty(bookingModels)){
-							for(BookingModel bookingModel:bookingModels){
-								if (StringUtils.isBlank(String.valueOf(bookingModel.getPropertyId()))) {
+							for(BookingModel bookingModel2:bookingModels){
+								if (StringUtils.isBlank(String.valueOf(bookingModel2.getPropertyId()))) {
 									exceptions.put(messageUtil.getBundle("property.id.null.code"), new Exception(messageUtil.getBundle("property.id.null.message")));
 								} else {
-										if (!Util.isNumeric(String.valueOf(bookingModel.getPropertyId()))) {
+										if (!Util.isNumeric(String.valueOf(bookingModel2.getPropertyId()))) {
 											exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
 										} else {
-											PropertyEntity propertyEntity = propertyDAO.find(Long.valueOf(bookingModel.getPropertyId()));
+											PropertyEntity propertyEntity = propertyDAO.find(Long.valueOf(bookingModel2.getPropertyId()));
 											
 											BookingModel bModel  = new BookingModel();
-											bModel = bookingModel;
+											bModel = bookingModel2;
 											if(Objects.nonNull(propertyEntity)){
 												bModel.setPropertyName(propertyEntity.getName());
 												bModel.setPropertyAddress(propertyEntity.getAddress());
+												bModel.setOraname(propertyEntity.getOraname());
 											}
 											finalBookingModels.add(bModel);
 										}
@@ -318,7 +321,7 @@ public class ReportValidation extends AuthorizeUserValidation {
 		return finalBookingModels;
 	}
 	
-	public List<BookingModel> validatePropertyBookingList(PropertyModel propertyModel) throws FormExceptions {
+	public List<BookingModel> validatePropertyBookingList(BookingModel bookingModel) throws FormExceptions {
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("validatePropertyBookingList -- Start");
@@ -328,13 +331,13 @@ public class ReportValidation extends AuthorizeUserValidation {
 		List<BookingModel> bookingModels = null;
 		List<BookingModel> finalBookingModels = new ArrayList<>();
 		UserModel userModel = null;
-		if(Objects.nonNull(propertyModel)){
+		if(Objects.nonNull(bookingModel)){
 			
 			// Validate User Token
-			if (StringUtils.isBlank(propertyModel.getUserToken())) {
+			if (StringUtils.isBlank(bookingModel.getUserToken())) {
 				exceptions.put(messageUtil.getBundle("token.null.code"), new Exception(messageUtil.getBundle("token.null.message")));
 			} else {
-				userModel = getUserDetails(propertyModel.getUserToken());
+				userModel = getUserDetails(bookingModel.getUserToken());
 			}
 			
 			// Validate Host Login Details
@@ -362,18 +365,18 @@ public class ReportValidation extends AuthorizeUserValidation {
 			}
 			
 			//Validate Property
-			if (StringUtils.isBlank(String.valueOf(propertyModel.getPropertyId()))) {
+			if (StringUtils.isBlank(String.valueOf(bookingModel.getPropertyId()))) {
 				exceptions.put(messageUtil.getBundle("property.id.null.code"), new Exception(messageUtil.getBundle("property.id.null.message")));
 			} else {
 				
-				if (!Util.isNumeric(String.valueOf(propertyModel.getPropertyId()))) {
+				if (!Util.isNumeric(String.valueOf(bookingModel.getPropertyId()))) {
 					exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
 				} else {
 					PropertyEntity propertyEntity = null;
 					try {
 						Map<String, String> innerMap1 = new LinkedHashMap<>();
 						innerMap1.put(PropertyAddConstant.STATUS, String.valueOf(Status.ACTIVE.ordinal()));
-						innerMap1.put(PropertyAddConstant.PROPERTYID, String.valueOf(propertyModel.getPropertyId()));
+						innerMap1.put(PropertyAddConstant.PROPERTYID, String.valueOf(bookingModel.getPropertyId()));
 				
 						Map<String, Map<String, String>> outerMap1 = new LinkedHashMap<>();
 						outerMap1.put("eq", innerMap1);
@@ -386,15 +389,24 @@ public class ReportValidation extends AuthorizeUserValidation {
 						if (Objects.isNull(propertyEntity)) {
 							exceptions.put(messageUtil.getBundle("property.id.invalid.code"), new Exception(messageUtil.getBundle("property.id.invalid.message")));
 						} else {
-							bookingModels = getPropertyBookingList(String.valueOf(propertyModel.getPropertyId()));
-							if(!CollectionUtils.isEmpty(bookingModels)){
-								for(BookingModel bookingModel:bookingModels){
+							bookingModels = getPropertyBookingList(bookingModel);
+							if(!CollectionUtils.isEmpty(bookingModels)) {
+								Double price = 0.0D;
+								for(BookingModel bookingModel2:bookingModels){
 									
 									BookingModel bModel  = new BookingModel();
-									bModel = bookingModel;
+									bModel = bookingModel2;
 									bModel.setPropertyName(propertyEntity.getName());
 									bModel.setPropertyAddress(propertyEntity.getAddress());
-									
+									bModel.setOraname(propertyEntity.getOraname());
+									if(Objects.nonNull(bookingModel2)) {
+										if(!CollectionUtils.isEmpty(bookingModel2.getBookingVsRooms())) {
+											for(BookingVsRoomModel bookingVsRoomModel : bookingModel2.getBookingVsRooms()) {
+												price = price + Double.parseDouble(bookingVsRoomModel.getHostPrice());
+											}
+										}
+									}
+									bModel.setHostPrice(String.valueOf(price));
 									finalBookingModels.add(bModel);
 								}
 							}

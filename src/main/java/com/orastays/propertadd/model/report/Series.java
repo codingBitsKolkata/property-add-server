@@ -1,4 +1,4 @@
-package com.orastays.propertyadd.model.booking;
+package com.orastays.propertadd.model.report;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -14,14 +14,11 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 @JsonInclude(Include.NON_NULL)
-public class UserInfo extends CommonModel {
+public class Series {
 
-	@JsonProperty("customerName")
-	private String customerName;
+	@JsonProperty("name")
+	private String name;
 
-	@JsonProperty("customerEmail")
-	private String customerEmail;
-
-	@JsonProperty("customerPhone")
-	private String customerPhone;
+	@JsonProperty("data")
+	private String[] data;
 }

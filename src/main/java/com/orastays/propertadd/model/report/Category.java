@@ -1,4 +1,4 @@
-package com.orastays.propertyadd.model.booking;
+package com.orastays.propertadd.model.report;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -14,14 +14,8 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 @JsonInclude(Include.NON_NULL)
-public class PaymentModel {
-	
-	@JsonProperty("status")
-	private String status;
-	
-	@JsonProperty("paymentLink")
-	private String paymentLink;
-	
-	@JsonProperty("reason")
-	private String reason;
+public class Category {
+
+	@JsonProperty("categories")
+	private String[] categories;
 }

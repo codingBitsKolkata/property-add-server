@@ -7,15 +7,16 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.orastays.propertyadd.exceptions.FormExceptions;
 import com.orastays.propertyadd.helper.PropertyAddConstant;
 import com.orastays.propertyadd.helper.Util;
-import com.orastays.propertyadd.model.CommonModel;
 import com.orastays.propertyadd.model.PropertyModel;
 import com.orastays.propertyadd.model.ResponseModel;
 import com.orastays.propertyadd.model.booking.BookingModel;
@@ -41,16 +42,16 @@ public class ReportController extends BaseController {
 			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue..."),
 			@ApiResponse(code = 204, message = "Language Id Required"),
 			@ApiResponse(code = 205, message = "Invalid Language ID") })
-	public ResponseEntity<ResponseModel> viewPropertyBookingList(@RequestBody PropertyModel propertyModel) {
+	public ResponseEntity<ResponseModel> viewPropertyBookingList(@RequestBody BookingModel bookingModel) {
 
 		if (logger.isInfoEnabled()) {
 			logger.info("viewPropertyBookingList -- START");
 		}
 
 		ResponseModel responseModel = new ResponseModel();
-		Util.printLog(propertyModel, PropertyAddConstant.INCOMING, "View Property Booking List", request);
+		Util.printLog(bookingModel, PropertyAddConstant.INCOMING, "View Property Booking List", request);
 		try {
-			responseModel.setResponseBody(reportService.viewPropertyBookingList(propertyModel));
+			responseModel.setResponseBody(reportService.viewPropertyBookingList(bookingModel));
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 			
@@ -93,16 +94,16 @@ public class ReportController extends BaseController {
 			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue..."),
 			@ApiResponse(code = 204, message = "Language Id Required"),
 			@ApiResponse(code = 205, message = "Invalid Language ID") })
-	public ResponseEntity<ResponseModel> viewUserBookingList(@RequestBody CommonModel commonModel) {
+	public ResponseEntity<ResponseModel> viewUserBookingList(@RequestBody BookingModel bookingModel) {
 
 		if (logger.isInfoEnabled()) {
 			logger.info("viewUserBookingList -- START");
 		}
 
 		ResponseModel responseModel = new ResponseModel();
-		Util.printLog(commonModel, PropertyAddConstant.INCOMING, "View User Booking List", request);
+		Util.printLog(bookingModel, PropertyAddConstant.INCOMING, "View User Booking List", request);
 		try {
-			responseModel.setResponseBody(reportService.viewUserBookingList(commonModel));
+			responseModel.setResponseBody(reportService.viewUserBookingList(bookingModel));
 			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
 			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
 			
@@ -284,6 +285,112 @@ public class ReportController extends BaseController {
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("requestToiletry -- END");
+		}
+		
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
+			return new ResponseEntity<>(responseModel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping(value = "/host-line-graph", produces = "application/json")
+	@ApiOperation(value = "Line Graph For Host", response = ResponseModel.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
+			@ApiResponse(code = 202, message = "Token Required"),
+			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue..."),
+			@ApiResponse(code = 204, message = "Language Id Required"),
+			@ApiResponse(code = 205, message = "Invalid Language ID") })
+	public ResponseEntity<ResponseModel> fetchHostLineGraph(@RequestParam(value = "userToken", required = true) String userToken,
+			@RequestParam(value = "year", required = true) String year) {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchHostLineGraph -- START");
+		}
+
+		ResponseModel responseModel = new ResponseModel();
+		Util.printLog(userToken + "year" + year, PropertyAddConstant.INCOMING, "Line Graph For Host", request);
+		try {
+			responseModel.setResponseBody(reportService.fetchHostLineGraph(userToken, year));
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+			
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Line Graph For Host -- "+Util.errorToString(fe));
+				}
+				break;
+			}
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Line Graph For Host -- "+Util.errorToString(e));
+			}
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
+		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Line Graph For Host", request);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchHostLineGraph -- END");
+		}
+		
+		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
+			return new ResponseEntity<>(responseModel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping(value = "/host-bar-graph", produces = "application/json")
+	@ApiOperation(value = "Bar Graph For Host", response = ResponseModel.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 201, message = "Please Try after Sometime!!!"),
+			@ApiResponse(code = 202, message = "Token Required"),
+			@ApiResponse(code = 203, message = "Token Expires!!!Please login to continue..."),
+			@ApiResponse(code = 204, message = "Language Id Required"),
+			@ApiResponse(code = 205, message = "Invalid Language ID") })
+	public ResponseEntity<ResponseModel> fetchHostBarGraph(@RequestParam(value = "userToken", required = true) String userToken,
+			@RequestParam(value = "year", required = true) String year) {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchHostBarGraph -- START");
+		}
+
+		ResponseModel responseModel = new ResponseModel();
+		Util.printLog(userToken + "year" + year, PropertyAddConstant.INCOMING, "Bar Graph For Host", request);
+		try {
+			responseModel.setResponseBody(reportService.fetchHostBarGraph(userToken, year));
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_MESSAGE));
+			
+		} catch (FormExceptions fe) {
+
+			for (Entry<String, Exception> entry : fe.getExceptions().entrySet()) {
+				responseModel.setResponseCode(entry.getKey());
+				responseModel.setResponseMessage(entry.getValue().getMessage());
+				if (logger.isInfoEnabled()) {
+					logger.info("FormExceptions in Bar Graph For Host -- "+Util.errorToString(fe));
+				}
+				break;
+			}
+		} catch (Exception e) {
+			if (logger.isInfoEnabled()) {
+				logger.info("Exception in Bar Graph For Host -- "+Util.errorToString(e));
+			}
+			responseModel.setResponseCode(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_CODE));
+			responseModel.setResponseMessage(messageUtil.getBundle(PropertyAddConstant.COMMON_ERROR_MESSAGE));
+		}
+		
+		Util.printLog(responseModel, PropertyAddConstant.OUTGOING, "Bar Graph For Host", request);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("fetchHostBarGraph -- END");
 		}
 		
 		if (responseModel.getResponseCode().equals(messageUtil.getBundle(PropertyAddConstant.COMMON_SUCCESS_CODE))) {
