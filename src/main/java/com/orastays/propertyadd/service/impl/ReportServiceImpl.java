@@ -222,6 +222,7 @@ public class ReportServiceImpl extends BaseServiceImpl implements ReportService 
 					BookingModel bookingModel = new BookingModel();
 					bookingModel.setPropertyId(String.valueOf(propertyEntity.getPropertyId()));
 					List<BookingModel> bookingModels = reportValidation.getPropertyBookingList(bookingModel);
+					// Pending Amount Calculation
 					Series serie = new Series();
 					serie.setName("Pending Amount");
 					String[] datas = new String[propertyEntities.size()];
@@ -236,6 +237,29 @@ public class ReportServiceImpl extends BaseServiceImpl implements ReportService 
 								}
 							}
 						}
+						datas[i] = String.valueOf(price);
+					}
+					serie.setData(datas);
+					series.add(serie);
+					
+					// Realize Amount Calculation
+					serie = new Series();
+					serie.setName("Realize Amount");
+					datas = new String[propertyEntities.size()];
+					if(!CollectionUtils.isEmpty(bookingModels)) {
+						Double price = 0.0D;
+						Double userPaid = 0.0D;
+						for(BookingModel bookingModel2 : bookingModels) {
+							if(Objects.nonNull(bookingModel2)) {
+								if(!CollectionUtils.isEmpty(bookingModel2.getBookingVsRooms())) {
+									for(BookingVsRoomModel bookingVsRoomModel : bookingModel2.getBookingVsRooms()) {
+										price = price + Double.parseDouble(bookingVsRoomModel.getHostPrice());
+									}
+								}
+							}
+							userPaid = userPaid + Double.parseDouble(bookingModel2.getUserFinalPrice());
+						}
+						price = price - userPaid;
 						datas[i] = String.valueOf(price);
 					}
 					serie.setData(datas);
