@@ -66,15 +66,24 @@ import com.orastays.propertyadd.dao.SpecialtiesDAO;
 import com.orastays.propertyadd.dao.StateDAO;
 import com.orastays.propertyadd.dao.StayTypeDAO;
 import com.orastays.propertyadd.helper.AzureFileUpload;
+import com.orastays.propertyadd.helper.MailHelper;
+import com.orastays.propertyadd.helper.MessageUtil;
 import com.orastays.propertyadd.validation.PropertyValidation;
+import com.orastays.propertyadd.validation.ReportValidation;
 
 public abstract class BaseServiceImpl {
 
 	@Value("${entitymanager.packagesToScan}")
 	protected String entitymanagerPackagesToScan;
+	
+	@Autowired
+	protected MessageUtil messageUtil;
 
 	@Autowired
 	protected PropertyValidation propertyValidation;
+	
+	@Autowired
+	protected ReportValidation reportValidation;
 
 	@Autowired
 	protected PropertyTypeDAO propertyTypeDAO;
@@ -264,5 +273,8 @@ public abstract class BaseServiceImpl {
 
 	@Autowired
 	protected AzureFileUpload azureFileUpload;
+	
+	@Autowired
+	protected MailHelper mailHelper;
 
 }

@@ -22,8 +22,6 @@ import com.orastays.propertyadd.model.SpecialExperienceModel;
 import com.orastays.propertyadd.model.SpecialtiesModel;
 import com.orastays.propertyadd.model.StateModel;
 import com.orastays.propertyadd.model.StayTypeModel;
-import com.orastays.propertyadd.model.booking.BookingModel;
-import com.orastays.propertyadd.model.booking.CancellationModel;
 
 public interface PropertyService {
 
@@ -49,10 +47,6 @@ public interface PropertyService {
 	List<PropertyVsToiletryModel> fetchToiletry(CommonModel commonModel) throws FormExceptions;
 	PropertyModel fetchPropertyById(PropertyModel propertyModel) throws FormExceptions;
 	void updateProperty(PropertyModel propertyModel) throws FormExceptions;
-	List<BookingModel> viewPropertyBookingList(PropertyModel propertyModel) throws FormExceptions;
-	List<BookingModel> viewUserBookingList(CommonModel commonModel) throws FormExceptions;
-	List<CancellationModel> viewPropertyCancellationList(BookingModel bookingModel) throws FormExceptions;
-	List<CancellationModel> viewUserCancellationList(BookingModel bookingModel) throws FormExceptions;
 	List<AmenitiesModel> fetchAmenitiesForFilter() throws FormExceptions;
 	List<String> uploadFiles(MultipartFile[] file,String userToken) throws FormExceptions;
 }

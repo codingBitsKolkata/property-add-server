@@ -71,8 +71,6 @@ import com.orastays.propertyadd.model.SpecialtiesModel;
 import com.orastays.propertyadd.model.StateModel;
 import com.orastays.propertyadd.model.StayTypeModel;
 import com.orastays.propertyadd.model.auth.UserModel;
-import com.orastays.propertyadd.model.booking.BookingModel;
-import com.orastays.propertyadd.model.booking.CancellationModel;
 import com.orastays.propertyadd.service.PropertyService;
 
 @Service
@@ -1242,66 +1240,6 @@ public class PropertyServiceImpl extends BaseServiceImpl implements PropertyServ
 				}
 
 
-	}
-
-	@Override
-	public List<BookingModel> viewPropertyBookingList(PropertyModel propertyModel) throws FormExceptions {
-		
-		if (logger.isInfoEnabled()) {
-			logger.info("viewPropertyBookingList -- START");
-		}
-		
-		
-		if (logger.isInfoEnabled()) {
-			logger.info("viewPropertyBookingList -- END");
-		}
-		
-		return  propertyValidation.validatePropertyUserToken(propertyModel);
-	}
-
-	@Override
-	public List<BookingModel> viewUserBookingList(CommonModel commonModel) throws FormExceptions {
-		
-		if (logger.isInfoEnabled()) {
-			logger.info("viewUserBookingList -- START");
-		}
-		
-		
-		
-		if (logger.isInfoEnabled()) {
-			logger.info("viewUserBookingList -- END");
-		}
-		
-		return propertyValidation.validateUserTokenForBookingList(commonModel);
-	}
-
-	@Override
-	public List<CancellationModel> viewPropertyCancellationList(BookingModel bookingModel) throws FormExceptions {
-
-		if (logger.isInfoEnabled()) {
-			logger.info("viewPropertyCancellationList -- START");
-		}
-		
-
-		if (logger.isInfoEnabled()) {
-			logger.info("viewPropertyCancellationList -- END");
-		}
-		
-		return propertyValidation.getPropertyCancellationList(bookingModel);
-	}
-
-	@Override
-	public List<CancellationModel> viewUserCancellationList(BookingModel bookingModel) throws FormExceptions {
-
-		if (logger.isInfoEnabled()) {
-			logger.info("viewUserCancellationList -- START");
-		}
-		
-
-		if (logger.isInfoEnabled()) {
-			logger.info("viewUserCancellationList -- END");
-		}
-		return propertyValidation.validateUserTokenForCancellationList(bookingModel);
 	}
 
 	@Override
