@@ -322,7 +322,7 @@
   "altEmail": "sudeep@orastays.com",
   "advancePercentage": "100",
   "sexCategory": "BOTH",
-  "location": "sector v",
+  "location": "Kolkata",
   "propertyType": {
     "propertyTypeId": "1"
   },
@@ -331,7 +331,7 @@
   },
   "propertyVsDescriptions": [
     {
-      "description": "Where does it come from",
+      "description": "Dummy Description",
       "languageId": "1"
     }
   ],
