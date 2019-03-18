@@ -13,9 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.orastays.propertadd.model.report.Category;
-import com.orastays.propertadd.model.report.Graph;
-import com.orastays.propertadd.model.report.Series;
 import com.orastays.propertyadd.entity.PropertyEntity;
 import com.orastays.propertyadd.exceptions.FormExceptions;
 import com.orastays.propertyadd.helper.PropertyAddConstant;
@@ -26,6 +23,9 @@ import com.orastays.propertyadd.model.auth.UserModel;
 import com.orastays.propertyadd.model.booking.BookingModel;
 import com.orastays.propertyadd.model.booking.BookingVsRoomModel;
 import com.orastays.propertyadd.model.booking.CancellationModel;
+import com.orastays.propertyadd.model.report.Category;
+import com.orastays.propertyadd.model.report.Graph;
+import com.orastays.propertyadd.model.report.Series;
 import com.orastays.propertyadd.service.ReportService;
 
 @Service

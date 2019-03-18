@@ -1,4 +1,4 @@
-package com.orastays.propertadd.model.report;
+package com.orastays.propertyadd.model.report;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

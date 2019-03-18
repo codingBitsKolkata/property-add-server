@@ -58,7 +58,7 @@ public class PropertyAddApplication extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	@LoadBalanced
+	//@LoadBalanced
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}

@@ -2,11 +2,11 @@ package com.orastays.propertyadd.service;
 
 import java.util.List;
 
-import com.orastays.propertadd.model.report.Graph;
 import com.orastays.propertyadd.exceptions.FormExceptions;
 import com.orastays.propertyadd.model.PropertyModel;
 import com.orastays.propertyadd.model.booking.BookingModel;
 import com.orastays.propertyadd.model.booking.CancellationModel;
+import com.orastays.propertyadd.model.report.Graph;
 
 public interface ReportService {
 

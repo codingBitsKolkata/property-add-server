@@ -1,4 +1,4 @@
-package com.orastays.propertadd.model.report;
+package com.orastays.propertyadd.model.report;
 
 import java.util.List;
 
